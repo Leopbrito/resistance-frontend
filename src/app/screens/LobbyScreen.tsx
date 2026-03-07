@@ -1,29 +1,23 @@
+import { Check, Clock, Crown, User } from "lucide-react";
 import { motion } from "motion/react";
-import { useNavigate } from "react-router";
+import { useContext } from "react";
+import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
-import { StatusIndicator } from "../components/StatusIndicator";
-import { Crown, User, Check, Clock } from "lucide-react";
-import { useState } from "react";
-
-interface Player {
-  id: string;
-  name: string;
-  isHost: boolean;
-  isReady: boolean;
-}
-
-const mockPlayers: Player[] = [
-  { id: "1", name: "Phoenix", isHost: true, isReady: true },
-  { id: "2", name: "Shadow", isHost: false, isReady: true },
-  { id: "3", name: "Cipher", isHost: false, isReady: false },
-  { id: "4", name: "Echo", isHost: false, isReady: true },
-  { id: "5", name: "Ghost", isHost: false, isReady: false },
-];
+import { socket } from "../web-socket";
 
 export function LobbyScreen() {
-  const navigate = useNavigate();
-  const [players] = useState<Player[]>(mockPlayers);
+  const { roomCode, gameState } = useContext(AppContext);
+
+  const handleStartGame = () => {
+    socket.emit(
+      "startGame",
+      {},
+      () => {
+        console.log("Jogo iniciado");
+      },
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
@@ -44,7 +38,7 @@ export function LobbyScreen() {
               Room Code:
             </span>
             <span className="font-['Orbitron'] text-[#00D9FF] tracking-widest">
-              ABCDEF
+              {roomCode}
             </span>
           </div>
         </motion.div>
@@ -57,9 +51,9 @@ export function LobbyScreen() {
           className="flex-1 mb-8 overflow-y-auto"
         >
           <div className="space-y-3 max-w-md mx-auto">
-            {players.map((player, index) => (
+            {gameState.players.map((player, index) => (
               <motion.div
-                key={player.id}
+                key={player.socketId}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index }}
@@ -90,7 +84,7 @@ export function LobbyScreen() {
 
                   {/* Status Badge */}
                   <div>
-                    {player.isReady ? (
+                    {true ? (
                       <div className="flex items-center gap-1 px-3 py-1 bg-[#00D9FF]/20 border border-[#00D9FF] rounded-full">
                         <Check className="w-3 h-3 text-[#00D9FF]" />
                         <span className="text-xs font-['Inter'] text-[#00D9FF] uppercase tracking-wide">
@@ -120,7 +114,7 @@ export function LobbyScreen() {
           className="text-center mb-6"
         >
           <p className="text-[#9CA3AF] font-['Inter'] text-sm">
-            {players.length} / 10 Players
+            {gameState.players.length} / 10 Players
           </p>
           <p className="text-[#6B7280] font-['Inter'] text-xs mt-1">
             Minimum 5 players required
@@ -134,14 +128,16 @@ export function LobbyScreen() {
           transition={{ delay: 0.4 }}
           className="max-w-md mx-auto w-full"
         >
-          <GlowButton
-            variant="resistance"
-            onClick={() => navigate("/role-reveal")}
-            className="w-full"
-            disabled={players.length < 5}
-          >
-            Start Game
-          </GlowButton>
+          {gameState.me?.isHost && (
+            <GlowButton
+              variant="resistance"
+              onClick={handleStartGame}
+              className="w-full"
+              disabled={gameState.players.length < 5}
+            >
+              Start Game
+            </GlowButton>
+          )}
 
           <p className="text-center text-[#9CA3AF] text-xs font-['Inter'] mt-4">
             Only the host can start the game

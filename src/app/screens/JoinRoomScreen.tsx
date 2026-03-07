@@ -1,22 +1,42 @@
+import { ArrowLeft } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
+import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
-import { ArrowLeft } from "lucide-react";
+import { socket } from "../web-socket";
 
 export function JoinRoomScreen() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const isCreateMode = searchParams.get("mode") === "create";
 
+  const { roomCode, setRoomCode } = useContext(AppContext);
   const [username, setUsername] = useState("");
-  const [roomCode, setRoomCode] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (username.trim()) {
-      navigate("/lobby");
+      if (isCreateMode) {
+        socket.emit(
+          "createRoom",
+          { playerName: username },
+          (roomCode: string) => {
+            console.log("Sala criada com código:", roomCode);
+            setRoomCode(roomCode);
+            navigate("/lobby");
+          },
+        );
+      } else {
+        socket.emit(
+          "joinRoom",
+          { playerName: username, roomCode },
+          (roomCode: string) => {
+            navigate("/lobby");
+          },
+        );
+      }
     }
   };
 
@@ -85,56 +105,18 @@ export function JoinRoomScreen() {
                   Room Code
                 </label>
                 <div className="flex gap-2">
-                  {[0, 1, 2, 3, 4, 5].map((index) => (
-                    <input
-                      key={index}
-                      type="text"
-                      maxLength={1}
-                      value={roomCode[index] || ""}
-                      onChange={(e) => {
-                        const newCode = roomCode.split("");
-                        newCode[index] = e.target.value.toUpperCase();
-                        setRoomCode(newCode.join(""));
-                        
-                        // Auto-focus next input
-                        if (e.target.value && index < 5) {
-                          const nextInput = e.target.parentElement?.children[index + 1] as HTMLInputElement;
-                          nextInput?.focus();
-                        }
-                      }}
-                      className="w-full aspect-square px-0 text-center text-2xl font-['Orbitron'] 
-                        bg-[#1A1F28] border-2 border-[#6B7280] rounded-lg
-                        text-[#00D9FF] placeholder-[#6B7280]
-                        focus:border-[#00D9FF] focus:outline-none focus:shadow-[0_0_20px_rgba(0,217,255,0.3)]
-                        transition-all duration-300 uppercase"
-                    />
-                  ))}
+                  <input
+                    id="roomCode"
+                    type="text"
+                    value={roomCode}
+                    onChange={(e) => setRoomCode(e.target.value)}
+                    placeholder="ABCD-1234"
+                    className="w-full px-5 py-4 bg-[#1A1F28] border-2 border-[#6B7280] rounded-lg
+                  text-white font-['Inter'] placeholder-[#6B7280]
+                  focus:border-[#00D9FF] focus:outline-none focus:shadow-[0_0_20px_rgba(0,217,255,0.3)]
+                  transition-all duration-300"
+                  />
                 </div>
-              </div>
-            )}
-
-            {/* Room code display for create mode */}
-            {isCreateMode && (
-              <div className="space-y-3">
-                <label className="block font-['Inter'] text-[#9CA3AF] text-sm tracking-wide uppercase">
-                  Your Room Code
-                </label>
-                <div className="flex gap-2 justify-center">
-                  {["A", "B", "C", "D", "E", "F"].map((letter, index) => (
-                    <div
-                      key={index}
-                      className="w-full aspect-square flex items-center justify-center
-                        bg-[#1A1F28] border-2 border-[#00D9FF] rounded-lg
-                        text-[#00D9FF] text-2xl font-['Orbitron']
-                        shadow-[0_0_15px_rgba(0,217,255,0.3)]"
-                    >
-                      {letter}
-                    </div>
-                  ))}
-                </div>
-                <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mt-2">
-                  Share this code with other players
-                </p>
               </div>
             )}
 
@@ -144,7 +126,9 @@ export function JoinRoomScreen() {
                 type="submit"
                 variant="resistance"
                 className="w-full"
-                disabled={!username.trim() || (!isCreateMode && roomCode.length !== 6)}
+                disabled={
+                  !username.trim() || (!isCreateMode && roomCode.length !== 9)
+                }
               >
                 {isCreateMode ? "Create & Enter" : "Join Game"}
               </GlowButton>
