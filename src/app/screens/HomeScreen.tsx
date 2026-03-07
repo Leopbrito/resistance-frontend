@@ -1,12 +1,20 @@
+import { Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router";
+import { GlitchText } from "../components/GlitchText";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
-import { GlitchText } from "../components/GlitchText";
-import { Shield } from "lucide-react";
 
 export function HomeScreen() {
   const navigate = useNavigate();
+
+  const handleCreateRoom = () => {
+    navigate("/join?mode=create");
+  };
+
+  const handleJoinRoom = () => {
+    navigate("/join");
+  };
 
   return (
     <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
@@ -62,17 +70,11 @@ export function HomeScreen() {
           transition={{ delay: 0.7, duration: 0.6 }}
           className="flex flex-col gap-4 w-full max-w-xs"
         >
-          <GlowButton
-            variant="resistance"
-            onClick={() => navigate("/join?mode=create")}
-          >
+          <GlowButton variant="resistance" onClick={handleCreateRoom}>
             Create Room
           </GlowButton>
 
-          <GlowButton
-            variant="neutral"
-            onClick={() => navigate("/join")}
-          >
+          <GlowButton variant="neutral" onClick={handleJoinRoom}>
             Join Room
           </GlowButton>
         </motion.div>

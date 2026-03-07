@@ -2,16 +2,16 @@ import { motion } from "motion/react";
 import { useNavigate } from "react-router";
 import { GlowButton } from "../components/GlowButton";
 import { Shield, Eye } from "lucide-react";
-import { useState } from "react";
-
-// For demo purposes - randomly assign role
-const ROLE = Math.random() > 0.7 ? "spy" : "resistance";
+import { useContext, useState } from "react";
+import { AppContext } from "../App";
+import { Role } from "../enums/enums";
 
 export function RoleRevealScreen() {
   const navigate = useNavigate();
+  const { gameState } = useContext(AppContext);
   const [showRole, setShowRole] = useState(false);
 
-  const isSpy = ROLE === "spy";
+  const isSpy = gameState.me?.role === Role.SPY;
 
   const handleReveal = () => {
     setShowRole(true);
