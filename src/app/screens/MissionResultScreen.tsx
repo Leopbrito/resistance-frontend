@@ -2,22 +2,18 @@ import { motion } from "motion/react";
 import { useNavigate } from "react-router";
 import { GlowButton } from "../components/GlowButton";
 import { CheckCircle, XCircle, Circle } from "lucide-react";
-import { useState, useEffect } from "react";
-
-// For demo - random success/failure
-const IS_SUCCESS = Math.random() > 0.5;
-
-const missions = [
-  { completed: true, success: true },
-  { completed: true, success: IS_SUCCESS },
-  { completed: false, success: false },
-  { completed: false, success: false },
-  { completed: false, success: false },
-];
+import { useState, useEffect, useContext } from "react";
+import { AppContext } from "../App";
+import { GamePhase } from "../enums/enums";
 
 export function MissionResultScreen() {
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
+  const { gameState } = useContext(AppContext);
+  
+  while(gameState.rounds.length < 5) {
+    gameState.rounds.push({} as any)
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,6 +21,14 @@ export function MissionResultScreen() {
     }, 500);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleContinueButton = () => {
+    if (gameState.phase === GamePhase.FINISHED) {
+      navigate("/lobby")
+    } else {
+      navigate("/mission-voting")
+    }
+  }
 
   return (
     <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
@@ -34,7 +38,7 @@ export function MissionResultScreen() {
         animate={{ opacity: 0.3 }}
         className="absolute inset-0"
         style={{
-          background: IS_SUCCESS
+          background: gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS"
             ? "radial-gradient(circle at center, #00D9FF 0%, transparent 70%)"
             : "radial-gradient(circle at center, #DC143C 0%, transparent 70%)",
         }}
@@ -51,7 +55,14 @@ export function MissionResultScreen() {
             Mission Progress
           </h3>
           <div className="flex justify-center gap-3">
-            {missions.map((mission, index) => (
+            {gameState.rounds
+            .map(m => {
+              return {
+                 completed: m.status === 'MISSION_SUCCESS' || m.status === 'MISSION_FAILED', 
+                 success: m.status === 'MISSION_SUCCESS' 
+              }
+            })
+            .map((mission, index) => (
               <motion.div
                 key={index}
                 initial={{ scale: 0 }}
@@ -133,13 +144,13 @@ export function MissionResultScreen() {
                 style={{
                   backfaceVisibility: "hidden",
                   transform: "rotateY(180deg)",
-                  background: IS_SUCCESS
+                  background: gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS"
                     ? "linear-gradient(135deg, #1A1F28 0%, #00D9FF20 100%)"
                     : "linear-gradient(135deg, #1A1F28 0%, #DC143C20 100%)",
                   borderWidth: "2px",
                   borderStyle: "solid",
-                  borderColor: IS_SUCCESS ? "#00D9FF" : "#DC143C",
-                  boxShadow: IS_SUCCESS
+                  borderColor: gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS" ? "#00D9FF" : "#DC143C",
+                  boxShadow: gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS"
                     ? "0 0 40px rgba(0,217,255,0.5)"
                     : "0 0 40px rgba(220,20,60,0.5)",
                 }}
@@ -149,7 +160,7 @@ export function MissionResultScreen() {
                   animate={{ scale: flipped ? 1 : 0 }}
                   transition={{ delay: 0.3, type: "spring" }}
                 >
-                  {IS_SUCCESS ? (
+                  {gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS" ? (
                     <CheckCircle
                       className="w-24 h-24 mb-6"
                       style={{ color: "#00D9FF" }}
@@ -170,13 +181,13 @@ export function MissionResultScreen() {
                   transition={{ delay: 0.5 }}
                   className="font-['Orbitron'] text-4xl tracking-wider"
                   style={{
-                    color: IS_SUCCESS ? "#00D9FF" : "#DC143C",
-                    textShadow: IS_SUCCESS
+                    color: gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS" ? "#00D9FF" : "#DC143C",
+                    textShadow: gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS"
                       ? "0 0 20px rgba(0,217,255,0.6)"
                       : "0 0 20px rgba(220,20,60,0.6)",
                   }}
                 >
-                  {IS_SUCCESS ? "SUCCESS" : "FAILED"}
+                  {gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS" ? "SUCCESS" : "FAILED"}
                 </motion.h2>
 
                 <motion.p
@@ -185,7 +196,7 @@ export function MissionResultScreen() {
                   transition={{ delay: 0.7 }}
                   className="font-['Inter'] text-[#9CA3AF] text-sm mt-4 px-8 text-center"
                 >
-                  {IS_SUCCESS
+                  {gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS"
                     ? "The mission was completed successfully"
                     : "The mission has been sabotaged"}
                 </motion.p>
@@ -202,21 +213,21 @@ export function MissionResultScreen() {
           className="w-full max-w-md"
         >
           <GlowButton
-            variant={IS_SUCCESS ? "resistance" : "spy"}
-            onClick={() => navigate("/lobby")}
+            variant={gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS" ? "resistance" : "spy"}
+            onClick={handleContinueButton}
             className="w-full"
           >
             Continue
           </GlowButton>
 
           <p className="text-center text-[#9CA3AF] text-xs font-['Inter'] mt-4">
-            {IS_SUCCESS ? "Resistance" : "Spies"}: 1 point
+            {gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS" ? "Resistance" : "Spies"}: 1 point
           </p>
         </motion.div>
       </div>
 
       {/* Particle effects based on result */}
-      {IS_SUCCESS ? (
+      {gameState.rounds[gameState.currentRoundIndex -1].status === "MISSION_SUCCESS" ? (
         <>
           {[...Array(20)].map((_, i) => (
             <motion.div
