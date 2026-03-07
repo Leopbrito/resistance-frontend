@@ -33,6 +33,6 @@ jobs:
 
       - name: Build and push image
         run: |
-          IMAGE="ghcr.io/${{ secrets.GHCR_USERNAME }}/leopbrito-webapp:${{ steps.version.outputs.version }}"
+          IMAGE="ghcr.io/${{ secrets.GHCR_USERNAME }}/resistance-frontend:${{ steps.version.outputs.version }}"
           docker build -t $IMAGE .
           docker push $IMAGE
