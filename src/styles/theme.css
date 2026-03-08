@@ -153,6 +153,7 @@
 
   html {
     font-size: var(--font-size);
+    background-color: rgb(11, 15, 20);
   }
 
   h1 {
