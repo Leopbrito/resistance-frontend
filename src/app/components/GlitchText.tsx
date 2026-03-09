@@ -14,7 +14,7 @@ export function GlitchText({ children, className = "" }: GlitchTextProps) {
       <motion.span
         animate={{
           opacity: [0, 0.7, 0],
-          x: [-2, 2, -2],
+          x: [-5, 5, -5],
         }}
         transition={{
           duration: 0.15,
@@ -30,7 +30,7 @@ export function GlitchText({ children, className = "" }: GlitchTextProps) {
       <motion.span
         animate={{
           opacity: [0, 0.7, 0],
-          x: [2, -2, 2],
+          x: [5, -5, 5],
         }}
         transition={{
           duration: 0.15,

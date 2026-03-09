@@ -48,7 +48,7 @@ export function HomeScreen() {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
-            textShadow: "0 0 40px rgba(0, 217, 255, 0.3)",
+            textShadow: "0 0 2.5px rgba(0, 217, 255, 0.5)",
           }}
         >
           <GlitchText>THE RESISTANCE</GlitchText>

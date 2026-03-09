@@ -61,8 +61,8 @@ export function RoleRevealScreen() {
         className="absolute inset-0"
         style={{
           background: isSpy
-            ? "radial-gradient(circle at center, #DC143C 0%, #0B0F14 70%)"
-            : "radial-gradient(circle at center, #00D9FF 0%, #0B0F14 70%)",
+            ? "radial-gradient(circle at center, #940e29 0%, #0B0F14 70%)"
+            : "radial-gradient(circle at center, #00b0cf 0%, #0B0F14 70%)",
         }}
       />
 
@@ -144,7 +144,7 @@ export function RoleRevealScreen() {
                     ],
               }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="absolute inset-0 blur-xl"
+              className="absolute inset-0 blur-2xl"
               style={{
                 background: isSpy ? "#DC143C" : "#00D9FF",
               }}
@@ -171,7 +171,7 @@ export function RoleRevealScreen() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <p className="font-['Inter'] text-[#9CA3AF] text-sm uppercase tracking-widest mb-2">
+          <p className="font-['Inter'] text-white text-sm font-bold uppercase tracking-widest mb-2">
             Your Role
           </p>
           <motion.h1
