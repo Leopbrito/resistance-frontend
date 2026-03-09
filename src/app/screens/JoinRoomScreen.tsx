@@ -6,6 +6,7 @@ import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
 import { socket } from "../web-socket";
+import { SocketEvent, ROOM_CODE_LENGTH } from "../enums/enums";
 
 export function JoinRoomScreen() {
   const navigate = useNavigate();
@@ -20,19 +21,27 @@ export function JoinRoomScreen() {
     if (username.trim()) {
       if (isCreateMode) {
         socket.emit(
-          "createRoom",
+          SocketEvent.CREATE_ROOM,
           { playerName: username },
-          (roomCode: string) => {
-            console.log("Sala criada com código:", roomCode);
-            setRoomCode(roomCode);
-            navigate("/lobby");
+          (response) => {
+            if (typeof response === 'object' && response !== null && 'error' in response) return;
+            if (typeof response === 'string') {
+              if (response.length !== ROOM_CODE_LENGTH) return;
+              
+              console.log("Sala criada com código:", response);
+              setRoomCode(response);
+              navigate("/lobby");
+            }
           },
         );
       } else {
         socket.emit(
-          "joinRoom",
+          SocketEvent.JOIN_ROOM,
           { playerName: username, roomCode },
-          (roomCode: string) => {
+          (response) => {
+            if (typeof response === 'object' && response !== null && 'error' in response) return;
+            if (typeof response === 'string' && response.length !== ROOM_CODE_LENGTH) return;
+            
             navigate("/lobby");
           },
         );
@@ -127,7 +136,7 @@ export function JoinRoomScreen() {
                 variant="resistance"
                 className="w-full"
                 disabled={
-                  !username.trim() || (!isCreateMode && roomCode.length !== 9)
+                  !username.trim() || (!isCreateMode && roomCode.length !== ROOM_CODE_LENGTH)
                 }
               >
                 {isCreateMode ? "Create & Enter" : "Join Game"}

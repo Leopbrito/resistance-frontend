@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
-import { MissionVoteAction, TeamVoteAction } from "../enums/enums";
+import { MissionVoteAction, TeamVoteAction, SocketEvent } from "../enums/enums";
 import { Player } from "../interfaces/interfaces";
 import { socket } from "../web-socket";
 
@@ -25,7 +25,7 @@ export function MissionVotingScreen() {
             gameState.rounds[gameState.currentRoundIndex].selectedTeam.length <
             gameState.rounds[gameState.currentRoundIndex].teamSize
           ) {
-            socket.emit("selectMissionTeam", {
+            socket.emit(SocketEvent.SELECT_MISSION_TEAM, {
               selectedPlayers: [
                 ...gameState.rounds[gameState.currentRoundIndex].selectedTeam,
                 player.socketId,
@@ -45,7 +45,7 @@ export function MissionVotingScreen() {
             (p) => p === player.socketId,
           )
         ) {
-          socket.emit("selectMissionTeam", {
+          socket.emit(SocketEvent.SELECT_MISSION_TEAM, {
             selectedPlayers: gameState.rounds[
               gameState.currentRoundIndex
             ].selectedTeam.filter((p) => p !== player.socketId),
@@ -57,7 +57,7 @@ export function MissionVotingScreen() {
 
   const handleSubmitTeam = () => {
     if (gameState.me?.isLeader) {
-      socket.emit("submitSelectedMissionTeam", {
+      socket.emit(SocketEvent.SUBMIT_SELECTED_MISSION_TEAM, {
         selectedPlayers:
           gameState.rounds[gameState.currentRoundIndex].selectedTeam,
       });
@@ -66,14 +66,14 @@ export function MissionVotingScreen() {
 
   const handleVoteTeam = (vote: TeamVoteAction) => {
     return () => {
-      socket.emit("voteTeamApproval", {
+      socket.emit(SocketEvent.VOTE_TEAM_APPROVAL, {
         vote,
       });
     };
   };
   const handleVoteMission = (vote: MissionVoteAction) => {
     return () => {
-      socket.emit("submitMissionVote", {
+      socket.emit(SocketEvent.SUBMIT_MISSION_VOTE, {
         vote,
       });
     };

@@ -5,13 +5,14 @@ import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
 import { socket } from "../web-socket";
+import { SocketEvent } from "../enums/enums";
 
 export function LobbyScreen() {
   const { roomCode, gameState } = useContext(AppContext);
 
   const handleStartGame = () => {
     socket.emit(
-      "startGame",
+      SocketEvent.START_GAME,
       {},
       () => {
         console.log("Jogo iniciado");

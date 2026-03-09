@@ -4,6 +4,7 @@ import { GameState } from "./interfaces/interfaces";
 import { router } from "./routes";
 import { navigate } from "./services/navigation-service";
 import { socket } from "./web-socket";
+import { SocketEvent } from "./enums/enums";
 
 export interface GameStateContext {
   roomCode: string;
@@ -20,7 +21,7 @@ export default function App() {
   const [roomCode, setRoomCode] = React.useState<string>("");
   const [gameState, setGameState] = React.useState<GameState>({} as GameState);
 
-  socket.on("gameStateUpdate", (updatedGameState: GameState) => {
+  socket.on(SocketEvent.GAME_STATE_UPDATE, (updatedGameState: GameState) => {
     console.log("updatedGameState: ", updatedGameState);
     
     if(updatedGameState.revealRolesStep) {

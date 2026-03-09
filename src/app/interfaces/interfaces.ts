@@ -1,4 +1,4 @@
-import { Role, GamePhase, TeamVoteAction, MissionVoteAction } from '../enums/enums';
+import { Role, GamePhase, TeamVoteAction, MissionVoteAction, SocketEvent } from '../enums/enums';
 
 export interface Player {
   socketId: string;
@@ -37,4 +37,19 @@ export interface Room {
   code: string;
   hostSocketId: string;
   gameState: GameState;
+}
+
+export interface ServerToClientEvents {
+  [SocketEvent.ERROR]: (error: { message: string } | string) => void;
+  [SocketEvent.GAME_STATE_UPDATE]: (gameState: GameState) => void;
+}
+
+export interface ClientToServerEvents {
+  [SocketEvent.CREATE_ROOM]: (data: { playerName: string }, callback: (response: { error?: string } | string) => void) => void;
+  [SocketEvent.JOIN_ROOM]: (data: { playerName: string; roomCode: string }, callback: (response: { error?: string } | string) => void) => void;
+  [SocketEvent.START_GAME]: (data: {}, callback: () => void) => void;
+  [SocketEvent.SELECT_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;
+  [SocketEvent.SUBMIT_SELECTED_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;
+  [SocketEvent.VOTE_TEAM_APPROVAL]: (data: { vote: TeamVoteAction }) => void;
+  [SocketEvent.SUBMIT_MISSION_VOTE]: (data: { vote: MissionVoteAction }) => void;
 }
