@@ -1,19 +1,18 @@
 import { ArrowLeft } from "lucide-react";
 import { motion } from "motion/react";
-import { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
-import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
+import { ROOM_CODE_LENGTH, SocketEvent } from "../enums/enums";
 import { socket } from "../web-socket";
-import { SocketEvent, ROOM_CODE_LENGTH } from "../enums/enums";
 
 export function JoinRoomScreen() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const isCreateMode = searchParams.get("mode") === "create";
 
-  const { roomCode, setRoomCode } = useContext(AppContext);
+  const [roomCode, setRoomCode] = useState("");
   const [username, setUsername] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,14 +23,8 @@ export function JoinRoomScreen() {
           SocketEvent.CREATE_ROOM,
           { playerName: username },
           (response) => {
-            if (typeof response === 'object' && response !== null && 'error' in response) return;
-            if (typeof response === 'string') {
-              if (response.length !== ROOM_CODE_LENGTH) return;
-              
-              console.log("Sala criada com código:", response);
-              setRoomCode(response);
-              navigate("/lobby");
-            }
+            sessionStorage.setItem("playerId", response.playerId);
+            navigate("/lobby");
           },
         );
       } else {
@@ -39,9 +32,7 @@ export function JoinRoomScreen() {
           SocketEvent.JOIN_ROOM,
           { playerName: username, roomCode },
           (response) => {
-            if (typeof response === 'object' && response !== null && 'error' in response) return;
-            if (typeof response === 'string' && response.length !== ROOM_CODE_LENGTH) return;
-            
+            sessionStorage.setItem("playerId", response.playerId);
             navigate("/lobby");
           },
         );
@@ -136,7 +127,8 @@ export function JoinRoomScreen() {
                 variant="resistance"
                 className="w-full"
                 disabled={
-                  !username.trim() || (!isCreateMode && roomCode.length !== ROOM_CODE_LENGTH)
+                  !username.trim() ||
+                  (!isCreateMode && roomCode.length !== ROOM_CODE_LENGTH)
                 }
               >
                 {isCreateMode ? "Create & Enter" : "Join Game"}

@@ -18,7 +18,7 @@ export function MissionVotingScreen() {
       if (gameState.me?.isLeader) {
         if (
           !gameState.rounds[gameState.currentRoundIndex].selectedTeam.find(
-            (p) => p === player.socketId,
+            (p) => p === player.id,
           )
         ) {
           if (
@@ -28,7 +28,7 @@ export function MissionVotingScreen() {
             socket.emit(SocketEvent.SELECT_MISSION_TEAM, {
               selectedPlayers: [
                 ...gameState.rounds[gameState.currentRoundIndex].selectedTeam,
-                player.socketId,
+                player.id,
               ],
             });
           }
@@ -42,13 +42,13 @@ export function MissionVotingScreen() {
       if (gameState.me?.isLeader) {
         if (
           gameState.rounds[gameState.currentRoundIndex].selectedTeam.find(
-            (p) => p === player.socketId,
+            (p) => p === player.id,
           )
         ) {
           socket.emit(SocketEvent.SELECT_MISSION_TEAM, {
             selectedPlayers: gameState.rounds[
               gameState.currentRoundIndex
-            ].selectedTeam.filter((p) => p !== player.socketId),
+            ].selectedTeam.filter((p) => p !== player.id),
           });
         }
       }
@@ -136,7 +136,7 @@ export function MissionVotingScreen() {
             {gameState.players
               .filter((p) =>
                 gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(
-                  (socketId) => p.socketId === socketId,
+                  (id) => p.id === id,
                 ),
               )
               .map((player, index) => (
@@ -176,7 +176,7 @@ export function MissionVotingScreen() {
                 (p) =>
                   !gameState.rounds[
                     gameState.currentRoundIndex
-                  ].selectedTeam.some((socketId) => p.socketId === socketId),
+                  ].selectedTeam.some((id) => p.id === id),
               )
               .map((player, index) => (
                 <motion.div
@@ -244,7 +244,7 @@ export function MissionVotingScreen() {
         {/* Vote Buttons */}
         {gameState.phase === "VOTING" &&
           !gameState.rounds[gameState.currentRoundIndex].teamVotes[
-            gameState.me?.socketId!
+            gameState.me?.id!
           ] && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -277,7 +277,7 @@ export function MissionVotingScreen() {
         {/* Player Message */}
         {gameState.phase === "VOTING" &&
           gameState.rounds[gameState.currentRoundIndex].teamVotes[
-            gameState.me?.socketId!
+            gameState.me?.id!
           ] && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -293,8 +293,8 @@ export function MissionVotingScreen() {
 
         {/* Vote Buttons */}
         {gameState.phase === "MISSION" &&
-          gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(p => p === gameState.me?.socketId) && 
-          !gameState.rounds[gameState.currentRoundIndex].missionVotes[gameState.me?.socketId!] && (
+          gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(p => p === gameState.me?.id) && 
+          !gameState.rounds[gameState.currentRoundIndex].missionVotes[gameState.me?.id!] && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -325,8 +325,8 @@ export function MissionVotingScreen() {
 
         {/* Player Message */}
         {gameState.phase === "MISSION" &&
-          gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(p => p === gameState.me?.socketId) &&
-          gameState.rounds[gameState.currentRoundIndex].missionVotes[gameState.me?.socketId!] && (
+          gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(p => p === gameState.me?.id) &&
+          gameState.rounds[gameState.currentRoundIndex].missionVotes[gameState.me?.id!] && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -341,7 +341,7 @@ export function MissionVotingScreen() {
 
         {/* Player Message */}
         {gameState.phase === "MISSION" &&
-          !gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(p => p === gameState.me?.socketId) && (
+          !gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(p => p === gameState.me?.id) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

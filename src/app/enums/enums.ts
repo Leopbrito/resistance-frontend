@@ -25,6 +25,9 @@ export enum SocketEvent {
   // Server to Client
   ERROR = 'error',
   GAME_STATE_UPDATE = 'gameStateUpdate',
+  RECONNECT = 'reconnectGame',
+  REVEAL_ROLES = 'revealRoles',
+  REVEAL_MISSION_RESULT = 'revealMissionResult',
 
   // Client to Server
   CREATE_ROOM = 'createRoom',

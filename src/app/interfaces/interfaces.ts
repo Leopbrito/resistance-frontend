@@ -1,12 +1,14 @@
 import { Role, GamePhase, TeamVoteAction, MissionVoteAction, SocketEvent } from '../enums/enums';
 
 export interface Player {
+  id: string;
   socketId: string;
   name: string;
   role?: Role;
   isLeader: boolean;
   isHost: boolean;
   roomCode: string;
+  connected: boolean
 }
 
 export interface Round {
@@ -42,11 +44,14 @@ export interface Room {
 export interface ServerToClientEvents {
   [SocketEvent.ERROR]: (error: { message: string } | string) => void;
   [SocketEvent.GAME_STATE_UPDATE]: (gameState: GameState) => void;
+  [SocketEvent.REVEAL_ROLES]: () => void;
+  [SocketEvent.REVEAL_MISSION_RESULT]: () => void;
+  [SocketEvent.RECONNECT]: (gameState: GameState) => void;
 }
 
 export interface ClientToServerEvents {
-  [SocketEvent.CREATE_ROOM]: (data: { playerName: string }, callback: (response: { error?: string } | string) => void) => void;
-  [SocketEvent.JOIN_ROOM]: (data: { playerName: string; roomCode: string }, callback: (response: { error?: string } | string) => void) => void;
+  [SocketEvent.CREATE_ROOM]: (data: { playerName: string }, callback: (response: { roomCode: string, playerId: string }) => void) => void;
+  [SocketEvent.JOIN_ROOM]: (data: { playerName: string; roomCode: string }, callback: (response: { roomCode: string, playerId: string }) => void) => void;
   [SocketEvent.START_GAME]: (data: {}, callback: () => void) => void;
   [SocketEvent.SELECT_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;
   [SocketEvent.SUBMIT_SELECTED_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;

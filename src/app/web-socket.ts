@@ -3,8 +3,13 @@ import { toast } from "sonner";
 import { SocketEvent } from "./enums/enums";
 import { ClientToServerEvents, ServerToClientEvents } from "./interfaces/interfaces";
 
-export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io("wss://api-resistance.leopbrito.com/", {
-  transports: ['websocket']
+const API_URL = import.meta.env.PROD ? "wss://api-resistance.leopbrito.com/" : "http://localhost:3000";
+
+export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(API_URL, {
+  transports: ['websocket'],
+  query: {
+    playerId: sessionStorage.getItem("playerId") || "",
+  }
 });
 
 socket.on(SocketEvent.ERROR, (error: { message: string; } | string) => {

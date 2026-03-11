@@ -1,15 +1,13 @@
 import React from "react";
 import { RouterProvider } from "react-router";
+import { GamePhase, SocketEvent } from "./enums/enums";
 import { GameState } from "./interfaces/interfaces";
 import { router } from "./routes";
 import { navigate } from "./services/navigation-service";
 import { socket } from "./web-socket";
-import { SocketEvent } from "./enums/enums";
 
 export interface GameStateContext {
-  roomCode: string;
-  setRoomCode: React.Dispatch<React.SetStateAction<string>>;
-  gameState: GameState,
+  gameState: GameState;
   setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }
 
@@ -18,28 +16,44 @@ export const AppContext: React.Context<GameStateContext> = React.createContext(
 );
 
 export default function App() {
-  const [roomCode, setRoomCode] = React.useState<string>("");
   const [gameState, setGameState] = React.useState<GameState>({} as GameState);
 
   socket.on(SocketEvent.GAME_STATE_UPDATE, (updatedGameState: GameState) => {
     console.log("updatedGameState: ", updatedGameState);
-    
-    if(updatedGameState.revealRolesStep) {
-      navigate("/role-reveal")
+    setGameState(updatedGameState);
+  });
+
+  socket.on(SocketEvent.REVEAL_ROLES, () => {
+    navigate("/role-reveal");
+  });
+
+  socket.on(SocketEvent.REVEAL_MISSION_RESULT, () => {
+    navigate("/mission-result");
+  });
+
+  socket.on(SocketEvent.RECONNECT, (updatedGameState: GameState) => {
+    console.log("Reconnecting...");
+    setGameState(updatedGameState);
+
+    if (
+      updatedGameState.phase === GamePhase.WAITING ||
+      updatedGameState.phase === GamePhase.FINISHED
+    ) {
+      navigate("/lobby");
     }
 
-    if(updatedGameState.revealMissionResultStep) {
-      navigate("/mission-result")
+    if (
+      updatedGameState.phase === GamePhase.TEAM_SELECTION ||
+      updatedGameState.phase === GamePhase.VOTING ||
+      updatedGameState.phase === GamePhase.MISSION
+    ) {
+      navigate("/mission-voting");
     }
-
-    setGameState(updatedGameState)
   });
 
   return (
     <AppContext.Provider
       value={{
-        roomCode,
-        setRoomCode,
         gameState,
         setGameState,
       }}
