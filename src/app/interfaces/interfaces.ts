@@ -13,11 +13,12 @@ export interface Player {
 
 export interface Round {
   roundNumber: number; // 1 to 5
-  leaderSocketId: string;
+  leaderId: string;
   teamSize: number;
   selectedTeam: string[]; // socketIds
   teamVotes: Record<string, TeamVoteAction>; // Mapping socketId -> Vote
   missionVotes: Record<string, MissionVoteAction>; // Mapping socketId -> Vote
+  missionVoteResult: MissionVoteAction[];
   status: 'PENDING' | 'TEAM_APPROVED' | 'TEAM_REJECTED' | 'MISSION_SUCCESS' | 'MISSION_FAILED';
   failedVotesCount?: number;
 }
@@ -45,6 +46,7 @@ export interface ServerToClientEvents {
   [SocketEvent.ERROR]: (error: { message: string } | string) => void;
   [SocketEvent.GAME_STATE_UPDATE]: (gameState: GameState) => void;
   [SocketEvent.REVEAL_ROLES]: () => void;
+  [SocketEvent.OPEN_MISSION_RESULT_SCREEN]: () => void;
   [SocketEvent.REVEAL_MISSION_RESULT]: () => void;
   [SocketEvent.RECONNECT]: (gameState: GameState) => void;
 }
@@ -57,4 +59,5 @@ export interface ClientToServerEvents {
   [SocketEvent.SUBMIT_SELECTED_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;
   [SocketEvent.VOTE_TEAM_APPROVAL]: (data: { vote: TeamVoteAction }) => void;
   [SocketEvent.SUBMIT_MISSION_VOTE]: (data: { vote: MissionVoteAction }) => void;
+  [SocketEvent.SUBMIT_MISSION_RESULT_REVEAL]: () => void;
 }

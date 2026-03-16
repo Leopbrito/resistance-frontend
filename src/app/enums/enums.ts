@@ -27,6 +27,7 @@ export enum SocketEvent {
   GAME_STATE_UPDATE = 'gameStateUpdate',
   RECONNECT = 'reconnectGame',
   REVEAL_ROLES = 'revealRoles',
+  OPEN_MISSION_RESULT_SCREEN = 'openMissionResultScreen',
   REVEAL_MISSION_RESULT = 'revealMissionResult',
 
   // Client to Server
@@ -37,6 +38,8 @@ export enum SocketEvent {
   SUBMIT_SELECTED_MISSION_TEAM = 'submitSelectedMissionTeam',
   VOTE_TEAM_APPROVAL = 'voteTeamApproval',
   SUBMIT_MISSION_VOTE = 'submitMissionVote',
+  SUBMIT_MISSION_RESULT_REVEAL = 'submitMissionResultReveal',
 }
+
 
 export const ROOM_CODE_LENGTH = 9;

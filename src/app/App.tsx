@@ -27,7 +27,7 @@ export default function App() {
     navigate("/role-reveal");
   });
 
-  socket.on(SocketEvent.REVEAL_MISSION_RESULT, () => {
+  socket.on(SocketEvent.OPEN_MISSION_RESULT_SCREEN, () => {
     navigate("/mission-result");
   });
 
