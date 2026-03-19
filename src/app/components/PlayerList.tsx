@@ -1,6 +1,6 @@
-import { CheckCircle, Crown, Eye, User, XCircle } from "lucide-react";
+import { CheckCircle, Crown, Eye, EyeOff, User, XCircle } from "lucide-react";
 import { motion } from "motion/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../App";
 import { GamePhase, SocketEvent, TeamVoteAction } from "../enums/enums";
 import { Player } from "../interfaces/interfaces";
@@ -8,6 +8,7 @@ import { socket } from "../web-socket";
 
 export function PlayerList() {
   const { gameState } = useContext(AppContext);
+  const [showSpies, setShowSpies] = useState(false);
 
   const currentRound = () => {
     return gameState.rounds[gameState.currentRoundIndex];
@@ -83,9 +84,18 @@ export function PlayerList() {
         transition={{ delay: 0.4 }}
         className="mb-6 flex-1"
       >
-        <h3 className="font-['Inter'] text-[#9CA3AF] text-sm uppercase tracking-wide mb-4">
-          {title()}
-        </h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="font-['Inter'] text-[#9CA3AF] text-sm uppercase tracking-wide">
+            {title()}
+          </h3>
+          <button
+            onClick={() => setShowSpies(!showSpies)}
+            className="text-[#9CA3AF] hover:text-white transition-colors"
+            title={showSpies ? "Hide Spies" : "Show Spies"}
+          >
+            {showSpies ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          </button>
+        </div>
 
         <div className="space-y-2">
           {gameState.players.map((player, index) => (
@@ -115,11 +125,13 @@ export function PlayerList() {
                 <div
                   className={
                     "w-12 h-12 rounded-full flex items-center justify-center " +
-                    (currentRound().selectedTeam.some((id) => id === player.id)
-                      ? " bg-gradient-to-br from-[#00D9FF] to-[#0088AA]  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
-                      : player.isLeader
-                        ? "bg-gradient-to-br from-[#FFD700] to-[yellow]  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
-                        : " bg-[#6B7280]")
+                    (player.role === "SPY" && showSpies
+                      ? " bg-gradient-to-br from-[#DC143C] to-[#8B0000]  shadow-[0_0_15px_rgba(220,20,60,0.4)]"
+                      : currentRound().selectedTeam.some((id) => id === player.id)
+                        ? " bg-gradient-to-br from-[#00D9FF] to-[#0088AA]  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
+                        : player.isLeader
+                          ? "bg-gradient-to-br from-[#FFD700] to-[yellow]  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
+                          : " bg-[#6B7280]")
                   }
                 >
                   {player.isLeader && (
@@ -127,7 +139,7 @@ export function PlayerList() {
                   )}
                   {!player.isLeader && (
 										<> {
-											player.role === "SPY" ? 
+											player.role === "SPY" && showSpies ? 
 											(
 												<Eye className="w-5 h-5 text-[#0B0F14]" />
 											) : 
@@ -144,7 +156,6 @@ export function PlayerList() {
                   </p>
                   <p className="font-['Inter'] text-[#9CA3AF]">
                     {player.name}
-                    <span className="text-[#DC143C] text-xs">{player.role === "SPY" ? " (Spy)" : ""}</span>
                   </p>
                 </div>
               </div>
