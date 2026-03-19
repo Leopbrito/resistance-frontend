@@ -12,7 +12,7 @@ export function JoinRoomScreen() {
   const [searchParams] = useSearchParams();
   const isCreateMode = searchParams.get("mode") === "create";
 
-  const [roomCode, setRoomCode] = useState("");
+  const [roomCode, setRoomCode] = useState(searchParams.get("roomCode") || "");
   const [username, setUsername] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {

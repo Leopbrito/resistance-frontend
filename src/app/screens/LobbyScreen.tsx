@@ -1,6 +1,6 @@
-import { Check, Clock, Crown, User } from "lucide-react";
+import { Check, Clock, Copy, Crown, User } from "lucide-react";
 import { motion } from "motion/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
@@ -9,6 +9,17 @@ import { SocketEvent } from "../enums/enums";
 
 export function LobbyScreen() {
   const { gameState } = useContext(AppContext);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyLink = () => {
+    if (gameState?.me?.roomCode) {
+      const link = `${window.location.origin}/join?roomCode=${gameState.me.roomCode}`;
+      navigator.clipboard.writeText(link).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    }
+  };
 
   const handleStartGame = () => {
     socket.emit(SocketEvent.START_GAME, {}, () => {
@@ -37,9 +48,20 @@ export function LobbyScreen() {
                 <span className="text-[#9CA3AF] text-sm font-['Inter']">
                   Room Code:
                 </span>
-                <span className="font-['Orbitron'] text-[#00D9FF] tracking-widest">
-                  {gameState.me?.roomCode}
-                </span>
+                <div 
+                  className="flex items-center gap-2 cursor-pointer group px-3 py-1 bg-[#1A1F28] rounded-md border border-[#6B7280] hover:border-[#00D9FF] transition-colors"
+                  onClick={handleCopyLink}
+                  title="Copy Invite Link"
+                >
+                  <span className="font-['Orbitron'] text-[#00D9FF] tracking-widest text-lg">
+                    {gameState.me?.roomCode}
+                  </span>
+                  {copied ? (
+                    <Check className="w-4 h-4 text-green-400" />
+                  ) : (
+                    <Copy className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#00D9FF] transition-colors" />
+                  )}
+                </div>
               </div>
             </motion.div>
 
