@@ -136,6 +136,8 @@ export function MissionVotingScreen() {
 
         {/* Vote Buttons */}
         {gameState.phase === "VOTING" &&
+          (!gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId || 
+            gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId === gameState.me?.id) &&
           !gameState.rounds[gameState.currentRoundIndex].teamVotes[
             gameState.me?.id!
           ] && (
@@ -169,9 +171,12 @@ export function MissionVotingScreen() {
 
         {/* Player Message */}
         {gameState.phase === "VOTING" &&
+          ((gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId && 
+            gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId !== gameState.me?.id &&
+            !gameState.rounds[gameState.currentRoundIndex].teamVotes[gameState.me?.id!]) ||
           gameState.rounds[gameState.currentRoundIndex].teamVotes[
             gameState.me?.id!
-          ] && (
+          ]) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -179,7 +184,9 @@ export function MissionVotingScreen() {
               className="space-y-3"
             >
               <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
-                Awaiting others players votes
+                {gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId
+                  ? `Awaiting ${gameState.players.find(p => p.id === gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId)?.name}'s vote...`
+                  : "Awaiting other players' votes..."}
               </p>
             </motion.div>
           )}
