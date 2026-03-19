@@ -1,4 +1,4 @@
-import { Check, Clock, Copy, Crown, User } from "lucide-react";
+import { Check, Clock, Copy, Crown, User, LogOut } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useState } from "react";
 import { AppContext } from "../App";
@@ -36,34 +36,49 @@ export function LobbyScreen() {
 
           <div className="relative z-10 min-h-screen px-6 py-8 flex flex-col">
             {/* Header */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center mb-8"
-            >
-              <h2 className="font-['Orbitron'] text-2xl mb-2 text-white tracking-wider">
-                WAITING ROOM
-              </h2>
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-[#9CA3AF] text-sm font-['Inter']">
-                  Room Code:
-                </span>
-                <div 
-                  className="flex items-center gap-2 cursor-pointer group px-3 py-1 bg-[#1A1F28] rounded-md border border-[#6B7280] hover:border-[#00D9FF] transition-colors"
-                  onClick={handleCopyLink}
-                  title="Copy Invite Link"
-                >
-                  <span className="font-['Orbitron'] text-[#00D9FF] tracking-widest text-lg">
-                    {gameState.me?.roomCode}
+            <div className="flex justify-between items-start mb-8 relative">
+              <motion.button
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                onClick={() => {
+                  sessionStorage.removeItem("playerId");
+                  window.location.href = "/";
+                }}
+                className="absolute right-0 top-0 flex items-center justify-center p-2 bg-[#DC143C]/10 border border-[#DC143C]/50 rounded-lg text-[#DC143C] hover:bg-[#DC143C]/20 hover:border-[#DC143C] transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"
+                title="Logout"
+              >
+                <LogOut className="w-5 h-5" />
+              </motion.button>
+
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center w-full"
+              >
+                <h2 className="font-['Orbitron'] text-2xl mb-2 text-white tracking-wider">
+                  WAITING ROOM
+                </h2>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-[#9CA3AF] text-sm font-['Inter']">
+                    Room Code:
                   </span>
-                  {copied ? (
-                    <Check className="w-4 h-4 text-green-400" />
-                  ) : (
-                    <Copy className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#00D9FF] transition-colors" />
-                  )}
+                  <div 
+                    className="flex items-center gap-2 cursor-pointer group px-3 py-1 bg-[#1A1F28] rounded-md border border-[#6B7280] hover:border-[#00D9FF] transition-colors"
+                    onClick={handleCopyLink}
+                    title="Copy Invite Link"
+                  >
+                    <span className="font-['Orbitron'] text-[#00D9FF] tracking-widest text-lg">
+                      {gameState.me?.roomCode}
+                    </span>
+                    {copied ? (
+                      <Check className="w-4 h-4 text-green-400" />
+                    ) : (
+                      <Copy className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#00D9FF] transition-colors" />
+                    )}
+                  </div>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
 
             {/* Player List */}
             <motion.div
