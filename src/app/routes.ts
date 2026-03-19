@@ -6,6 +6,7 @@ import { LobbyScreen } from "./screens/LobbyScreen";
 import { RoleRevealScreen } from "./screens/RoleRevealScreen";
 import { MissionVotingScreen } from "./screens/MissionVotingScreen";
 import { MissionResultScreen } from "./screens/MissionResultScreen";
+import { GameEndScreen } from "./screens/GameEndScreen";
 import ErrorRedirect from "./components/ErrorRedirect";
 
 export const router = createBrowserRouter([
@@ -39,6 +40,11 @@ export const router = createBrowserRouter([
       {
         path: "mission-result",
         Component: MissionResultScreen,
+        ErrorBoundary: ErrorRedirect,
+      },
+      {
+        path: "game-end",
+        Component: GameEndScreen,
         ErrorBoundary: ErrorRedirect,
       },
     ],

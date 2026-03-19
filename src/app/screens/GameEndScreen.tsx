@@ -1,58 +1,44 @@
-import { CheckCircle, XCircle } from "lucide-react";
+import { Eye, Shield } from "lucide-react";
 import { motion } from "motion/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
-import { GamePhase, MissionVoteAction, SocketEvent } from "../enums/enums";
-import { socket } from "../web-socket";
 
-export function MissionResultScreen() {
+export function GameEndScreen() {
   const navigate = useNavigate();
   const { gameState } = useContext(AppContext);
-  const currentRoundIndex = gameState.phase === GamePhase.FINISHED ? gameState.currentRoundIndex : gameState.currentRoundIndex - 1;
   const [results, setResults] = useState<any[]>(
-    gameState.rounds[currentRoundIndex].missionVoteResult.map(
-      (result) => ({
-        status: result,
-        flipped: false,
-      }),
-    ).sort((a, b) => a.status === MissionVoteAction.SUCCESS ? -1 : 1)
+    gameState.players?.map((player) => ({
+      player,
+      flipped: false,
+    })) || []
   );
 
-  socket.on(SocketEvent.REVEAL_MISSION_RESULT, () => {
-    results.forEach((result, index) => {
-      setTimeout(() => {
-        setResults(
-          results.map((r, i) => {
-            return {
-              ...r,
-              flipped: i <= index,
-            };
-          }),
-        );
-      }, 700 * index);
-    });
-  });
-
-  const handleRevealResults = () => {
-    socket.emit(SocketEvent.SUBMIT_MISSION_RESULT_REVEAL);
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (results.length > 0) {
+        results.forEach((result, index) => {
+          setTimeout(() => {
+            setResults((prev) =>
+              prev.map((r, i) => ({
+                ...r,
+                flipped: i <= index,
+              }))
+            );
+          }, 700 * index);
+        });
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleContinueButton = () => {
-    if (gameState.phase === GamePhase.FINISHED) {
-      navigate("/game-end");
-    } else {
-      navigate("/mission-voting");
-    }
+    navigate("/lobby");
   };
 
   const isResistanceWin = () => {
-    return (
-      !results.every((result) => result.flipped) ||
-      gameState.rounds[gameState.currentRoundIndex - 1].status ===
-        "MISSION_SUCCESS"
-    );
+    return gameState.spyWins < 3;
   };
 
   return (
@@ -70,21 +56,19 @@ export function MissionResultScreen() {
       />
 
       <div className="relative z-10 min-h-screen px-6 py-8 flex flex-col items-center justify-between">
-        {/* Mission Progress Tracker */}
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="font-['Orbitron'] text-3xl mb-12 text-center tracking-wider text-white"
         >
-          MISSION RESULT
+          {isResistanceWin() ? "RESISTANCE WINS" : "SPIES WIN"}
         </motion.h2>
-        {/* <MissionTracker/> */}
 
         {/* Card Flip Result */}
         <div className="flex-1 flex flex-wrap gap-4 items-center justify-center">
           {results.map((result, index) => (
-            <div className="perspective-1000">
+            <div key={result.player.id} className="perspective-1000">
               <motion.div
                 initial={{ rotateY: 0 }}
                 animate={{ rotateY: result.flipped ? 180 : 0 }}
@@ -94,10 +78,10 @@ export function MissionResultScreen() {
                 }}
                 className="relative w-32 h-48"
               >
-                {/* Card Back */}
+                {/* Card Back - Unknown Role */}
                 <div
                   className="absolute inset-0 rounded-2xl bg-[#1A1F28] border-2 border-[#6B7280]
-                flex items-center justify-center shadow-2xl"
+                flex flex-col items-center justify-center shadow-2xl"
                   style={{
                     backfaceVisibility: "hidden",
                   }}
@@ -105,39 +89,42 @@ export function MissionResultScreen() {
                   <motion.div
                     animate={{
                       boxShadow: [
-                        "0 0 20px rgba(0,217,255,0.3)",
-                        "0 0 40px rgba(0,217,255,0.6)",
-                        "0 0 20px rgba(0,217,255,0.3)",
+                        "0 0 10px rgba(107,114,128,0.3)",
+                        "0 0 20px rgba(107,114,128,0.6)",
+                        "0 0 10px rgba(107,114,128,0.3)",
                       ],
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-24 h-24 rounded-full border-2 border-[#00D9FF] 
-                  flex items-center justify-center"
+                    className="w-16 h-16 rounded-full border-2 border-[#6B7280] 
+                  flex items-center justify-center mb-4"
                   >
-                    <span className="text-4xl font-['Orbitron'] text-[#00D9FF]">
+                    <span className="text-2xl font-['Orbitron'] text-[#6B7280]">
                       ?
                     </span>
                   </motion.div>
+                  <span className="font-['Inter'] text-sm tracking-wide text-[#9CA3AF] text-center px-1 line-clamp-1">
+                    {result.player.name}
+                  </span>
                 </div>
 
-                {/* Card Front */}
+                {/* Card Front - Revealed Role */}
                 <div
-                  className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center shadow-2xl"
+                  className="absolute inset-0 rounded-2xl flex flex-col items-center justify-center shadow-2xl overflow-hidden"
                   style={{
                     backfaceVisibility: "hidden",
                     transform: "rotateY(180deg)",
                     background:
-                      result.status === MissionVoteAction.SUCCESS
+                      result.player.role !== "SPY"
                         ? "linear-gradient(135deg, #1A1F28 0%, #00D9FF20 100%)"
                         : "linear-gradient(135deg, #1A1F28 0%, #DC143C20 100%)",
                     borderWidth: "2px",
                     borderStyle: "solid",
                     borderColor:
-                      result.status === MissionVoteAction.SUCCESS
+                      result.player.role !== "SPY"
                         ? "#00D9FF"
                         : "#DC143C",
                     boxShadow:
-                      result.status === MissionVoteAction.SUCCESS
+                      result.player.role !== "SPY"
                         ? "0 0 40px rgba(0,217,255,0.5)"
                         : "0 0 40px rgba(220,20,60,0.5)",
                   }}
@@ -147,94 +134,61 @@ export function MissionResultScreen() {
                     animate={{ scale: result.flipped ? 1 : 0 }}
                     transition={{ delay: 0.3, type: "spring" }}
                   >
-                    {result.status === MissionVoteAction.SUCCESS ? (
-                      <CheckCircle
-                        className="w-16 h-16 mb-6"
+                    {result.player.role !== "SPY" ? (
+                      <Shield
+                        className="w-12 h-12 mb-4"
                         style={{ color: "#00D9FF" }}
-                        strokeWidth={2}
+                        strokeWidth={1.5}
                       />
                     ) : (
-                      <XCircle
-                        className="w-16 h-16 mb-6"
+                      <Eye
+                        className="w-12 h-12 mb-4"
                         style={{ color: "#DC143C" }}
-                        strokeWidth={2}
+                        strokeWidth={1.5}
                       />
                     )}
                   </motion.div>
 
                   <motion.h3
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{
                       opacity: result.flipped ? 1 : 0,
-                      y: result.flipped ? 0 : 20,
+                      y: result.flipped ? 0 : 10,
                     }}
                     transition={{ delay: 0.5 }}
-                    className="font-['Orbitron'] tracking-wider"
+                    className="font-['Inter'] text-xs uppercase tracking-wider mb-2 text-center"
                     style={{
                       color:
-                        result.status === MissionVoteAction.SUCCESS
+                        result.player.role !== "SPY"
                           ? "#00D9FF"
                           : "#DC143C",
-                      textShadow:
-                        result.status === MissionVoteAction.SUCCESS
-                          ? "0 0 20px rgba(0,217,255,0.6)"
-                          : "0 0 20px rgba(220,20,60,0.6)",
                     }}
                   >
-                    {result.status === MissionVoteAction.SUCCESS
-                      ? "SUCCESS"
-                      : "FAILED"}
+                    {result.player.role !== "SPY" ? "RESISTANCE" : "SPY"}
                   </motion.h3>
+
+                  <span className="font-['Inter'] font-semibold text-sm tracking-wide text-white text-center px-1 line-clamp-1">
+                    {result.player.name}
+                  </span>
                 </div>
               </motion.div>
             </div>
           ))}
         </div>
 
-        {!results.every((result) => result.flipped) ? (
-          <>
-            {gameState.me?.id ===
-            gameState.rounds[currentRoundIndex].leaderId ? (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="w-full max-w-md"
-              >
-                <GlowButton
-                  variant={isResistanceWin() ? "resistance" : "spy"}
-                  onClick={handleRevealResults}
-                  className="w-full"
-                >
-                  Reveal Results
-                </GlowButton>
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="space-y-3"
-              >
-                <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
-                  Awaiting leader to reveal results...
-                </p>
-              </motion.div>
-            )}
-          </>
-        ) : (
+        {results.length > 0 && results.every((result) => result.flipped) && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="w-full max-w-md"
+            className="w-full max-w-md mt-12"
           >
             <GlowButton
-              variant={isResistanceWin() ? "resistance" : "spy"}
+              variant="resistance"
               onClick={handleContinueButton}
               className="w-full"
             >
-              Continue
+              Exit to Lobby
             </GlowButton>
           </motion.div>
         )}
