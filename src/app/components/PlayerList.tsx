@@ -1,14 +1,18 @@
 import { CheckCircle, Crown, Eye, EyeOff, User, XCircle } from "lucide-react";
 import { motion } from "motion/react";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "../App";
 import { GamePhase, SocketEvent, TeamVoteAction } from "../enums/enums";
 import { Player } from "../interfaces/interfaces";
 import { socket } from "../web-socket";
 
-export function PlayerList() {
+interface PlayerListProps {
+  showSpies: boolean;
+  setShowSpies: (show: boolean) => void;
+}
+
+export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
   const { gameState } = useContext(AppContext);
-  const [showSpies, setShowSpies] = useState(false);
 
   const currentRound = () => {
     return gameState.rounds[gameState.currentRoundIndex];
@@ -88,13 +92,15 @@ export function PlayerList() {
           <h3 className="font-['Inter'] text-[#9CA3AF] text-sm uppercase tracking-wide">
             {title()}
           </h3>
-          <button
-            onClick={() => setShowSpies(!showSpies)}
-            className="text-[#9CA3AF] hover:text-white transition-colors"
-            title={showSpies ? "Hide Spies" : "Show Spies"}
-          >
-            {showSpies ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowSpies(!showSpies)}
+              className="text-[#9CA3AF] hover:text-white transition-colors"
+              title={showSpies ? "Hide Spies" : "Show Spies"}
+            >
+              {showSpies ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
 
         <div className="space-y-2">

@@ -1,6 +1,6 @@
-import { LogOut } from "lucide-react";
+import { Eye, LogOut, Shield } from "lucide-react";
 import { motion } from "motion/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
 import { MissionTracker } from "../components/MissionTracker";
@@ -11,6 +11,7 @@ import { socket } from "../web-socket";
 
 export function MissionVotingScreen() {
   const { gameState } = useContext(AppContext);
+  const [showSpies, setShowSpies] = useState(false);
 
   const handleSubmitTeam = () => {
     if (gameState.me?.isLeader) {
@@ -43,7 +44,26 @@ export function MissionVotingScreen() {
 
       <div className="relative z-10 min-h-screen px-6 py-8 flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-start mb-4 relative z-20">
+        <div className="flex justify-between items-start mb-4 relative z-20 h-10">
+          {showSpies && gameState.me?.role && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="absolute left-0 top-0"
+            >
+              <div 
+                className={`flex items-center justify-center p-2 rounded-lg border ${
+                  gameState.me?.role === 'SPY' 
+                    ? 'text-[#DC143C] border-[#DC143C]/50 bg-[#DC143C]/10 shadow-[0_0_10px_rgba(220,20,60,0.1)]' 
+                    : 'text-[#00D9FF] border-[#00D9FF]/50 bg-[#00D9FF]/10 shadow-[0_0_10px_rgba(0,217,255,0.1)]'
+                }`}
+                title={`Your Role: ${gameState.me.role}`}
+              >
+                {gameState.me?.role === 'SPY' ? <Eye className="w-5 h-5" /> : <Shield className="w-5 h-5" />}
+              </div>
+            </motion.div>
+          )}
+
           <motion.button
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -71,7 +91,7 @@ export function MissionVotingScreen() {
         <MissionTracker hideTitle={true} />
 
         {/* Team Section */}
-        <PlayerList />
+        <PlayerList showSpies={showSpies} setShowSpies={setShowSpies} />
 
         {/* Player Message */}
         {gameState.phase === "TEAM_SELECTION" && !gameState.me?.isLeader && (
