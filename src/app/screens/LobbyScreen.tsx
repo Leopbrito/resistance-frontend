@@ -1,4 +1,4 @@
-import { Check, Clock, Copy, Crown, User, LogOut } from "lucide-react";
+import { Check, Clock, Copy, Crown, User, LogOut, QrCode } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useState } from "react";
 import { AppContext } from "../App";
@@ -6,6 +6,8 @@ import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
 import { socket } from "../web-socket";
 import { SocketEvent } from "../enums/enums";
+import { QRCodeSVG } from "qrcode.react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
 
 export function LobbyScreen() {
   const { gameState } = useContext(AppContext);
@@ -76,6 +78,31 @@ export function LobbyScreen() {
                       <Copy className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#00D9FF] transition-colors" />
                     )}
                   </div>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button
+                        className="flex items-center justify-center px-3 py-1 bg-[#1A1F28] rounded-md border border-[#6B7280] hover:border-[#00D9FF] transition-colors group"
+                        title="Show QR Code"
+                      >
+                        <QrCode className="w-5 h-5 text-[#9CA3AF] group-hover:text-[#00D9FF] transition-colors" />
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-[#0B0F14] border border-[#00D9FF]/50 text-white sm:max-w-md shadow-[0_0_15px_rgba(0,217,255,0.2)]">
+                      <DialogHeader>
+                        <DialogTitle className="font-['Orbitron'] text-xl text-center text-[#00D9FF] tracking-wider">SHARE ROOM</DialogTitle>
+                        <DialogDescription className="text-center text-[#9CA3AF] font-['Inter']">
+                          Scan this QR code to join the resistance.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="flex items-center justify-center p-6 bg-white rounded-lg mx-auto w-fit mt-4 mb-2">
+                        <QRCodeSVG 
+                          value={`${window.location.origin}/join?roomCode=${gameState.me?.roomCode}`}
+                          size={200}
+                          level="H"
+                        />
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </motion.div>
             </div>
