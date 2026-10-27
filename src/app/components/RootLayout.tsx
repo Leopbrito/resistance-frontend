@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { Toaster } from "sonner";
 import { DevNavigation } from "./DevNavigation";
@@ -6,7 +7,11 @@ import { setNavigator } from "../services/navigation-service";
 
 export function RootLayout() {
   const navigate = useNavigate();
-  setNavigator(navigate);
+
+  useEffect(() => {
+    setNavigator(navigate);
+    return () => setNavigator(undefined);
+  }, [navigate]);
 
   return (
     <>

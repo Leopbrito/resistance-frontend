@@ -1,6 +1,6 @@
 import { CheckCircle, XCircle } from "lucide-react";
 import { motion } from "motion/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
@@ -20,20 +20,31 @@ export function MissionResultScreen() {
     ).sort((a, b) => a.status === MissionVoteAction.SUCCESS ? -1 : 1)
   );
 
-  socket.on(SocketEvent.REVEAL_MISSION_RESULT, () => {
-    results.forEach((result, index) => {
-      setTimeout(() => {
-        setResults(
-          results.map((r, i) => {
-            return {
-              ...r,
-              flipped: i <= index,
-            };
-          }),
+  useEffect(() => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    const onRevealMissionResult = () => {
+      results.forEach((_, index) => {
+        timers.push(
+          setTimeout(() => {
+            setResults((prev) =>
+              prev.map((r, i) => ({
+                ...r,
+                flipped: i <= index,
+              })),
+            );
+          }, 700 * index),
         );
-      }, 700 * index);
-    });
-  });
+      });
+    };
+
+    socket.on(SocketEvent.REVEAL_MISSION_RESULT, onRevealMissionResult);
+
+    return () => {
+      socket.off(SocketEvent.REVEAL_MISSION_RESULT, onRevealMissionResult);
+      timers.forEach(clearTimeout);
+    };
+  }, []);
 
   const handleRevealResults = () => {
     socket.emit(SocketEvent.SUBMIT_MISSION_RESULT_REVEAL);

@@ -18,38 +18,48 @@ export const AppContext: React.Context<GameStateContext> = React.createContext(
 export default function App() {
   const [gameState, setGameState] = React.useState<GameState>({} as GameState);
 
-  socket.on(SocketEvent.GAME_STATE_UPDATE, (updatedGameState: GameState) => {
-    console.log("updatedGameState: ", updatedGameState);
-    setGameState(updatedGameState);
-  });
+  React.useEffect(() => {
+    const onGameStateUpdate = (updatedGameState: GameState) => {
+      console.log("updatedGameState: ", updatedGameState);
+      setGameState(updatedGameState);
+    };
 
-  socket.on(SocketEvent.REVEAL_ROLES, () => {
-    navigate("/role-reveal");
-  });
+    const onRevealRoles = () => navigate("/role-reveal");
 
-  socket.on(SocketEvent.OPEN_MISSION_RESULT_SCREEN, () => {
-    navigate("/mission-result");
-  });
+    const onOpenMissionResultScreen = () => navigate("/mission-result");
 
-  socket.on(SocketEvent.RECONNECT, (updatedGameState: GameState) => {
-    console.log("Reconnecting...");
-    setGameState(updatedGameState);
+    const onReconnect = (updatedGameState: GameState) => {
+      console.log("Reconnecting...");
+      setGameState(updatedGameState);
 
-    if (
-      updatedGameState.phase === GamePhase.WAITING ||
-      updatedGameState.phase === GamePhase.FINISHED
-    ) {
-      navigate("/lobby");
-    }
+      if (
+        updatedGameState.phase === GamePhase.WAITING ||
+        updatedGameState.phase === GamePhase.FINISHED
+      ) {
+        navigate("/lobby");
+      }
 
-    if (
-      updatedGameState.phase === GamePhase.TEAM_SELECTION ||
-      updatedGameState.phase === GamePhase.VOTING ||
-      updatedGameState.phase === GamePhase.MISSION
-    ) {
-      navigate("/mission-voting");
-    }
-  });
+      if (
+        updatedGameState.phase === GamePhase.TEAM_SELECTION ||
+        updatedGameState.phase === GamePhase.VOTING ||
+        updatedGameState.phase === GamePhase.MISSION
+      ) {
+        navigate("/mission-voting");
+      }
+    };
+
+    socket.on(SocketEvent.GAME_STATE_UPDATE, onGameStateUpdate);
+    socket.on(SocketEvent.REVEAL_ROLES, onRevealRoles);
+    socket.on(SocketEvent.OPEN_MISSION_RESULT_SCREEN, onOpenMissionResultScreen);
+    socket.on(SocketEvent.RECONNECT, onReconnect);
+
+    return () => {
+      socket.off(SocketEvent.GAME_STATE_UPDATE, onGameStateUpdate);
+      socket.off(SocketEvent.REVEAL_ROLES, onRevealRoles);
+      socket.off(SocketEvent.OPEN_MISSION_RESULT_SCREEN, onOpenMissionResultScreen);
+      socket.off(SocketEvent.RECONNECT, onReconnect);
+    };
+  }, []);
 
   return (
     <AppContext.Provider
