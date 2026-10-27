@@ -1,5 +1,11 @@
 import { AckScreen, Role, GamePhase, TeamVoteAction, MissionVoteAction, SocketEvent } from '../enums/enums';
 
+// Erro enviado pelo servidor: o texto vem de errors.<code> nos arquivos de i18n
+export interface ServerError {
+  code: string;
+  params?: Record<string, string | number>;
+}
+
 export interface Player {
   id: string;
   socketId: string;
@@ -46,7 +52,7 @@ export interface Room {
 }
 
 export interface ServerToClientEvents {
-  [SocketEvent.ERROR]: (error: { message: string } | string) => void;
+  [SocketEvent.ERROR]: (error: ServerError | string) => void;
   [SocketEvent.GAME_STATE_UPDATE]: (gameState: GameState) => void;
   [SocketEvent.REVEAL_ROLES]: () => void;
   [SocketEvent.OPEN_MISSION_RESULT_SCREEN]: () => void;

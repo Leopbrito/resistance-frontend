@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router";
 import { GlowButton } from "../components/GlowButton";
@@ -8,6 +9,7 @@ import { AckScreen, Role } from "../enums/enums";
 import { ackScreen } from "../web-socket";
 
 export function RoleRevealScreen() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { gameState } = useContext(AppContext);
   const [showRole, setShowRole] = useState(false);
@@ -42,11 +44,11 @@ export function RoleRevealScreen() {
           </motion.div>
 
           <h2 className="font-['Orbitron'] text-2xl mb-6 text-white tracking-wider">
-            YOUR ASSIGNMENT AWAITS
+            {t("roles.assignmentAwaits")}
           </h2>
 
           <GlowButton variant="resistance" onClick={handleReveal}>
-            Reveal Role
+            {t("roles.reveal")}
           </GlowButton>
         </motion.div>
       </div>
@@ -173,7 +175,7 @@ export function RoleRevealScreen() {
           transition={{ delay: 0.5 }}
         >
           <p className="font-['Inter'] text-white text-sm font-bold uppercase tracking-widest mb-2">
-            Your Role
+            {t("roles.yourRole")}
           </p>
           <motion.h1
             initial={{ opacity: 0, scale: 0.8 }}
@@ -187,7 +189,7 @@ export function RoleRevealScreen() {
                 : "0 0 30px rgba(0, 217, 255, 0.8), 0 0 60px rgba(0, 217, 255, 0.4)",
             }}
           >
-            {isSpy ? "SPY" : "RESISTANCE"}
+            {t(`roles.${isSpy ? "SPY" : "RESISTANCE"}.name`)}
           </motion.h1>
 
           <motion.p
@@ -200,9 +202,7 @@ export function RoleRevealScreen() {
                 : 'mb-12'
             }`}
           >
-            {isSpy
-              ? "Infiltrate the resistance. Sabotage their missions without revealing your identity."
-              : "Protect the resistance. Identify the spies and complete the missions successfully."}
+            {t(`roles.${isSpy ? "SPY" : "RESISTANCE"}.description`)}
           </motion.p>
 
           {isSpy && gameState.players.filter((p) => p.role === Role.SPY && p.id !== gameState.me?.id).length > 0 && (
@@ -213,7 +213,7 @@ export function RoleRevealScreen() {
               className="mb-12"
             >
               <p className="font-['Inter'] text-[#DC143C] text-xs font-bold uppercase tracking-widest mb-3">
-                Fellow Spies
+                {t("roles.fellowSpies")}
               </p>
               <div className="flex flex-wrap justify-center gap-2">
                 {gameState.players
@@ -244,7 +244,7 @@ export function RoleRevealScreen() {
               navigate("/mission-voting");
             }}
           >
-            Continue
+            {t("common.continue")}
           </GlowButton>
         </motion.div>
       </div>

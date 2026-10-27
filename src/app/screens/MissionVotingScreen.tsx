@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Eye, LogOut, Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useEffect, useState } from "react";
@@ -12,6 +13,7 @@ import { clearPlayerId, socket } from "../web-socket";
 const SHOW_SPIES_KEY = "showSpies";
 
 export function MissionVotingScreen() {
+  const { t } = useTranslation();
   const { gameState } = useContext(AppContext);
   // Convenção por aba (sessionStorage): sobrevive ao refresh, mas não vaza o papel para outras abas
   const [showSpies, setShowSpies] = useState(() => {
@@ -74,7 +76,7 @@ export function MissionVotingScreen() {
                     ? 'text-[#DC143C] border-[#DC143C]/50 bg-[#DC143C]/10 shadow-[0_0_10px_rgba(220,20,60,0.1)]' 
                     : 'text-[#00D9FF] border-[#00D9FF]/50 bg-[#00D9FF]/10 shadow-[0_0_10px_rgba(0,217,255,0.1)]'
                 }`}
-                title={`Your Role: ${gameState.me.role}`}
+                title={t("roles.yourRoleTitle", { role: t(`roles.${gameState.me.role}.name`) })}
               >
                 {gameState.me?.role === 'SPY' ? <Eye className="w-5 h-5" /> : <Shield className="w-5 h-5" />}
               </div>
@@ -89,7 +91,7 @@ export function MissionVotingScreen() {
               window.location.href = "/";
             }}
             className="absolute right-0 top-0 flex items-center justify-center p-2 bg-[#DC143C]/10 border border-[#DC143C]/50 rounded-lg text-[#DC143C] hover:bg-[#DC143C]/20 hover:border-[#DC143C] transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"
-            title="Logout"
+            title={t("common.logout")}
           >
             <LogOut className="w-5 h-5" />
           </motion.button>
@@ -100,7 +102,7 @@ export function MissionVotingScreen() {
             className="text-center w-full"
           >
             <h2 className="font-['Orbitron'] text-2xl mb-2 text-white tracking-wider">
-              MISSION PROGRESS
+              {t("voting.missionProgress")}
             </h2>
           </motion.div>
         </div>
@@ -119,7 +121,7 @@ export function MissionVotingScreen() {
             className="space-y-3"
           >
             <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
-              Awaiting leader selection
+              {t("voting.awaitingLeader")}
             </p>
           </motion.div>
         )}
@@ -133,7 +135,7 @@ export function MissionVotingScreen() {
             className="space-y-3"
           >
             <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
-              Do you submit this team?
+              {t("voting.submitQuestion")}
             </p>
 
             <GlowButton
@@ -146,7 +148,7 @@ export function MissionVotingScreen() {
               }
               className="w-full"
             >
-              Submit Team
+              {t("voting.submitTeam")}
             </GlowButton>
           </motion.div>
         )}
@@ -165,7 +167,7 @@ export function MissionVotingScreen() {
               className="space-y-3"
             >
               <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
-                Do you approve this team?
+                {t("voting.approveQuestion")}
               </p>
 
               <GlowButton
@@ -173,7 +175,7 @@ export function MissionVotingScreen() {
                 onClick={handleVoteTeam(TeamVoteAction.APPROVE)}
                 className="w-full"
               >
-                Approve Team
+                {t("voting.approveTeam")}
               </GlowButton>
 
               <GlowButton
@@ -181,7 +183,7 @@ export function MissionVotingScreen() {
                 onClick={handleVoteTeam(TeamVoteAction.REJECT)}
                 className="w-full"
               >
-                Reject Team
+                {t("voting.rejectTeam")}
               </GlowButton>
             </motion.div>
           )}
@@ -202,8 +204,8 @@ export function MissionVotingScreen() {
             >
               <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
                 {gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId
-                  ? `Awaiting ${gameState.players.find(p => p.id === gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId)?.name}'s vote...`
-                  : "Awaiting other players' votes..."}
+                  ? t("voting.awaitingVoter", { name: gameState.players.find(p => p.id === gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId)?.name })
+                  : t("voting.awaitingOthers")}
               </p>
             </motion.div>
           )}
@@ -223,7 +225,7 @@ export function MissionVotingScreen() {
               className="space-y-3"
             >
               <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
-                vote for misson?
+                {t("voting.missionQuestion")}
               </p>
 
               <GlowButton
@@ -231,7 +233,7 @@ export function MissionVotingScreen() {
                 onClick={handleVoteMission(MissionVoteAction.SUCCESS)}
                 className="w-full"
               >
-                SUCCESS
+                {t("voting.success")}
               </GlowButton>
 
               <GlowButton
@@ -239,7 +241,7 @@ export function MissionVotingScreen() {
                 onClick={handleVoteMission(MissionVoteAction.FAIL)}
                 className="w-full"
               >
-                FAIL
+                {t("voting.fail")}
               </GlowButton>
             </motion.div>
           )}
@@ -259,7 +261,7 @@ export function MissionVotingScreen() {
               className="space-y-3"
             >
               <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
-                You have already voted, Awaiting others players votes...
+                {t("voting.alreadyVoted")}
               </p>
             </motion.div>
           )}
@@ -276,7 +278,7 @@ export function MissionVotingScreen() {
               className="space-y-3"
             >
               <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
-                Awaiting mission finish
+                {t("voting.awaitingMission")}
               </p>
             </motion.div>
           )}

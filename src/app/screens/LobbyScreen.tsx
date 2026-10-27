@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Check, Clock, Copy, Crown, User, LogOut, QrCode } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useState } from "react";
@@ -10,6 +11,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
 
 export function LobbyScreen() {
+  const { t } = useTranslation();
   const { gameState } = useContext(AppContext);
   const [copied, setCopied] = useState(false);
 
@@ -47,7 +49,7 @@ export function LobbyScreen() {
                   window.location.href = "/";
                 }}
                 className="absolute right-0 top-0 flex items-center justify-center p-2 bg-[#DC143C]/10 border border-[#DC143C]/50 rounded-lg text-[#DC143C] hover:bg-[#DC143C]/20 hover:border-[#DC143C] transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"
-                title="Logout"
+                title={t("common.logout")}
               >
                 <LogOut className="w-5 h-5" />
               </motion.button>
@@ -58,16 +60,16 @@ export function LobbyScreen() {
                 className="text-center w-full"
               >
                 <h2 className="font-['Orbitron'] text-2xl mb-2 text-white tracking-wider">
-                  WAITING ROOM
+                  {t("lobby.waitingRoom")}
                 </h2>
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-[#9CA3AF] text-sm font-['Inter']">
-                    Room Code:
+                    {t("lobby.roomCode")}
                   </span>
                   <div 
                     className="flex items-center gap-2 cursor-pointer group px-3 py-1 bg-[#1A1F28] rounded-md border border-[#6B7280] hover:border-[#00D9FF] transition-colors"
                     onClick={handleCopyLink}
-                    title="Copy Invite Link"
+                    title={t("lobby.copyInvite")}
                   >
                     <span className="font-['Orbitron'] text-[#00D9FF] tracking-widest text-lg">
                       {gameState.me?.roomCode}
@@ -82,16 +84,16 @@ export function LobbyScreen() {
                     <DialogTrigger asChild>
                       <button
                         className="flex items-center justify-center px-3 py-1 bg-[#1A1F28] rounded-md border border-[#6B7280] hover:border-[#00D9FF] transition-colors group"
-                        title="Show QR Code"
+                        title={t("lobby.showQr")}
                       >
                         <QrCode className="w-5 h-5 text-[#9CA3AF] group-hover:text-[#00D9FF] transition-colors" />
                       </button>
                     </DialogTrigger>
                     <DialogContent className="bg-[#0B0F14] border border-[#00D9FF]/50 text-white sm:max-w-md shadow-[0_0_15px_rgba(0,217,255,0.2)]">
                       <DialogHeader>
-                        <DialogTitle className="font-['Orbitron'] text-xl text-center text-[#00D9FF] tracking-wider">SHARE ROOM</DialogTitle>
+                        <DialogTitle className="font-['Orbitron'] text-xl text-center text-[#00D9FF] tracking-wider">{t("lobby.shareRoom")}</DialogTitle>
                         <DialogDescription className="text-center text-[#9CA3AF] font-['Inter']">
-                          Scan this QR code to join the resistance.
+                          {t("lobby.scanQr")}
                         </DialogDescription>
                       </DialogHeader>
                       <div className="flex items-center justify-center p-6 bg-white rounded-lg mx-auto w-fit mt-4 mb-2">
@@ -152,14 +154,14 @@ export function LobbyScreen() {
                           <div className="flex items-center gap-1 px-3 py-1 bg-[#00D9FF]/20 border border-[#00D9FF] rounded-full">
                             <Check className="w-3 h-3 text-[#00D9FF]" />
                             <span className="text-xs font-['Inter'] text-[#00D9FF] uppercase tracking-wide">
-                              Connected
+                              {t("lobby.connected")}
                             </span>
                           </div>
                         ) : (
                           <div className="flex items-center gap-1 px-3 py-1 bg-[#6B7280]/20 border border-[#6B7280] rounded-full">
                             <Clock className="w-3 h-3 text-[#6B7280]" />
                             <span className="text-xs font-['Inter'] text-[#6B7280] uppercase tracking-wide">
-                              Disconnected
+                              {t("lobby.disconnected")}
                             </span>
                           </div>
                         )}
@@ -178,10 +180,10 @@ export function LobbyScreen() {
               className="text-center mb-6"
             >
               <p className="text-[#9CA3AF] font-['Inter'] text-sm">
-                {gameState.players?.length} / 10 Players
+                {t("lobby.playerCount", { count: gameState.players?.length ?? 0, max: 10 })}
               </p>
               <p className="text-[#6B7280] font-['Inter'] text-xs mt-1">
-                Minimum 5 players required
+                {t("lobby.minPlayers", { min: 5 })}
               </p>
             </motion.div>
 
@@ -199,12 +201,12 @@ export function LobbyScreen() {
                   className="w-full"
                   disabled={gameState.players?.length < 5}
                 >
-                  Start Game
+                  {t("lobby.startGame")}
                 </GlowButton>
               )}
 
               <p className="text-center text-[#9CA3AF] text-xs font-['Inter'] mt-4">
-                Only the host can start the game
+                {t("lobby.onlyHostStarts")}
               </p>
             </motion.div>
           </div>

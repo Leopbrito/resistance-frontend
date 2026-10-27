@@ -1,0 +1,122 @@
+{
+  "common": {
+    "back": "Back",
+    "continue": "Continue",
+    "logout": "Logout",
+    "players_one": "{{count}} player",
+    "players_other": "{{count}} players",
+    "language": "Language"
+  },
+  "home": {
+    "title": "THE RESISTANCE",
+    "tagline": "Trust No One",
+    "createRoom": "Create Room",
+    "joinRoom": "Join Room"
+  },
+  "join": {
+    "createTitle": "CREATE ROOM",
+    "joinTitle": "JOIN ROOM",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "roomCode": "Room Code",
+    "createSubmit": "Create & Enter",
+    "joinSubmit": "Join Game"
+  },
+  "lobby": {
+    "waitingRoom": "WAITING ROOM",
+    "roomCode": "Room Code:",
+    "copyInvite": "Copy Invite Link",
+    "showQr": "Show QR Code",
+    "shareRoom": "SHARE ROOM",
+    "scanQr": "Scan this QR code to join the resistance.",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "playerCount_one": "{{count}} / {{max}} Player",
+    "playerCount_other": "{{count}} / {{max}} Players",
+    "minPlayers": "Minimum {{min}} players required",
+    "startGame": "Start Game",
+    "onlyHostStarts": "Only the host can start the game"
+  },
+  "roles": {
+    "SPY": {
+      "name": "SPY",
+      "description": "Infiltrate the resistance. Sabotage their missions without revealing your identity."
+    },
+    "RESISTANCE": {
+      "name": "RESISTANCE",
+      "description": "Protect the resistance. Identify the spies and complete the missions successfully."
+    },
+    "assignmentAwaits": "YOUR ASSIGNMENT AWAITS",
+    "reveal": "Reveal Role",
+    "yourRole": "Your Role",
+    "yourRoleTitle": "Your Role: {{role}}",
+    "fellowSpies": "Fellow Spies"
+  },
+  "voting": {
+    "missionProgress": "MISSION PROGRESS",
+    "awaitingLeader": "Awaiting leader selection",
+    "submitQuestion": "Do you submit this team?",
+    "submitTeam": "Submit Team",
+    "approveQuestion": "Do you approve this team?",
+    "approveTeam": "Approve Team",
+    "rejectTeam": "Reject Team",
+    "awaitingVoter": "Awaiting {{name}}'s vote...",
+    "awaitingOthers": "Awaiting other players' votes...",
+    "missionQuestion": "Vote for the mission",
+    "success": "SUCCESS",
+    "fail": "FAIL",
+    "alreadyVoted": "You have already voted. Awaiting other players' votes...",
+    "awaitingMission": "Awaiting mission finish"
+  },
+  "players": {
+    "mission": "Mission {{n}}",
+    "teamSelection": "Mission {{n}} - Team Selection ({{current}}/{{total}} players)",
+    "teamApproval": "Mission {{n}} - Team Approval ({{current}}/{{total}} players)",
+    "missionVotes": "Mission {{n}} - Mission Votes ({{current}}/{{total}} players)",
+    "hideSpies": "Hide Spies",
+    "showSpies": "Show Spies",
+    "missionLeader": "Mission Leader"
+  },
+  "tracker": {
+    "title": "Mission Progress"
+  },
+  "result": {
+    "title": "MISSION RESULT",
+    "success": "SUCCESS",
+    "failed": "FAILED",
+    "reveal": "Reveal Results",
+    "awaitingReveal": "Awaiting leader to reveal results..."
+  },
+  "end": {
+    "resistanceWins": "RESISTANCE WINS",
+    "spiesWin": "SPIES WIN",
+    "exit": "Exit to Lobby"
+  },
+  "session": {
+    "expired": "Session expired. Please create or join a room again.",
+    "replaced": "Your session was opened in another tab."
+  },
+  "errors": {
+    "UNKNOWN": "Unknown error occurred",
+    "VALIDATION_FAILED": "Invalid data. Please check the fields and try again.",
+    "INVALID_ROOM_CODE": "Room code must be in format ABCD-1234",
+    "ROOM_NOT_FOUND": "Room not found",
+    "ROOM_FULL": "Room is full (max {{max}} players)",
+    "GAME_ALREADY_STARTED": "Game has already started",
+    "PLAYER_ALREADY_IN_ROOM": "Player already in room",
+    "PLAYER_NAME_TAKEN": "A player with this name is already in the room",
+    "PLAYER_NOT_IN_ROOM": "Player is not in the room",
+    "NOT_HOST": "Only the room host can start the game",
+    "INVALID_PLAYER_COUNT": "The Resistance requires {{min}} to {{max}} players",
+    "NOT_TEAM_SELECTION_PHASE": "The game is not in the team selection phase",
+    "NOT_LEADER": "Only the leader can choose the team",
+    "INVALID_SELECTED_PLAYER": "Invalid selected player",
+    "INVALID_TEAM_SIZE": "You must select exactly {{teamSize}} players",
+    "NOT_VOTING_PHASE": "Wrong phase. Team voting is not active.",
+    "NOT_YOUR_TURN_TO_VOTE": "Wait for your turn to vote.",
+    "ALREADY_VOTED": "You have already submitted your vote",
+    "NOT_MISSION_PHASE": "The game is not in the mission phase.",
+    "NOT_ON_MISSION_TEAM": "Only the selected team can perform the mission",
+    "MISSION_ALREADY_PERFORMED": "You have already done your part of the mission"
+  }
+}

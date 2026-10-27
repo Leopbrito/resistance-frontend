@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "motion/react";
 import React, { useState } from "react";
@@ -8,6 +9,7 @@ import { ROOM_CODE_LENGTH, SocketEvent } from "../enums/enums";
 import { setPlayerId, socket, startNewSession } from "../web-socket";
 
 export function JoinRoomScreen() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const isCreateMode = searchParams.get("mode") === "create";
@@ -55,7 +57,7 @@ export function JoinRoomScreen() {
           className="flex items-center gap-2 text-[#9CA3AF] hover:text-[#00D9FF] transition-colors mb-12"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span className="font-['Inter']">Back</span>
+          <span className="font-['Inter']">{t("common.back")}</span>
         </motion.button>
 
         <div className="flex flex-col items-center pt-12">
@@ -65,7 +67,7 @@ export function JoinRoomScreen() {
             transition={{ delay: 0.1 }}
             className="font-['Orbitron'] text-3xl mb-12 text-center tracking-wider text-white"
           >
-            {isCreateMode ? "CREATE ROOM" : "JOIN ROOM"}
+            {isCreateMode ? t("join.createTitle") : t("join.joinTitle")}
           </motion.h2>
 
           <motion.form
@@ -81,14 +83,14 @@ export function JoinRoomScreen() {
                 htmlFor="username"
                 className="block font-['Inter'] text-[#9CA3AF] text-sm tracking-wide uppercase"
               >
-                Username
+                {t("join.username")}
               </label>
               <input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
+                placeholder={t("join.usernamePlaceholder")}
                 className="w-full px-5 py-4 bg-[#1A1F28] border-2 border-[#6B7280] rounded-lg
                   text-white font-['Inter'] placeholder-[#6B7280]
                   focus:border-[#00D9FF] focus:outline-none focus:shadow-[0_0_20px_rgba(0,217,255,0.3)]
@@ -103,7 +105,7 @@ export function JoinRoomScreen() {
                   htmlFor="roomCode"
                   className="block font-['Inter'] text-[#9CA3AF] text-sm tracking-wide uppercase"
                 >
-                  Room Code
+                  {t("join.roomCode")}
                 </label>
                 <div className="flex gap-2">
                   <input
@@ -132,7 +134,7 @@ export function JoinRoomScreen() {
                   (!isCreateMode && roomCode.length !== ROOM_CODE_LENGTH)
                 }
               >
-                {isCreateMode ? "Create & Enter" : "Join Game"}
+                {isCreateMode ? t("join.createSubmit") : t("join.joinSubmit")}
               </GlowButton>
             </div>
           </motion.form>

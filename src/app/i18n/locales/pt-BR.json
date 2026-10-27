@@ -1,0 +1,122 @@
+{
+  "common": {
+    "back": "Voltar",
+    "continue": "Continuar",
+    "logout": "Sair",
+    "players_one": "{{count}} jogador",
+    "players_other": "{{count}} jogadores",
+    "language": "Idioma"
+  },
+  "home": {
+    "title": "A RESISTÊNCIA",
+    "tagline": "Não Confie em Ninguém",
+    "createRoom": "Criar Sala",
+    "joinRoom": "Entrar na Sala"
+  },
+  "join": {
+    "createTitle": "CRIAR SALA",
+    "joinTitle": "ENTRAR NA SALA",
+    "username": "Nome de usuário",
+    "usernamePlaceholder": "Digite seu nome de usuário",
+    "roomCode": "Código da Sala",
+    "createSubmit": "Criar e Entrar",
+    "joinSubmit": "Entrar no Jogo"
+  },
+  "lobby": {
+    "waitingRoom": "SALA DE ESPERA",
+    "roomCode": "Código da Sala:",
+    "copyInvite": "Copiar Link de Convite",
+    "showQr": "Mostrar QR Code",
+    "shareRoom": "COMPARTILHAR SALA",
+    "scanQr": "Escaneie este QR code para entrar na resistência.",
+    "connected": "Conectado",
+    "disconnected": "Desconectado",
+    "playerCount_one": "{{count}} / {{max}} Jogador",
+    "playerCount_other": "{{count}} / {{max}} Jogadores",
+    "minPlayers": "Mínimo de {{min}} jogadores necessário",
+    "startGame": "Iniciar Jogo",
+    "onlyHostStarts": "Somente o anfitrião pode iniciar o jogo"
+  },
+  "roles": {
+    "SPY": {
+      "name": "ESPIÃO",
+      "description": "Infiltre-se na resistência. Sabote as missões deles sem revelar sua identidade."
+    },
+    "RESISTANCE": {
+      "name": "RESISTÊNCIA",
+      "description": "Proteja a resistência. Identifique os espiões e conclua as missões com sucesso."
+    },
+    "assignmentAwaits": "SUA MISSÃO AGUARDA",
+    "reveal": "Revelar Função",
+    "yourRole": "Sua Função",
+    "yourRoleTitle": "Sua Função: {{role}}",
+    "fellowSpies": "Outros Espiões"
+  },
+  "voting": {
+    "missionProgress": "PROGRESSO DAS MISSÕES",
+    "awaitingLeader": "Aguardando a seleção do líder",
+    "submitQuestion": "Você confirma este time?",
+    "submitTeam": "Confirmar Time",
+    "approveQuestion": "Você aprova este time?",
+    "approveTeam": "Aprovar Time",
+    "rejectTeam": "Rejeitar Time",
+    "awaitingVoter": "Aguardando o voto de {{name}}...",
+    "awaitingOthers": "Aguardando os votos dos outros jogadores...",
+    "missionQuestion": "Vote na missão",
+    "success": "SUCESSO",
+    "fail": "FALHA",
+    "alreadyVoted": "Você já votou. Aguardando os votos dos outros jogadores...",
+    "awaitingMission": "Aguardando o fim da missão"
+  },
+  "players": {
+    "mission": "Missão {{n}}",
+    "teamSelection": "Missão {{n}} - Seleção do Time ({{current}}/{{total}} jogadores)",
+    "teamApproval": "Missão {{n}} - Aprovação do Time ({{current}}/{{total}} jogadores)",
+    "missionVotes": "Missão {{n}} - Votos da Missão ({{current}}/{{total}} jogadores)",
+    "hideSpies": "Ocultar Espiões",
+    "showSpies": "Mostrar Espiões",
+    "missionLeader": "Líder da Missão"
+  },
+  "tracker": {
+    "title": "Progresso das Missões"
+  },
+  "result": {
+    "title": "RESULTADO DA MISSÃO",
+    "success": "SUCESSO",
+    "failed": "FALHOU",
+    "reveal": "Revelar Resultados",
+    "awaitingReveal": "Aguardando o líder revelar os resultados..."
+  },
+  "end": {
+    "resistanceWins": "A RESISTÊNCIA VENCE",
+    "spiesWin": "OS ESPIÕES VENCEM",
+    "exit": "Voltar ao Lobby"
+  },
+  "session": {
+    "expired": "Sessão expirada. Crie ou entre em uma sala novamente.",
+    "replaced": "Sua sessão foi aberta em outra aba."
+  },
+  "errors": {
+    "UNKNOWN": "Ocorreu um erro desconhecido",
+    "VALIDATION_FAILED": "Dados inválidos. Verifique os campos e tente novamente.",
+    "INVALID_ROOM_CODE": "O código da sala deve estar no formato ABCD-1234",
+    "ROOM_NOT_FOUND": "Sala não encontrada",
+    "ROOM_FULL": "A sala está cheia (máximo de {{max}} jogadores)",
+    "GAME_ALREADY_STARTED": "O jogo já começou",
+    "PLAYER_ALREADY_IN_ROOM": "Jogador já está na sala",
+    "PLAYER_NAME_TAKEN": "Já existe um jogador com esse nome na sala",
+    "PLAYER_NOT_IN_ROOM": "Jogador não está na sala",
+    "NOT_HOST": "Apenas o criador da sala pode iniciar o jogo",
+    "INVALID_PLAYER_COUNT": "The Resistance requer de {{min}} a {{max}} jogadores",
+    "NOT_TEAM_SELECTION_PHASE": "O jogo não está na fase de seleção de time",
+    "NOT_LEADER": "Apenas o líder pode escolher a equipe",
+    "INVALID_SELECTED_PLAYER": "Jogador selecionado inválido",
+    "INVALID_TEAM_SIZE": "É necessário selecionar exatamente {{teamSize}} jogadores",
+    "NOT_VOTING_PHASE": "Fase incorreta. A votação do time não está ativa.",
+    "NOT_YOUR_TURN_TO_VOTE": "Aguarde sua vez de votar.",
+    "ALREADY_VOTED": "Você já enviou seu voto",
+    "NOT_MISSION_PHASE": "O jogo não está na fase de missão.",
+    "NOT_ON_MISSION_TEAM": "Apenas a equipe escalada pode realizar a missão",
+    "MISSION_ALREADY_PERFORMED": "Você já executou sua parte da missão"
+  }
+}

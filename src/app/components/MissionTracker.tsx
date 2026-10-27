@@ -1,9 +1,11 @@
+import { useTranslation } from "react-i18next";
 import { CheckCircle, Circle, Eye, Shield, XCircle } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext } from "react";
 import { AppContext } from "../App";
 
 export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
+  const { t } = useTranslation();
   const { gameState } = useContext(AppContext);
   
   while(gameState.rounds.length < 5) {
@@ -19,7 +21,7 @@ export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
           className="w-full mb-6"
         >
           {!hideTitle && <h3 className="text-center font-['Inter'] text-[#9CA3AF] text-sm uppercase tracking-wide mb-4">
-            Mission Progress
+            {t("tracker.title")}
           </h3>}
           <div className="flex justify-center gap-3">
             {gameState.rounds

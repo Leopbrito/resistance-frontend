@@ -1,11 +1,14 @@
+import { useTranslation } from "react-i18next";
 import { Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router";
 import { GlitchText } from "../components/GlitchText";
 import { GlowButton } from "../components/GlowButton";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { ParticleBackground } from "../components/ParticleBackground";
 
 export function HomeScreen() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleCreateRoom = () => {
@@ -19,6 +22,7 @@ export function HomeScreen() {
   return (
     <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
       <ParticleBackground />
+      <LanguageSwitcher />
 
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
         {/* Logo/Icon */}
@@ -51,7 +55,7 @@ export function HomeScreen() {
             textShadow: "0 0 2.5px rgba(0, 217, 255, 0.5)",
           }}
         >
-          <GlitchText>THE RESISTANCE</GlitchText>
+          <GlitchText>{t("home.title")}</GlitchText>
         </motion.h1>
 
         <motion.p
@@ -60,7 +64,7 @@ export function HomeScreen() {
           transition={{ delay: 0.5, duration: 0.6 }}
           className="font-['Inter'] text-[#9CA3AF] text-sm mb-16 tracking-widest uppercase"
         >
-          Trust No One
+          {t("home.tagline")}
         </motion.p>
 
         {/* Buttons */}
@@ -71,11 +75,11 @@ export function HomeScreen() {
           className="flex flex-col gap-4 w-full max-w-xs"
         >
           <GlowButton variant="resistance" onClick={handleCreateRoom}>
-            Create Room
+            {t("home.createRoom")}
           </GlowButton>
 
           <GlowButton variant="neutral" onClick={handleJoinRoom}>
-            Join Room
+            {t("home.joinRoom")}
           </GlowButton>
         </motion.div>
 

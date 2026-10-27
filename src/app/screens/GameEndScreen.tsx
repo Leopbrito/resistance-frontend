@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Eye, Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import { AckScreen } from "../enums/enums";
 import { ackScreen } from "../web-socket";
 
 export function GameEndScreen() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { gameState } = useContext(AppContext);
   const [results, setResults] = useState<any[]>(
@@ -65,7 +67,7 @@ export function GameEndScreen() {
           transition={{ delay: 0.1 }}
           className="font-['Orbitron'] text-3xl mb-12 text-center tracking-wider text-white"
         >
-          {isResistanceWin() ? "RESISTANCE WINS" : "SPIES WIN"}
+          {isResistanceWin() ? t("end.resistanceWins") : t("end.spiesWin")}
         </motion.h2>
 
         {/* Card Flip Result */}
@@ -167,7 +169,7 @@ export function GameEndScreen() {
                           : "#DC143C",
                     }}
                   >
-                    {result.player.role !== "SPY" ? "RESISTANCE" : "SPY"}
+                    {t(`roles.${result.player.role !== "SPY" ? "RESISTANCE" : "SPY"}.name`)}
                   </motion.h3>
 
                   <span className="font-['Inter'] font-semibold text-sm tracking-wide text-white text-center px-1 line-clamp-1">
@@ -191,7 +193,7 @@ export function GameEndScreen() {
               onClick={handleContinueButton}
               className="w-full"
             >
-              Exit to Lobby
+              {t("end.exit")}
             </GlowButton>
           </motion.div>
         )}

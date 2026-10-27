@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { CheckCircle, XCircle } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import { AckScreen, GamePhase, MissionVoteAction, SocketEvent } from "../enums/e
 import { ackScreen, socket } from "../web-socket";
 
 export function MissionResultScreen() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { gameState } = useContext(AppContext);
   // Fixa o round do resultado: o estado muda (ack, próxima rodada) enquanto a tela está montada
@@ -96,7 +98,7 @@ export function MissionResultScreen() {
           transition={{ delay: 0.1 }}
           className="font-['Orbitron'] text-3xl mb-12 text-center tracking-wider text-white"
         >
-          MISSION RESULT
+          {t("result.title")}
         </motion.h2>
         {/* <MissionTracker/> */}
 
@@ -201,8 +203,8 @@ export function MissionResultScreen() {
                     }}
                   >
                     {result.status === MissionVoteAction.SUCCESS
-                      ? "SUCCESS"
-                      : "FAILED"}
+                      ? t("result.success")
+                      : t("result.failed")}
                   </motion.h3>
                 </div>
               </motion.div>
@@ -224,7 +226,7 @@ export function MissionResultScreen() {
                   onClick={handleRevealResults}
                   className="w-full"
                 >
-                  Reveal Results
+                  {t("result.reveal")}
                 </GlowButton>
               </motion.div>
             ) : (
@@ -235,7 +237,7 @@ export function MissionResultScreen() {
                 className="space-y-3"
               >
                 <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
-                  Awaiting leader to reveal results...
+                  {t("result.awaitingReveal")}
                 </p>
               </motion.div>
             )}
@@ -252,7 +254,7 @@ export function MissionResultScreen() {
               onClick={handleContinueButton}
               className="w-full"
             >
-              Continue
+              {t("common.continue")}
             </GlowButton>
           </motion.div>
         )}

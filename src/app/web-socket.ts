@@ -1,8 +1,9 @@
 import { io, Socket } from "socket.io-client";
 import { toast } from "sonner";
+import i18n from "./i18n";
 import { AckScreen, SocketEvent } from "./enums/enums";
 import { navigate } from "./services/navigation-service";
-import { ClientToServerEvents, ServerToClientEvents } from "./interfaces/interfaces";
+import { ClientToServerEvents, ServerError, ServerToClientEvents } from "./interfaces/interfaces";
 
 const API_URL = import.meta.env.PROD ? "wss://api-resistance.leopbrito.com/" : "http://localhost:3000";
 
@@ -42,9 +43,17 @@ export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(API
   auth: (cb) => cb({ playerId: sessionDetached ? "" : getPlayerId() || "" }),
 });
 
-socket.on(SocketEvent.ERROR, (error: { message: string; } | string) => {
-  const errorMessage = typeof error === 'string' ? error : error.message;
-  toast.error(errorMessage || "Unknown error occurred", {
+// Texto livre (servidor antigo) ou código desconhecido caem em errors.UNKNOWN
+const translateServerError = (error: ServerError | string): string => {
+  const code = typeof error === "string" ? undefined : error?.code;
+  const key = `errors.${code}`;
+  return code && i18n.exists(key)
+    ? i18n.t(key, error && typeof error !== "string" ? error.params : undefined)
+    : i18n.t("errors.UNKNOWN");
+};
+
+socket.on(SocketEvent.ERROR, (error: ServerError | string) => {
+  toast.error(translateServerError(error), {
     duration: 4000,
   });
 });
@@ -62,13 +71,13 @@ export const startNewSession = () => {
 
 socket.on(SocketEvent.SESSION_INVALID, () => {
   clearPlayerId();
-  toast.error("Session expired. Please create or join a room again.", { duration: 4000 });
+  toast.error(i18n.t("session.expired"), { duration: 4000 });
   navigate("/");
 });
 
 socket.on(SocketEvent.SESSION_REPLACED, () => {
   sessionDetached = true;
   socket.disconnect();
-  toast.error("Your session was opened in another tab.", { duration: 4000 });
+  toast.error(i18n.t("session.replaced"), { duration: 4000 });
   navigate("/");
 });

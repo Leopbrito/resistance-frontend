@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { CheckCircle, Crown, Eye, EyeOff, User, XCircle } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext } from "react";
@@ -12,6 +13,7 @@ interface PlayerListProps {
 }
 
 export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
+  const { t } = useTranslation();
   const { gameState } = useContext(AppContext);
 
   const currentRound = () => {
@@ -67,16 +69,17 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
   };
 
 	const title = () => {
+		const n = gameState.currentRoundIndex + 1;
 		if (gameState.phase === GamePhase.TEAM_SELECTION) {
-			return `Mission ${gameState.currentRoundIndex + 1} - Team Selection (${currentRound().selectedTeam.length}/${currentRound().teamSize} players)`;
+			return t("players.teamSelection", { n, current: currentRound().selectedTeam.length, total: currentRound().teamSize });
 		}
 		if (gameState.phase === GamePhase.VOTING) {
-			return `Mission ${gameState.currentRoundIndex + 1} - Team Approval (${teamVotesCount()}/${gameState.players.length} players)`;
+			return t("players.teamApproval", { n, current: teamVotesCount(), total: gameState.players.length });
 		}
 		if (gameState.phase === GamePhase.MISSION) {
-			return `Mission ${gameState.currentRoundIndex + 1} - Mission Votes (${missionVotesCount()}/${currentRound().teamSize} players)`;
+			return t("players.missionVotes", { n, current: missionVotesCount(), total: currentRound().teamSize });
 		}
-		return `Mission ${gameState.currentRoundIndex + 1}`;
+		return t("players.mission", { n });
 	};
 
   return (
@@ -96,7 +99,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
             <button
               onClick={() => setShowSpies(!showSpies)}
               className="text-[#9CA3AF] hover:text-white transition-colors"
-              title={showSpies ? "Hide Spies" : "Show Spies"}
+              title={showSpies ? t("players.hideSpies") : t("players.showSpies")}
             >
               {showSpies ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
@@ -158,7 +161,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
                 </div>
                 <div>
                   <p className="text-[#FFD700] font-['Inter'] text-sm tracking-wide">
-                    {player.isLeader ? "Mission Leader" : ""}
+                    {player.isLeader ? t("players.missionLeader") : ""}
                   </p>
                   <p className="font-['Inter'] text-[#9CA3AF]">
                     {player.name}
