@@ -52,6 +52,8 @@ export interface ServerToClientEvents {
   [SocketEvent.OPEN_MISSION_RESULT_SCREEN]: () => void;
   [SocketEvent.REVEAL_MISSION_RESULT]: () => void;
   [SocketEvent.RECONNECT]: (gameState: GameState) => void;
+  [SocketEvent.SESSION_INVALID]: () => void;
+  [SocketEvent.SESSION_REPLACED]: () => void;
 }
 
 export interface ClientToServerEvents {

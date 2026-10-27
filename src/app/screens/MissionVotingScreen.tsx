@@ -7,7 +7,7 @@ import { MissionTracker } from "../components/MissionTracker";
 import { ParticleBackground } from "../components/ParticleBackground";
 import { PlayerList } from "../components/PlayerList";
 import { MissionVoteAction, SocketEvent, TeamVoteAction } from "../enums/enums";
-import { socket } from "../web-socket";
+import { clearPlayerId, socket } from "../web-socket";
 
 export function MissionVotingScreen() {
   const { gameState } = useContext(AppContext);
@@ -68,7 +68,7 @@ export function MissionVotingScreen() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             onClick={() => {
-              sessionStorage.removeItem("playerId");
+              clearPlayerId();
               window.location.href = "/";
             }}
             className="absolute right-0 top-0 flex items-center justify-center p-2 bg-[#DC143C]/10 border border-[#DC143C]/50 rounded-lg text-[#DC143C] hover:bg-[#DC143C]/20 hover:border-[#DC143C] transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"

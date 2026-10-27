@@ -1,6 +1,7 @@
 import { ComponentType, ReactNode, useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
+import { getPlayerId } from "../web-socket";
 
 const HYDRATION_TIMEOUT_MS = 8000;
 
@@ -13,7 +14,7 @@ export function GameRoute({ children }: { children: ReactNode }) {
     if (isHydrated) return;
 
     // Sem sessão não há estado a restaurar; com sessão, espera o servidor até o timeout
-    const hasSession = !!sessionStorage.getItem("playerId");
+    const hasSession = !!getPlayerId();
     const timer = setTimeout(
       () => navigate("/", { replace: true }),
       hasSession ? HYDRATION_TIMEOUT_MS : 0,

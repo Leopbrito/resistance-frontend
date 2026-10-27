@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
 import { ROOM_CODE_LENGTH, SocketEvent } from "../enums/enums";
-import { socket } from "../web-socket";
+import { setPlayerId, socket, startNewSession } from "../web-socket";
 
 export function JoinRoomScreen() {
   const navigate = useNavigate();
@@ -18,12 +18,13 @@ export function JoinRoomScreen() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (username.trim()) {
+      startNewSession();
       if (isCreateMode) {
         socket.emit(
           SocketEvent.CREATE_ROOM,
           { playerName: username },
           (response) => {
-            sessionStorage.setItem("playerId", response.playerId);
+            setPlayerId(response.playerId);
             navigate("/lobby");
           },
         );
@@ -32,7 +33,7 @@ export function JoinRoomScreen() {
           SocketEvent.JOIN_ROOM,
           { playerName: username, roomCode },
           (response) => {
-            sessionStorage.setItem("playerId", response.playerId);
+            setPlayerId(response.playerId);
             navigate("/lobby");
           },
         );
