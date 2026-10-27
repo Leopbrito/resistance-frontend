@@ -8,6 +8,7 @@ import { socket } from "./web-socket";
 
 export interface GameStateContext {
   gameState: GameState;
+  isHydrated: boolean;
   setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }
 
@@ -17,11 +18,13 @@ export const AppContext: React.Context<GameStateContext> = React.createContext(
 
 export default function App() {
   const [gameState, setGameState] = React.useState<GameState>({} as GameState);
+  const [isHydrated, setIsHydrated] = React.useState(false);
 
   React.useEffect(() => {
     const onGameStateUpdate = (updatedGameState: GameState) => {
       console.log("updatedGameState: ", updatedGameState);
       setGameState(updatedGameState);
+      setIsHydrated(true);
     };
 
     const onRevealRoles = () => navigate("/role-reveal");
@@ -31,6 +34,7 @@ export default function App() {
     const onReconnect = (updatedGameState: GameState) => {
       console.log("Reconnecting...");
       setGameState(updatedGameState);
+      setIsHydrated(true);
 
       if (
         updatedGameState.phase === GamePhase.WAITING ||
@@ -65,6 +69,7 @@ export default function App() {
     <AppContext.Provider
       value={{
         gameState,
+        isHydrated,
         setGameState,
       }}
     >

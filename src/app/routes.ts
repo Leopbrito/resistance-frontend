@@ -8,6 +8,7 @@ import { MissionVotingScreen } from "./screens/MissionVotingScreen";
 import { MissionResultScreen } from "./screens/MissionResultScreen";
 import { GameEndScreen } from "./screens/GameEndScreen";
 import ErrorRedirect from "./components/ErrorRedirect";
+import { withGameRoute } from "./components/GameRoute";
 
 export const router = createBrowserRouter([
   {
@@ -24,27 +25,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "lobby",
-        Component: LobbyScreen,
+        Component: withGameRoute(LobbyScreen),
         ErrorBoundary: ErrorRedirect,
       },
       {
         path: "role-reveal",
-        Component: RoleRevealScreen,
+        Component: withGameRoute(RoleRevealScreen),
         ErrorBoundary: ErrorRedirect,
       },
       {
         path: "mission-voting",
-        Component: MissionVotingScreen,
+        Component: withGameRoute(MissionVotingScreen),
         ErrorBoundary: ErrorRedirect,
       },
       {
         path: "mission-result",
-        Component: MissionResultScreen,
+        Component: withGameRoute(MissionResultScreen),
         ErrorBoundary: ErrorRedirect,
       },
       {
         path: "game-end",
-        Component: GameEndScreen,
+        Component: withGameRoute(GameEndScreen),
         ErrorBoundary: ErrorRedirect,
       },
     ],
