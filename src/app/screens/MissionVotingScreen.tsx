@@ -1,6 +1,6 @@
 import { Eye, LogOut, Shield } from "lucide-react";
 import { motion } from "motion/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
 import { MissionTracker } from "../components/MissionTracker";
@@ -9,9 +9,26 @@ import { PlayerList } from "../components/PlayerList";
 import { MissionVoteAction, SocketEvent, TeamVoteAction } from "../enums/enums";
 import { clearPlayerId, socket } from "../web-socket";
 
+const SHOW_SPIES_KEY = "showSpies";
+
 export function MissionVotingScreen() {
   const { gameState } = useContext(AppContext);
-  const [showSpies, setShowSpies] = useState(false);
+  // Convenção por aba (sessionStorage): sobrevive ao refresh, mas não vaza o papel para outras abas
+  const [showSpies, setShowSpies] = useState(() => {
+    try {
+      return sessionStorage.getItem(SHOW_SPIES_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(SHOW_SPIES_KEY, String(showSpies));
+    } catch {
+      // sem storage: volta oculto após o refresh
+    }
+  }, [showSpies]);
 
   const handleSubmitTeam = () => {
     if (gameState.me?.isLeader) {
