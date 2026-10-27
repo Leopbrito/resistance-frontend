@@ -7,9 +7,8 @@ const API_URL = import.meta.env.PROD ? "wss://api-resistance.leopbrito.com/" : "
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(API_URL, {
   transports: ['websocket'],
-  query: {
-    playerId: sessionStorage.getItem("playerId") || "",
-  }
+  // Função: reavaliada a cada (re)conexão, para reconexões automáticas usarem o playerId atual
+  auth: (cb) => cb({ playerId: sessionStorage.getItem("playerId") || "" }),
 });
 
 socket.on(SocketEvent.ERROR, (error: { message: string; } | string) => {
