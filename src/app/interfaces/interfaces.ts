@@ -1,4 +1,4 @@
-import { Role, GamePhase, TeamVoteAction, MissionVoteAction, SocketEvent } from '../enums/enums';
+import { AckScreen, Role, GamePhase, TeamVoteAction, MissionVoteAction, SocketEvent } from '../enums/enums';
 
 export interface Player {
   id: string;
@@ -8,7 +8,10 @@ export interface Player {
   isLeader: boolean;
   isHost: boolean;
   roomCode: string;
-  connected: boolean
+  connected: boolean;
+  rolesSeen?: boolean;
+  pendingMissionResult?: number | null; // índice do round cujo resultado ainda não foi visto
+  gameEndSeen?: boolean;
 }
 
 export interface Round {
@@ -22,6 +25,7 @@ export interface Round {
   status: 'PENDING' | 'TEAM_APPROVED' | 'TEAM_REJECTED' | 'MISSION_SUCCESS' | 'MISSION_FAILED';
   failedVotesCount?: number;
   currentTeamVoterId?: string;
+  resultRevealed?: boolean;
 }
 
 export interface GameState {
@@ -33,8 +37,6 @@ export interface GameState {
   rounds: Round[];
   currentRoundIndex: number; // 0 to 4
   failedTeamsInRow: number; // Se chegar a 5, espiões vencem (regra opcional, mas boa para se ter)
-  revealRolesStep: boolean;
-  revealMissionResultStep: boolean;
 }
 
 export interface Room {
@@ -61,4 +63,5 @@ export interface ClientToServerEvents {
   [SocketEvent.VOTE_TEAM_APPROVAL]: (data: { vote: TeamVoteAction }) => void;
   [SocketEvent.SUBMIT_MISSION_VOTE]: (data: { vote: MissionVoteAction }) => void;
   [SocketEvent.SUBMIT_MISSION_RESULT_REVEAL]: () => void;
+  [SocketEvent.ACK_SCREEN]: (data: { screen: AckScreen }) => void;
 }

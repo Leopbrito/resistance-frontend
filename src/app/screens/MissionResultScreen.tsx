@@ -4,18 +4,26 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
-import { GamePhase, MissionVoteAction, SocketEvent } from "../enums/enums";
-import { socket } from "../web-socket";
+import { AckScreen, GamePhase, MissionVoteAction, SocketEvent } from "../enums/enums";
+import { ackScreen, socket } from "../web-socket";
 
 export function MissionResultScreen() {
   const navigate = useNavigate();
   const { gameState } = useContext(AppContext);
-  const currentRoundIndex = gameState.phase === GamePhase.FINISHED ? gameState.currentRoundIndex : gameState.currentRoundIndex - 1;
+  // Fixa o round do resultado: o estado muda (ack, próxima rodada) enquanto a tela está montada
+  const [resultRoundIndex] = useState(
+    () =>
+      gameState.me?.pendingMissionResult ??
+      (gameState.phase === GamePhase.FINISHED
+        ? gameState.currentRoundIndex
+        : gameState.currentRoundIndex - 1),
+  );
+  const resultRound = gameState.rounds[resultRoundIndex];
   const [results, setResults] = useState<any[]>(
-    gameState.rounds[currentRoundIndex].missionVoteResult.map(
+    resultRound.missionVoteResult.map(
       (result) => ({
         status: result,
-        flipped: false,
+        flipped: !!resultRound.resultRevealed,
       }),
     ).sort((a, b) => a.status === MissionVoteAction.SUCCESS ? -1 : 1)
   );
@@ -51,6 +59,7 @@ export function MissionResultScreen() {
   };
 
   const handleContinueButton = () => {
+    ackScreen(AckScreen.MISSION_RESULT);
     if (gameState.phase === GamePhase.FINISHED) {
       navigate("/game-end");
     } else {
@@ -61,8 +70,7 @@ export function MissionResultScreen() {
   const isResistanceWin = () => {
     return (
       !results.every((result) => result.flipped) ||
-      gameState.rounds[gameState.currentRoundIndex - 1].status ===
-        "MISSION_SUCCESS"
+      resultRound.status === "MISSION_SUCCESS"
     );
   };
 
@@ -204,8 +212,7 @@ export function MissionResultScreen() {
 
         {!results.every((result) => result.flipped) ? (
           <>
-            {gameState.me?.id ===
-            gameState.rounds[currentRoundIndex].leaderId ? (
+            {gameState.me?.id === resultRound.leaderId ? (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

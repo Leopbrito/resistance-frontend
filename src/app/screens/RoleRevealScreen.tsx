@@ -4,7 +4,8 @@ import { GlowButton } from "../components/GlowButton";
 import { Shield, Eye } from "lucide-react";
 import { useContext, useState } from "react";
 import { AppContext } from "../App";
-import { Role } from "../enums/enums";
+import { AckScreen, Role } from "../enums/enums";
+import { ackScreen } from "../web-socket";
 
 export function RoleRevealScreen() {
   const navigate = useNavigate();
@@ -238,7 +239,10 @@ export function RoleRevealScreen() {
         >
           <GlowButton
             variant={isSpy ? "spy" : "resistance"}
-            onClick={() => navigate("/mission-voting")}
+            onClick={() => {
+              ackScreen(AckScreen.ROLES);
+              navigate("/mission-voting");
+            }}
           >
             Continue
           </GlowButton>

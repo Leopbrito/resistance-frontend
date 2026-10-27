@@ -1,8 +1,9 @@
 import React from "react";
 import { RouterProvider } from "react-router";
-import { GamePhase, SocketEvent } from "./enums/enums";
+import { SocketEvent } from "./enums/enums";
 import { GameState } from "./interfaces/interfaces";
 import { router } from "./routes";
+import { canResumeFrom, getRouteForState } from "./services/game-route";
 import { navigate } from "./services/navigation-service";
 import { socket } from "./web-socket";
 
@@ -36,19 +37,8 @@ export default function App() {
       setGameState(updatedGameState);
       setIsHydrated(true);
 
-      if (
-        updatedGameState.phase === GamePhase.WAITING ||
-        updatedGameState.phase === GamePhase.FINISHED
-      ) {
-        navigate("/lobby");
-      }
-
-      if (
-        updatedGameState.phase === GamePhase.TEAM_SELECTION ||
-        updatedGameState.phase === GamePhase.VOTING ||
-        updatedGameState.phase === GamePhase.MISSION
-      ) {
-        navigate("/mission-voting");
+      if (canResumeFrom(router.state.location.pathname)) {
+        navigate(getRouteForState(updatedGameState));
       }
     };
 

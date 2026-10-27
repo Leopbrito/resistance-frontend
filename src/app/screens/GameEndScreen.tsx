@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
+import { AckScreen } from "../enums/enums";
+import { ackScreen } from "../web-socket";
 
 export function GameEndScreen() {
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ export function GameEndScreen() {
   }, []);
 
   const handleContinueButton = () => {
+    ackScreen(AckScreen.GAME_END);
     navigate("/lobby");
   };
 
