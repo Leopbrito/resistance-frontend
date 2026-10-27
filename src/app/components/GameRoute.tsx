@@ -1,6 +1,7 @@
 import { ComponentType, ReactNode, useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
+import { useWakeLock } from "../hooks/useWakeLock";
 import { getPlayerId } from "../web-socket";
 
 const HYDRATION_TIMEOUT_MS = 8000;
@@ -9,6 +10,9 @@ const HYDRATION_TIMEOUT_MS = 8000;
 export function GameRoute({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const { isHydrated } = useContext(AppContext);
+
+  // Tela bloqueada suspende a aba e derruba o socket: mantém acesa durante o jogo
+  useWakeLock(isHydrated);
 
   useEffect(() => {
     if (isHydrated) return;
