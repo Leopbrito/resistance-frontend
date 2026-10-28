@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
+import { StatusMessage } from "../components/StatusMessage";
 import { AckScreen, GamePhase, MissionVoteAction, RoundStatus, SocketEvent } from "../enums/enums";
 import { ackScreen, socket } from "../web-socket";
 
@@ -228,16 +229,7 @@ export function MissionResultScreen() {
                 </GlowButton>
               </motion.div>
             ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="space-y-3"
-              >
-                <p className="text-center text-neutral-light text-sm font-body mb-4">
-                  {t("result.awaitingReveal")}
-                </p>
-              </motion.div>
+              <StatusMessage message={t("result.awaitingReveal")} />
             )}
           </>
         ) : (

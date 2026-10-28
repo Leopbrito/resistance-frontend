@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
+import { TextField } from "../components/TextField";
 import { ROOM_CODE_LENGTH, SocketEvent } from "../enums/enums";
 import { RoomAck } from "../interfaces/interfaces";
 import { setPlayerId, socket, startNewSession } from "../web-socket";
@@ -73,50 +74,22 @@ export function JoinRoomScreen() {
             onSubmit={handleSubmit}
             className="w-full max-w-sm space-y-8"
           >
-            {/* Username Input */}
-            <div className="space-y-3">
-              <label
-                htmlFor="username"
-                className="block font-body text-neutral-light text-sm tracking-wide uppercase"
-              >
-                {t("join.username")}
-              </label>
-              <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder={t("join.usernamePlaceholder")}
-                className="w-full px-5 py-4 bg-surface border-2 border-neutral rounded-lg
-                  text-white font-body placeholder-neutral
-                  focus:border-resistance focus:outline-none focus:shadow-[0_0_20px_rgba(0,217,255,0.3)]
-                  transition-all duration-300"
-              />
-            </div>
+            <TextField
+              id="username"
+              label={t("join.username")}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder={t("join.usernamePlaceholder")}
+            />
 
-            {/* Room Code Input (only for join mode) */}
             {!isCreateMode && (
-              <div className="space-y-3">
-                <label
-                  htmlFor="roomCode"
-                  className="block font-body text-neutral-light text-sm tracking-wide uppercase"
-                >
-                  {t("join.roomCode")}
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    id="roomCode"
-                    type="text"
-                    value={roomCode}
-                    onChange={(e) => setRoomCode(e.target.value)}
-                    placeholder="ABCD-1234"
-                    className="w-full px-5 py-4 bg-surface border-2 border-neutral rounded-lg
-                  text-white font-body placeholder-neutral
-                  focus:border-resistance focus:outline-none focus:shadow-[0_0_20px_rgba(0,217,255,0.3)]
-                  transition-all duration-300"
-                  />
-                </div>
-              </div>
+              <TextField
+                id="roomCode"
+                label={t("join.roomCode")}
+                value={roomCode}
+                onChange={(e) => setRoomCode(e.target.value)}
+                placeholder="ABCD-1234"
+              />
             )}
 
             {/* Submit Button */}

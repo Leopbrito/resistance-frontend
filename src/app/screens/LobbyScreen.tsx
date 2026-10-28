@@ -1,11 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { Check, Clock, Copy, Crown, User, LogOut, QrCode } from "lucide-react";
+import { Check, Clock, Copy, Crown, User, QrCode } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useState } from "react";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
+import { LogoutButton } from "../components/LogoutButton";
 import { ParticleBackground } from "../components/ParticleBackground";
-import { clearPlayerId, socket } from "../web-socket";
+import { socket } from "../web-socket";
 import { SocketEvent } from "../enums/enums";
 import { QRCodeSVG } from "qrcode.react";
 import {
@@ -48,18 +49,7 @@ export function LobbyScreen() {
           <div className="relative z-10 min-h-screen px-6 py-8 flex flex-col">
             {/* Header */}
             <div className="flex justify-between items-start mb-8 relative">
-              <motion.button
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                onClick={() => {
-                  clearPlayerId();
-                  window.location.href = "/";
-                }}
-                className="absolute right-0 top-0 flex items-center justify-center p-2 bg-spy/10 border border-spy/50 rounded-lg text-spy hover:bg-spy/20 hover:border-spy transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"
-                title={t("common.logout")}
-              >
-                <LogOut className="w-5 h-5" />
-              </motion.button>
+              <LogoutButton />
 
               <motion.div
                 initial={{ opacity: 0, y: -20 }}

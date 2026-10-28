@@ -13,7 +13,7 @@ npm run dev           # servidor de desenvolvimento (espera o backend em http://
 npm run build         # build de produção em dist/
 npm test              # vitest run
 npm run typecheck     # tsc --noEmit
-npm run lint          # eslint . (hoje: 0 erros e 19 avisos conhecidos)
+npm run lint          # eslint . (hoje: 0 erros e 14 avisos conhecidos)
 npm run format        # prettier --write .
 npm run format:check  # prettier --check .
 ```
@@ -30,10 +30,10 @@ src/
     routes.ts           rotas; telas do jogo são lazy
     web-socket.ts       instância do socket, sessão (playerId), erros
     screens/            uma tela por rota
-    components/         componentes de jogo; ui/ só tem dialog.tsx e utils.ts
-    services/           game-route.ts (rota a partir do estado), navigation-service.ts
+    components/         componentes de jogo (GlowButton, StatusMessage, LogoutButton, TextField…); ui/ só tem dialog.tsx e utils.ts
+    services/           game-route.ts (rota a partir do estado), round-view.ts (condições de votação), navigation-service.ts
     enums/ interfaces/  contrato com o backend (eventos, fases, tipos)
-    hooks/              useWakeLock
+    hooks/              useWakeLock, useCurrentRound
     i18n/               index.ts + locales/en.json e pt-BR.json
   styles/               theme.css (tokens), tailwind.css, fonts.css
 ```

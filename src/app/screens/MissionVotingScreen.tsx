@@ -1,20 +1,30 @@
 import { useTranslation } from "react-i18next";
-import { Eye, LogOut, Shield } from "lucide-react";
+import { Eye, Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
+import { LogoutButton } from "../components/LogoutButton";
 import { MissionTracker } from "../components/MissionTracker";
 import { ParticleBackground } from "../components/ParticleBackground";
 import { PlayerList } from "../components/PlayerList";
+import { StatusMessage } from "../components/StatusMessage";
 import { GamePhase, MissionVoteAction, Role, SocketEvent, TeamVoteAction } from "../enums/enums";
-import { clearPlayerId, socket } from "../web-socket";
+import { useCurrentRound } from "../hooks/useCurrentRound";
+import { getRoundView } from "../services/round-view";
+import { socket } from "../web-socket";
 
 const SHOW_SPIES_KEY = "showSpies";
 
 export function MissionVotingScreen() {
   const { t } = useTranslation();
   const { gameState } = useContext(AppContext);
+  const round = useCurrentRound();
+  const view = getRoundView(round, gameState.me?.id);
+  const isLeader = !!gameState.me?.isLeader;
+  const isTeamSelection = gameState.phase === GamePhase.TEAM_SELECTION;
+  const isVoting = gameState.phase === GamePhase.VOTING;
+  const isMission = gameState.phase === GamePhase.MISSION;
   // Convenção por aba (sessionStorage): sobrevive ao refresh, mas não vaza o papel para outras abas
   const [showSpies, setShowSpies] = useState(() => {
     try {
@@ -35,7 +45,7 @@ export function MissionVotingScreen() {
   const handleSubmitTeam = () => {
     if (gameState.me?.isLeader) {
       socket.emit(SocketEvent.SUBMIT_SELECTED_MISSION_TEAM, {
-        selectedPlayers: gameState.rounds[gameState.currentRoundIndex].selectedTeam,
+        selectedPlayers: round.selectedTeam,
       });
       handleVoteTeam(TeamVoteAction.APPROVE)();
     }
@@ -86,18 +96,7 @@ export function MissionVotingScreen() {
             </motion.div>
           )}
 
-          <motion.button
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            onClick={() => {
-              clearPlayerId();
-              window.location.href = "/";
-            }}
-            className="absolute right-0 top-0 flex items-center justify-center p-2 bg-spy/10 border border-spy/50 rounded-lg text-spy hover:bg-spy/20 hover:border-spy transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"
-            title={t("common.logout")}
-          >
-            <LogOut className="w-5 h-5" />
-          </motion.button>
+          <LogoutButton />
 
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -115,173 +114,80 @@ export function MissionVotingScreen() {
         {/* Team Section */}
         <PlayerList showSpies={showSpies} setShowSpies={setShowSpies} />
 
-        {/* Player Message */}
-        {gameState.phase === GamePhase.TEAM_SELECTION && !gameState.me?.isLeader && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="space-y-3"
-          >
-            <p className="text-center text-neutral-light text-sm font-body mb-4">
-              {t("voting.awaitingLeader")}
-            </p>
-          </motion.div>
-        )}
+        {isTeamSelection && !isLeader && <StatusMessage message={t("voting.awaitingLeader")} />}
 
-        {/* Leader Buttons */}
-        {gameState.phase === GamePhase.TEAM_SELECTION && gameState.me?.isLeader && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="space-y-3"
-          >
-            <p className="text-center text-neutral-light text-sm font-body mb-4">
-              {t("voting.submitQuestion")}
-            </p>
-
+        {isTeamSelection && isLeader && (
+          <StatusMessage message={t("voting.submitQuestion")}>
             <GlowButton
               variant="resistance"
               onClick={handleSubmitTeam}
-              disabled={
-                gameState.rounds[gameState.currentRoundIndex].selectedTeam.length <
-                gameState.rounds[gameState.currentRoundIndex].teamSize
-              }
+              disabled={round.selectedTeam.length < round.teamSize}
               className="w-full"
             >
               {t("voting.submitTeam")}
             </GlowButton>
-          </motion.div>
+          </StatusMessage>
         )}
 
-        {/* Vote Buttons */}
-        {gameState.phase === GamePhase.VOTING &&
-          (!gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId ||
-            gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId ===
-              gameState.me?.id) &&
-          !gameState.rounds[gameState.currentRoundIndex].teamVotes[gameState.me?.id!] && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="space-y-3"
+        {isVoting && view.canVoteTeam && (
+          <StatusMessage message={t("voting.approveQuestion")}>
+            <GlowButton
+              variant="resistance"
+              onClick={handleVoteTeam(TeamVoteAction.APPROVE)}
+              className="w-full"
             >
-              <p className="text-center text-neutral-light text-sm font-body mb-4">
-                {t("voting.approveQuestion")}
-              </p>
+              {t("voting.approveTeam")}
+            </GlowButton>
 
-              <GlowButton
-                variant="resistance"
-                onClick={handleVoteTeam(TeamVoteAction.APPROVE)}
-                className="w-full"
-              >
-                {t("voting.approveTeam")}
-              </GlowButton>
-
-              <GlowButton
-                variant="spy"
-                onClick={handleVoteTeam(TeamVoteAction.REJECT)}
-                className="w-full"
-              >
-                {t("voting.rejectTeam")}
-              </GlowButton>
-            </motion.div>
-          )}
-
-        {/* Player Message */}
-        {gameState.phase === GamePhase.VOTING &&
-          ((gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId &&
-            gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId !== gameState.me?.id &&
-            !gameState.rounds[gameState.currentRoundIndex].teamVotes[gameState.me?.id!]) ||
-            gameState.rounds[gameState.currentRoundIndex].teamVotes[gameState.me?.id!]) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="space-y-3"
+            <GlowButton
+              variant="spy"
+              onClick={handleVoteTeam(TeamVoteAction.REJECT)}
+              className="w-full"
             >
-              <p className="text-center text-neutral-light text-sm font-body mb-4">
-                {gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId
-                  ? t("voting.awaitingVoter", {
-                      name: gameState.players.find(
-                        (p) =>
-                          p.id === gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId,
-                      )?.name,
-                    })
-                  : t("voting.awaitingOthers")}
-              </p>
-            </motion.div>
-          )}
+              {t("voting.rejectTeam")}
+            </GlowButton>
+          </StatusMessage>
+        )}
 
-        {/* Vote Buttons */}
-        {gameState.phase === GamePhase.MISSION &&
-          gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(
-            (p) => p === gameState.me?.id,
-          ) &&
-          !gameState.rounds[gameState.currentRoundIndex].missionVotes[gameState.me?.id!] && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="space-y-3"
+        {isVoting && view.isAwaitingTeamVote && (
+          <StatusMessage
+            message={
+              round.currentTeamVoterId
+                ? t("voting.awaitingVoter", {
+                    name: gameState.players.find((p) => p.id === round.currentTeamVoterId)?.name,
+                  })
+                : t("voting.awaitingOthers")
+            }
+          />
+        )}
+
+        {isMission && view.canVoteMission && (
+          <StatusMessage message={t("voting.missionQuestion")}>
+            <GlowButton
+              variant="resistance"
+              onClick={handleVoteMission(MissionVoteAction.SUCCESS)}
+              className="w-full"
             >
-              <p className="text-center text-neutral-light text-sm font-body mb-4">
-                {t("voting.missionQuestion")}
-              </p>
+              {t("voting.success")}
+            </GlowButton>
 
-              <GlowButton
-                variant="resistance"
-                onClick={handleVoteMission(MissionVoteAction.SUCCESS)}
-                className="w-full"
-              >
-                {t("voting.success")}
-              </GlowButton>
-
-              <GlowButton
-                variant="spy"
-                onClick={handleVoteMission(MissionVoteAction.FAIL)}
-                className="w-full"
-              >
-                {t("voting.fail")}
-              </GlowButton>
-            </motion.div>
-          )}
-
-        {/* Player Message */}
-        {gameState.phase === GamePhase.MISSION &&
-          gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(
-            (p) => p === gameState.me?.id,
-          ) &&
-          gameState.rounds[gameState.currentRoundIndex].missionVotes[gameState.me?.id!] && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="space-y-3"
+            <GlowButton
+              variant="spy"
+              onClick={handleVoteMission(MissionVoteAction.FAIL)}
+              className="w-full"
             >
-              <p className="text-center text-neutral-light text-sm font-body mb-4">
-                {t("voting.alreadyVoted")}
-              </p>
-            </motion.div>
-          )}
+              {t("voting.fail")}
+            </GlowButton>
+          </StatusMessage>
+        )}
 
-        {/* Player Message */}
-        {gameState.phase === GamePhase.MISSION &&
-          !gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(
-            (p) => p === gameState.me?.id,
-          ) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="space-y-3"
-            >
-              <p className="text-center text-neutral-light text-sm font-body mb-4">
-                {t("voting.awaitingMission")}
-              </p>
-            </motion.div>
-          )}
+        {isMission && view.isOnMissionTeam && view.hasVotedMission && (
+          <StatusMessage message={t("voting.alreadyVoted")} />
+        )}
+
+        {isMission && !view.isOnMissionTeam && (
+          <StatusMessage message={t("voting.awaitingMission")} />
+        )}
       </div>
     </div>
   );

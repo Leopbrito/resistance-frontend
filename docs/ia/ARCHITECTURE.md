@@ -62,4 +62,4 @@ O servidor manda `ServerError { code, params? }`. `web-socket.ts` traduz para `e
 
 ## Pendências conhecidas (issues abertas)
 
-URL da API fixa no código (#15), logout fora do router (#14), dependências de `useEffect` (#13), `console.log` em produção (#11), strings literais no lugar de enums (#10), duplicação entre telas (#9), CI sem checks (#6), contratos compartilhados com o backend (#16). Consulte as issues antes de assumir que algo é intencional.
+URL da API fixa no código (#15), logout fora do router (#14), dependências de `useEffect` (#13), `console.log` em produção (#11), CI sem checks (#6), contratos compartilhados com o backend (#16). Consulte as issues antes de assumir que algo é intencional.

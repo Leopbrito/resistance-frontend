@@ -13,6 +13,8 @@
 - Componentes de função, **export nomeado** (`export function LobbyScreen`). O `lazy` das rotas depende disso; `ErrorRedirect` é a exceção histórica (default).
 - Um componente por arquivo, em PascalCase, em `components/` (reutilizável) ou `screens/` (uma por rota).
 - O estado do jogo vem de `useContext(AppContext)`. Estado local de tela (`useState`) é só de interface, como "mostrar papel" ou "modal aberto". Não copie `gameState` para `useState`.
+- O round atual vem de `useCurrentRound()`; as condições de tela (posso votar? estou no time?) ficam em `services/round-view.ts` (`getRoundView`), puras e com teste. Não repita `gameState.rounds[gameState.currentRoundIndex]` nas telas.
+- Reaproveite `StatusMessage` (mensagem + ações), `LogoutButton` e `TextField` em vez de copiar o markup.
 - Listeners de socket dentro de `useEffect` sempre devolvem o `socket.off` correspondente.
 - Efeitos com `setTimeout`/`setInterval` limpam o timer no retorno.
 - Não deixe `console.log` no código (issue #11).

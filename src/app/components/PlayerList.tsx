@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { useContext } from "react";
 import { AppContext } from "../App";
 import { GamePhase, Role, SocketEvent, TeamVoteAction } from "../enums/enums";
+import { useCurrentRound } from "../hooks/useCurrentRound";
 import { Player } from "../interfaces/interfaces";
 import { socket } from "../web-socket";
 
@@ -16,17 +17,15 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
   const { t } = useTranslation();
   const { gameState } = useContext(AppContext);
 
-  const currentRound = () => {
-    return gameState.rounds[gameState.currentRoundIndex];
-  };
+  const round = useCurrentRound();
 
   const handleSelectPlayer = (player: Player) => {
     return () => {
       if (gameState.me?.isLeader) {
-        if (!currentRound().selectedTeam.find((p) => p === player.id)) {
-          if (currentRound().selectedTeam.length < currentRound().teamSize) {
+        if (!round.selectedTeam.find((p) => p === player.id)) {
+          if (round.selectedTeam.length < round.teamSize) {
             socket.emit(SocketEvent.SELECT_MISSION_TEAM, {
-              selectedPlayers: [...currentRound().selectedTeam, player.id],
+              selectedPlayers: [...round.selectedTeam, player.id],
             });
           }
         }
@@ -37,9 +36,9 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
   const handleRemovePlayer = (player: Player) => {
     return () => {
       if (gameState.me?.isLeader) {
-        if (currentRound().selectedTeam.find((p) => p === player.id)) {
+        if (round.selectedTeam.find((p) => p === player.id)) {
           socket.emit(SocketEvent.SELECT_MISSION_TEAM, {
-            selectedPlayers: currentRound().selectedTeam.filter((p) => p !== player.id),
+            selectedPlayers: round.selectedTeam.filter((p) => p !== player.id),
           });
         }
       }
@@ -47,19 +46,19 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
   };
 
   const hasVoted = (player: Player) => {
-    return Boolean(currentRound().teamVotes[player.id]);
+    return Boolean(round.teamVotes[player.id]);
   };
 
   const hasApproved = (player: Player) => {
-    return Boolean(currentRound().teamVotes[player.id] === TeamVoteAction.APPROVE);
+    return Boolean(round.teamVotes[player.id] === TeamVoteAction.APPROVE);
   };
 
   const teamVotesCount = () => {
-    return Object.values(currentRound().teamVotes).filter((v) => Boolean(v)).length;
+    return Object.values(round.teamVotes).filter((v) => Boolean(v)).length;
   };
 
   const missionVotesCount = () => {
-    return Object.values(currentRound().missionVotes).filter((v) => Boolean(v)).length;
+    return Object.values(round.missionVotes).filter((v) => Boolean(v)).length;
   };
 
   const title = () => {
@@ -67,8 +66,8 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
     if (gameState.phase === GamePhase.TEAM_SELECTION) {
       return t("players.teamSelection", {
         n,
-        current: currentRound().selectedTeam.length,
-        total: currentRound().teamSize,
+        current: round.selectedTeam.length,
+        total: round.teamSize,
       });
     }
     if (gameState.phase === GamePhase.VOTING) {
@@ -82,7 +81,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
       return t("players.missionVotes", {
         n,
         current: missionVotesCount(),
-        total: currentRound().teamSize,
+        total: round.teamSize,
       });
     }
     return t("players.mission", { n });
@@ -121,7 +120,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
               transition={{ delay: 0.01 }}
               className={
                 "bg-surface border-2 rounded-lg p-4 flex items-center justify-between " +
-                (currentRound().selectedTeam.some((id) => id === player.id)
+                (round.selectedTeam.some((id) => id === player.id)
                   ? "border-resistance shadow-[0_0_15px_rgba(0,217,255,0.3)]"
                   : "border-neutral opacity-50")
               }
@@ -130,7 +129,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
               }}
               onClick={
                 gameState.me?.isLeader
-                  ? currentRound().selectedTeam.some((id) => id === player.id)
+                  ? round.selectedTeam.some((id) => id === player.id)
                     ? handleRemovePlayer(player)
                     : handleSelectPlayer(player)
                   : () => {}
@@ -142,7 +141,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
                     "w-12 h-12 rounded-full flex items-center justify-center " +
                     (player.role === Role.SPY && showSpies
                       ? " bg-gradient-to-br from-spy to-spy-dark  shadow-[0_0_15px_rgba(220,20,60,0.4)]"
-                      : currentRound().selectedTeam.some((id) => id === player.id)
+                      : round.selectedTeam.some((id) => id === player.id)
                         ? " bg-gradient-to-br from-resistance to-resistance-dark  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
                         : player.isLeader
                           ? "bg-gradient-to-br from-gold to-[yellow]  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
