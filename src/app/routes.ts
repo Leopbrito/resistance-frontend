@@ -2,11 +2,6 @@ import { createBrowserRouter } from "react-router";
 import { RootLayout } from "./components/RootLayout";
 import { HomeScreen } from "./screens/HomeScreen";
 import { JoinRoomScreen } from "./screens/JoinRoomScreen";
-import { LobbyScreen } from "./screens/LobbyScreen";
-import { RoleRevealScreen } from "./screens/RoleRevealScreen";
-import { MissionVotingScreen } from "./screens/MissionVotingScreen";
-import { MissionResultScreen } from "./screens/MissionResultScreen";
-import { GameEndScreen } from "./screens/GameEndScreen";
 import ErrorRedirect from "./components/ErrorRedirect";
 import { withGameRoute } from "./components/GameRoute";
 
@@ -25,27 +20,42 @@ export const router = createBrowserRouter([
       },
       {
         path: "lobby",
-        Component: withGameRoute(LobbyScreen),
+        lazy: async () => {
+          const { LobbyScreen } = await import("./screens/LobbyScreen");
+          return { Component: withGameRoute(LobbyScreen) };
+        },
         ErrorBoundary: ErrorRedirect,
       },
       {
         path: "role-reveal",
-        Component: withGameRoute(RoleRevealScreen),
+        lazy: async () => {
+          const { RoleRevealScreen } = await import("./screens/RoleRevealScreen");
+          return { Component: withGameRoute(RoleRevealScreen) };
+        },
         ErrorBoundary: ErrorRedirect,
       },
       {
         path: "mission-voting",
-        Component: withGameRoute(MissionVotingScreen),
+        lazy: async () => {
+          const { MissionVotingScreen } = await import("./screens/MissionVotingScreen");
+          return { Component: withGameRoute(MissionVotingScreen) };
+        },
         ErrorBoundary: ErrorRedirect,
       },
       {
         path: "mission-result",
-        Component: withGameRoute(MissionResultScreen),
+        lazy: async () => {
+          const { MissionResultScreen } = await import("./screens/MissionResultScreen");
+          return { Component: withGameRoute(MissionResultScreen) };
+        },
         ErrorBoundary: ErrorRedirect,
       },
       {
         path: "game-end",
-        Component: withGameRoute(GameEndScreen),
+        lazy: async () => {
+          const { GameEndScreen } = await import("./screens/GameEndScreen");
+          return { Component: withGameRoute(GameEndScreen) };
+        },
         ErrorBoundary: ErrorRedirect,
       },
     ],
