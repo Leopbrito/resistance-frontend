@@ -6,6 +6,7 @@ import { useNavigate, useSearchParams } from "react-router";
 import { GlowButton } from "../components/GlowButton";
 import { ParticleBackground } from "../components/ParticleBackground";
 import { ROOM_CODE_LENGTH, SocketEvent } from "../enums/enums";
+import { RoomAck } from "../interfaces/interfaces";
 import { setPlayerId, socket, startNewSession } from "../web-socket";
 
 export function JoinRoomScreen() {
@@ -17,21 +18,24 @@ export function JoinRoomScreen() {
   const [roomCode, setRoomCode] = useState(searchParams.get("roomCode") || "");
   const [username, setUsername] = useState("");
 
+  const handleRoomAck = (response: RoomAck) => {
+    // Em falha o servidor já emitiu o erro (toast): sem sessão para gravar nem lobby para abrir
+    if (!("playerId" in response)) return;
+
+    setPlayerId(response.playerId);
+    navigate("/lobby");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (username.trim()) {
-      startNewSession();
-      if (isCreateMode) {
-        socket.emit(SocketEvent.CREATE_ROOM, { playerName: username }, (response) => {
-          setPlayerId(response.playerId);
-          navigate("/lobby");
-        });
-      } else {
-        socket.emit(SocketEvent.JOIN_ROOM, { playerName: username, roomCode }, (response) => {
-          setPlayerId(response.playerId);
-          navigate("/lobby");
-        });
-      }
+    const playerName = username.trim();
+    if (!playerName) return;
+
+    startNewSession();
+    if (isCreateMode) {
+      socket.emit(SocketEvent.CREATE_ROOM, { playerName }, handleRoomAck);
+    } else {
+      socket.emit(SocketEvent.JOIN_ROOM, { playerName, roomCode }, handleRoomAck);
     }
   };
 

@@ -13,6 +13,10 @@ export interface ServerError {
   params?: Record<string, string | number>;
 }
 
+// Ack de criar/entrar na sala: em falha o servidor responde { success: false, error }
+export type RoomAck =
+  { roomCode: string; playerId: string } | { success: false; error: ServerError };
+
 export interface Player {
   id: string;
   socketId: string;
@@ -72,11 +76,11 @@ export interface ServerToClientEvents {
 export interface ClientToServerEvents {
   [SocketEvent.CREATE_ROOM]: (
     data: { playerName: string },
-    callback: (response: { roomCode: string; playerId: string }) => void,
+    callback: (response: RoomAck) => void,
   ) => void;
   [SocketEvent.JOIN_ROOM]: (
     data: { playerName: string; roomCode: string },
-    callback: (response: { roomCode: string; playerId: string }) => void,
+    callback: (response: RoomAck) => void,
   ) => void;
   [SocketEvent.START_GAME]: (data: {}, callback: () => void) => void;
   [SocketEvent.SELECT_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;
