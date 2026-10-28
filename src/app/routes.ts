@@ -3,7 +3,7 @@ import { RootLayout } from "./components/RootLayout";
 import { HomeScreen } from "./screens/HomeScreen";
 import { JoinRoomScreen } from "./screens/JoinRoomScreen";
 import ErrorRedirect from "./components/ErrorRedirect";
-import { withGameRoute } from "./components/GameRoute";
+import { withGameRoute } from "./components/withGameRoute";
 
 export const router = createBrowserRouter([
   {

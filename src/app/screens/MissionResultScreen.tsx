@@ -3,11 +3,17 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { AppContext } from "../App";
+import { AppContext } from "../app-context";
+import { ConfettiBurst } from "../components/ConfettiBurst";
 import { GlowButton } from "../components/GlowButton";
 import { StatusMessage } from "../components/StatusMessage";
 import { AckScreen, GamePhase, MissionVoteAction, RoundStatus, SocketEvent } from "../enums/enums";
 import { ackScreen, socket } from "../web-socket";
+
+interface VoteResult {
+  status: MissionVoteAction;
+  flipped: boolean;
+}
 
 export function MissionResultScreen() {
   const { t } = useTranslation();
@@ -22,7 +28,7 @@ export function MissionResultScreen() {
         : gameState.currentRoundIndex - 1),
   );
   const resultRound = gameState.rounds[resultRoundIndex];
-  const [results, setResults] = useState<any[]>(
+  const [results, setResults] = useState<VoteResult[]>(
     resultRound.missionVoteResult
       .map((result) => ({
         status: result,
@@ -31,11 +37,14 @@ export function MissionResultScreen() {
       .sort((a) => (a.status === MissionVoteAction.SUCCESS ? -1 : 1)),
   );
 
+  // O total de votos não muda durante a tela; só o flipped
+  const voteCount = results.length;
+
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
 
     const onRevealMissionResult = () => {
-      results.forEach((_, index) => {
+      for (let index = 0; index < voteCount; index++) {
         timers.push(
           setTimeout(() => {
             setResults((prev) =>
@@ -46,7 +55,7 @@ export function MissionResultScreen() {
             );
           }, 700 * index),
         );
-      });
+      }
     };
 
     socket.on(SocketEvent.REVEAL_MISSION_RESULT, onRevealMissionResult);
@@ -55,7 +64,7 @@ export function MissionResultScreen() {
       socket.off(SocketEvent.REVEAL_MISSION_RESULT, onRevealMissionResult);
       timers.forEach(clearTimeout);
     };
-  }, []);
+  }, [voteCount]);
 
   const handleRevealResults = () => {
     socket.emit(SocketEvent.SUBMIT_MISSION_RESULT_REVEAL);
@@ -253,32 +262,7 @@ export function MissionResultScreen() {
       {/* Particle effects based on result */}
       {isResistanceWin() ? (
         <>
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{
-                opacity: 0,
-                scale: 0,
-                x: "50vw",
-                y: "50vh",
-              }}
-              animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1, 0],
-                x: `${50 + (Math.random() - 0.5) * 100}vw`,
-                y: `${50 + (Math.random() - 0.5) * 100}vh`,
-              }}
-              transition={{
-                duration: 2,
-                delay: 1 + i * 0.05,
-                ease: "easeOut",
-              }}
-              className="absolute w-2 h-2 rounded-full bg-resistance"
-              style={{
-                boxShadow: "0 0 10px rgba(0,217,255,0.8)",
-              }}
-            />
-          ))}
+          <ConfettiBurst />
         </>
       ) : (
         <motion.div

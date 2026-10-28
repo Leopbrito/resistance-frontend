@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { CheckCircle, Crown, Eye, EyeOff, User, XCircle } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "../app-context";
 import { GamePhase, Role, SocketEvent, TeamVoteAction } from "../enums/enums";
 import { useCurrentRound } from "../hooks/useCurrentRound";
 import { Player } from "../interfaces/interfaces";

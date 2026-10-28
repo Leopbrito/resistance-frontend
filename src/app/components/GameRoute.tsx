@@ -1,7 +1,7 @@
-import { ComponentType, ReactNode, useContext, useEffect } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
-import { AppContext } from "../App";
+import { AppContext } from "../app-context";
 import { useWakeLock } from "../hooks/useWakeLock";
 import { getPlayerId } from "../web-socket";
 
@@ -26,7 +26,7 @@ export function GameRoute({ children }: { children: ReactNode }) {
       hasSession ? HYDRATION_TIMEOUT_MS : 0,
     );
     return () => clearTimeout(timer);
-  }, [isHydrated]);
+  }, [isHydrated, navigate]);
 
   if (!isHydrated) {
     return (
@@ -40,9 +40,3 @@ export function GameRoute({ children }: { children: ReactNode }) {
 
   return <>{children}</>;
 }
-
-export const withGameRoute = (Screen: ComponentType) => () => (
-  <GameRoute>
-    <Screen />
-  </GameRoute>
-);

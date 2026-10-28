@@ -18,11 +18,7 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-      // Padrões existentes que exigem mudança de comportamento: tratados em issues próprias
-      "@typescript-eslint/no-explicit-any": "warn",
-      "@typescript-eslint/no-empty-object-type": "warn",
-      "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
-      "react-hooks/purity": "warn",
+      "react-hooks/exhaustive-deps": "error",
     },
   },
   prettier,

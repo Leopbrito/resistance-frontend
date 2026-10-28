@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Check, Clock, Copy, Crown, User, QrCode } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useState } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "../app-context";
 import { GlowButton } from "../components/GlowButton";
 import { LogoutButton } from "../components/LogoutButton";
 import { ParticleBackground } from "../components/ParticleBackground";

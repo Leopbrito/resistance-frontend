@@ -13,12 +13,12 @@ npm run dev           # servidor de desenvolvimento (espera o backend em http://
 npm run build         # build de produção em dist/
 npm test              # vitest run
 npm run typecheck     # tsc --noEmit
-npm run lint          # eslint . (hoje: 0 erros e 14 avisos conhecidos)
+npm run lint          # eslint . (hoje: 0 erros e 0 avisos)
 npm run format        # prettier --write .
 npm run format:check  # prettier --check .
 ```
 
-Antes de dar uma tarefa por concluída, rode `typecheck`, `lint`, `format:check`, `test` e `build`. Não deve haver erro novo nem aviso de lint novo.
+Antes de dar uma tarefa por concluída, rode `typecheck`, `lint`, `format:check`, `test` e `build`. O lint está zerado e deve continuar assim.
 
 ## Mapa do código
 
@@ -26,7 +26,7 @@ Antes de dar uma tarefa por concluída, rode `typecheck`, `lint`, `format:check`
 src/
   main.tsx              entrada; importa i18n e styles/index.css
   app/
-    App.tsx             AppContext (gameState) + listeners globais do socket
+    App.tsx             estado do jogo + listeners globais do socket; app-context.ts tem o AppContext
     routes.ts           rotas; telas do jogo são lazy
     web-socket.ts       instância do socket, sessão (playerId), erros
     screens/            uma tela por rota

@@ -3,39 +3,54 @@ import { Eye, Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { AppContext } from "../App";
+import { AppContext } from "../app-context";
+import { ConfettiBurst } from "../components/ConfettiBurst";
 import { GlowButton } from "../components/GlowButton";
 import { AckScreen, Role } from "../enums/enums";
+import { Player } from "../interfaces/interfaces";
 import { ackScreen } from "../web-socket";
+
+interface PlayerResult {
+  player: Player;
+  flipped: boolean;
+}
 
 export function GameEndScreen() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { gameState } = useContext(AppContext);
-  const [results, setResults] = useState<any[]>(
+  const [results, setResults] = useState<PlayerResult[]>(
     gameState.players?.map((player) => ({
       player,
       flipped: false,
     })) || [],
   );
 
+  // O total de jogadores não muda durante a tela; só o flipped
+  const playerCount = results.length;
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (results.length > 0) {
-        results.forEach((_, index) => {
-          setTimeout(() => {
-            setResults((prev) =>
-              prev.map((r, i) => ({
-                ...r,
-                flipped: i <= index,
-              })),
-            );
-          }, 700 * index);
-        });
-      }
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
+    if (playerCount === 0) return;
+
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    timers.push(
+      setTimeout(() => {
+        for (let index = 0; index < playerCount; index++) {
+          timers.push(
+            setTimeout(() => {
+              setResults((prev) =>
+                prev.map((r, i) => ({
+                  ...r,
+                  flipped: i <= index,
+                })),
+              );
+            }, 700 * index),
+          );
+        }
+      }, 1000),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [playerCount]);
 
   const handleContinueButton = () => {
     ackScreen(AckScreen.GAME_END);
@@ -198,32 +213,7 @@ export function GameEndScreen() {
       {/* Particle effects based on result */}
       {isResistanceWin() ? (
         <>
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{
-                opacity: 0,
-                scale: 0,
-                x: "50vw",
-                y: "50vh",
-              }}
-              animate={{
-                opacity: [0, 1, 0],
-                scale: [0, 1, 0],
-                x: `${50 + (Math.random() - 0.5) * 100}vw`,
-                y: `${50 + (Math.random() - 0.5) * 100}vh`,
-              }}
-              transition={{
-                duration: 2,
-                delay: 1 + i * 0.05,
-                ease: "easeOut",
-              }}
-              className="absolute w-2 h-2 rounded-full bg-resistance"
-              style={{
-                boxShadow: "0 0 10px rgba(0,217,255,0.8)",
-              }}
-            />
-          ))}
+          <ConfettiBurst />
         </>
       ) : (
         <motion.div

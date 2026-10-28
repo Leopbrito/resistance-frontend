@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { GlowButton } from "../components/GlowButton";
 import { Shield, Eye } from "lucide-react";
 import { useContext, useState } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "../app-context";
 import { AckScreen, Role } from "../enums/enums";
 import { ackScreen } from "../web-socket";
 

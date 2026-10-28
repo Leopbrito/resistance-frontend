@@ -2,16 +2,20 @@ import { useTranslation } from "react-i18next";
 import { Circle, Eye, Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "../app-context";
 import { RoundStatus } from "../enums/enums";
+
+const TOTAL_ROUNDS = 5;
 
 export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
   const { t } = useTranslation();
   const { gameState } = useContext(AppContext);
 
-  while (gameState.rounds.length < 5) {
-    gameState.rounds.push({} as any);
-  }
+  // Sempre 5 posições; rodadas que ainda não existem aparecem como pendentes
+  const slots = Array.from(
+    { length: Math.max(TOTAL_ROUNDS, gameState.rounds.length) },
+    (_, i) => gameState.rounds[i],
+  );
 
   return (
     <>
@@ -27,13 +31,13 @@ export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
           </h3>
         )}
         <div className="flex justify-center gap-3">
-          {gameState.rounds
+          {slots
             .map((m) => {
               return {
                 completed:
-                  m.status === RoundStatus.MISSION_SUCCESS ||
-                  m.status === RoundStatus.MISSION_FAILED,
-                success: m.status === RoundStatus.MISSION_SUCCESS,
+                  m?.status === RoundStatus.MISSION_SUCCESS ||
+                  m?.status === RoundStatus.MISSION_FAILED,
+                success: m?.status === RoundStatus.MISSION_SUCCESS,
               };
             })
             .map((mission, index) => (

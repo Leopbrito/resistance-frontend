@@ -6,7 +6,7 @@ export default function ErrorRedirect() {
 
   useEffect(() => {
     navigate("/", { replace: true });
-  }, []);
+  }, [navigate]);
 
   return null;
 }

@@ -83,7 +83,7 @@ export interface ClientToServerEvents {
     data: { playerName: string; roomCode: string },
     callback: (response: RoomAck) => void,
   ) => void;
-  [SocketEvent.START_GAME]: (data: {}, callback: () => void) => void;
+  [SocketEvent.START_GAME]: (data: Record<string, never>, callback: () => void) => void;
   [SocketEvent.SELECT_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;
   [SocketEvent.SUBMIT_SELECTED_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;
   [SocketEvent.VOTE_TEAM_APPROVAL]: (data: { vote: TeamVoteAction }) => void;

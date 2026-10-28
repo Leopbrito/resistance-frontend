@@ -34,4 +34,4 @@ Dívida conhecida: sombras e brilhos ainda repetem `rgba(0,217,255,…)` e `rgba
 
 - `motion` (`import { motion } from "motion/react"`) para entrada de elementos (`initial`/`animate`) e brilhos.
 - Em props animadas (`animate`, `whileHover`), prefira valores numéricos ou cores literais; interpolar `var()` não é garantido.
-- `Math.random()` no render gera aviso de lint (`react-hooks/purity`); em código novo, calcule em `useMemo`/`useState` inicializador.
+- `Math.random()` (ou qualquer valor impuro) no render é erro de lint (`react-hooks/purity`): sorteie uma vez no inicializador do `useState`, como o `ConfettiBurst` faz.

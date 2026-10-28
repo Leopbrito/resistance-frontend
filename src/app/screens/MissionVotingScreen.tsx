@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Eye, Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "../app-context";
 import { GlowButton } from "../components/GlowButton";
 import { LogoutButton } from "../components/LogoutButton";
 import { MissionTracker } from "../components/MissionTracker";

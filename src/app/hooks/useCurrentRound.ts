@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "../app-context";
 import { Round } from "../interfaces/interfaces";
 
 export function useCurrentRound(): Round {

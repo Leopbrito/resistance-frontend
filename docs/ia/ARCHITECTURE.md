@@ -20,7 +20,7 @@ Browser (este repo)                         Backend (../resistance-backend)
 ## Fluxo do estado
 
 1. `web-socket.ts` cria o `socket` uma vez, com `auth` reavaliado a cada conexão: `{ playerId }` lido do `localStorage`.
-2. `App.tsx` guarda `gameState` e `isHydrated` em `AppContext` e escuta os eventos globais:
+2. `App.tsx` guarda `gameState` e `isHydrated` no `AppContext` (definido em `app-context.ts`) e escuta os eventos globais:
    - `gameStateUpdate`: substitui o `gameState` inteiro e marca `isHydrated`.
    - `reconnectGame`: igual ao anterior, e se a rota atual permite (`canResumeFrom`), navega para `getRouteForState(gameState)`.
    - `revealRoles` → `/role-reveal`; `openMissionResultScreen` → `/mission-result`.
@@ -62,4 +62,4 @@ O servidor manda `ServerError { code, params? }`. `web-socket.ts` traduz para `e
 
 ## Pendências conhecidas (issues abertas)
 
-URL da API fixa no código (#15), logout fora do router (#14), dependências de `useEffect` (#13), `console.log` em produção (#11), CI sem checks (#6), contratos compartilhados com o backend (#16). Consulte as issues antes de assumir que algo é intencional.
+URL da API fixa no código (#15), logout fora do router (#14), `console.log` em produção (#11), CI sem checks (#6), contratos compartilhados com o backend (#16). Consulte as issues antes de assumir que algo é intencional.

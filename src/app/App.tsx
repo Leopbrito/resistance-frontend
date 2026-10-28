@@ -1,21 +1,12 @@
 import React from "react";
 import { RouterProvider } from "react-router";
 import { SocketEvent } from "./enums/enums";
+import { AppContext } from "./app-context";
 import { GameState } from "./interfaces/interfaces";
 import { router } from "./routes";
 import { canResumeFrom, getRouteForState } from "./services/game-route";
 import { navigate } from "./services/navigation-service";
 import { socket } from "./web-socket";
-
-export interface GameStateContext {
-  gameState: GameState;
-  isHydrated: boolean;
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>;
-}
-
-export const AppContext: React.Context<GameStateContext> = React.createContext(
-  {} as GameStateContext,
-);
 
 export default function App() {
   const [gameState, setGameState] = React.useState<GameState>({} as GameState);
