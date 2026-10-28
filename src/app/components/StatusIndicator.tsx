@@ -12,9 +12,9 @@ export function StatusIndicator({
   size = "md",
 }: StatusIndicatorProps) {
   const colors = {
-    resistance: "#00D9FF",
-    spy: "#DC143C",
-    neutral: "#6B7280",
+    resistance: "var(--color-resistance)",
+    spy: "var(--color-spy)",
+    neutral: "var(--color-neutral)",
   };
 
   const sizes = {

@@ -21,7 +21,7 @@ export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
         className="w-full mb-6"
       >
         {!hideTitle && (
-          <h3 className="text-center font-['Inter'] text-[#9CA3AF] text-sm uppercase tracking-wide mb-4">
+          <h3 className="text-center font-body text-neutral-light text-sm uppercase tracking-wide mb-4">
             {t("tracker.title")}
           </h3>
         )}
@@ -43,27 +43,27 @@ export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
                 {mission.completed ? (
                   mission.success ? (
                     <div
-                      className="w-12 h-12 rounded-full border-2 border-[#00D9FF] 
-                      bg-[#00D9FF]/20 flex items-center justify-center
+                      className="w-12 h-12 rounded-full border-2 border-resistance 
+                      bg-resistance/20 flex items-center justify-center
                       shadow-[0_0_15px_rgba(0,217,255,0.4)]"
                     >
-                      <Shield className="w-6 h-6 text-[#00D9FF]" />
+                      <Shield className="w-6 h-6 text-resistance" />
                     </div>
                   ) : (
                     <div
-                      className="w-12 h-12 rounded-full border-2 border-[#DC143C] 
-                      bg-[#DC143C]/20 flex items-center justify-center
+                      className="w-12 h-12 rounded-full border-2 border-spy 
+                      bg-spy/20 flex items-center justify-center
                       shadow-[0_0_15px_rgba(220,20,60,0.4)]"
                     >
-                      <Eye className="w-6 h-6 text-[#DC143C]" />
+                      <Eye className="w-6 h-6 text-spy" />
                     </div>
                   )
                 ) : (
                   <div
-                    className="w-12 h-12 rounded-full border-2 border-[#6B7280] 
-                    bg-[#1A1F28] flex items-center justify-center"
+                    className="w-12 h-12 rounded-full border-2 border-neutral 
+                    bg-surface flex items-center justify-center"
                   >
-                    <Circle className="w-6 h-6 text-[#6B7280]" />
+                    <Circle className="w-6 h-6 text-neutral" />
                   </div>
                 )}
               </motion.div>

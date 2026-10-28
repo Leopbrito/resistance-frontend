@@ -74,7 +74,7 @@ export function MissionResultScreen() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
+    <div className="relative min-h-screen bg-canvas overflow-hidden">
       {/* Dynamic background based on result */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -82,8 +82,8 @@ export function MissionResultScreen() {
         className="absolute inset-0"
         style={{
           background: isResistanceWin()
-            ? "radial-gradient(circle at center, #00D9FF 0%, transparent 70%)"
-            : "radial-gradient(circle at center, #DC143C 0%, transparent 70%)",
+            ? "radial-gradient(circle at center, var(--color-resistance) 0%, transparent 70%)"
+            : "radial-gradient(circle at center, var(--color-spy) 0%, transparent 70%)",
         }}
       />
 
@@ -93,7 +93,7 @@ export function MissionResultScreen() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="font-['Orbitron'] text-3xl mb-12 text-center tracking-wider text-white"
+          className="font-display text-3xl mb-12 text-center tracking-wider text-white"
         >
           {t("result.title")}
         </motion.h2>
@@ -114,7 +114,7 @@ export function MissionResultScreen() {
               >
                 {/* Card Back */}
                 <div
-                  className="absolute inset-0 rounded-2xl bg-[#1A1F28] border-2 border-[#6B7280]
+                  className="absolute inset-0 rounded-2xl bg-surface border-2 border-neutral
                 flex items-center justify-center shadow-2xl"
                   style={{
                     backfaceVisibility: "hidden",
@@ -129,10 +129,10 @@ export function MissionResultScreen() {
                       ],
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-24 h-24 rounded-full border-2 border-[#00D9FF] 
+                    className="w-24 h-24 rounded-full border-2 border-resistance 
                   flex items-center justify-center"
                   >
-                    <span className="text-4xl font-['Orbitron'] text-[#00D9FF]">?</span>
+                    <span className="text-4xl font-display text-resistance">?</span>
                   </motion.div>
                 </div>
 
@@ -144,12 +144,14 @@ export function MissionResultScreen() {
                     transform: "rotateY(180deg)",
                     background:
                       result.status === MissionVoteAction.SUCCESS
-                        ? "linear-gradient(135deg, #1A1F28 0%, #00D9FF20 100%)"
-                        : "linear-gradient(135deg, #1A1F28 0%, #DC143C20 100%)",
+                        ? "linear-gradient(135deg, var(--color-surface) 0%, color-mix(in srgb, var(--color-resistance) 12.5%, transparent) 100%)"
+                        : "linear-gradient(135deg, var(--color-surface) 0%, color-mix(in srgb, var(--color-spy) 12.5%, transparent) 100%)",
                     borderWidth: "2px",
                     borderStyle: "solid",
                     borderColor:
-                      result.status === MissionVoteAction.SUCCESS ? "#00D9FF" : "#DC143C",
+                      result.status === MissionVoteAction.SUCCESS
+                        ? "var(--color-resistance)"
+                        : "var(--color-spy)",
                     boxShadow:
                       result.status === MissionVoteAction.SUCCESS
                         ? "0 0 40px rgba(0,217,255,0.5)"
@@ -164,13 +166,13 @@ export function MissionResultScreen() {
                     {result.status === MissionVoteAction.SUCCESS ? (
                       <CheckCircle
                         className="w-16 h-16 mb-6"
-                        style={{ color: "#00D9FF" }}
+                        style={{ color: "var(--color-resistance)" }}
                         strokeWidth={2}
                       />
                     ) : (
                       <XCircle
                         className="w-16 h-16 mb-6"
-                        style={{ color: "#DC143C" }}
+                        style={{ color: "var(--color-spy)" }}
                         strokeWidth={2}
                       />
                     )}
@@ -183,9 +185,12 @@ export function MissionResultScreen() {
                       y: result.flipped ? 0 : 20,
                     }}
                     transition={{ delay: 0.5 }}
-                    className="font-['Orbitron'] tracking-wider"
+                    className="font-display tracking-wider"
                     style={{
-                      color: result.status === MissionVoteAction.SUCCESS ? "#00D9FF" : "#DC143C",
+                      color:
+                        result.status === MissionVoteAction.SUCCESS
+                          ? "var(--color-resistance)"
+                          : "var(--color-spy)",
                       textShadow:
                         result.status === MissionVoteAction.SUCCESS
                           ? "0 0 20px rgba(0,217,255,0.6)"
@@ -226,7 +231,7 @@ export function MissionResultScreen() {
                 transition={{ delay: 0.6 }}
                 className="space-y-3"
               >
-                <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
+                <p className="text-center text-neutral-light text-sm font-body mb-4">
                   {t("result.awaitingReveal")}
                 </p>
               </motion.div>
@@ -273,7 +278,7 @@ export function MissionResultScreen() {
                 delay: 1 + i * 0.05,
                 ease: "easeOut",
               }}
-              className="absolute w-2 h-2 rounded-full bg-[#00D9FF]"
+              className="absolute w-2 h-2 rounded-full bg-resistance"
               style={{
                 boxShadow: "0 0 10px rgba(0,217,255,0.8)",
               }}
@@ -290,7 +295,7 @@ export function MissionResultScreen() {
             repeat: Infinity,
             repeatDelay: 1,
           }}
-          className="absolute inset-0 bg-[#DC143C] mix-blend-screen pointer-events-none"
+          className="absolute inset-0 bg-spy mix-blend-screen pointer-events-none"
         />
       )}
     </div>

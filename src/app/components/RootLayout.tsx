@@ -22,11 +22,11 @@ export function RootLayout() {
         theme="dark"
         toastOptions={{
           style: {
-            background: "#1A1F28",
-            border: "1px solid #DC143C",
+            background: "var(--color-surface)",
+            border: "1px solid var(--color-spy)",
             color: "#fff",
           },
-          className: "font-['Inter']",
+          className: "font-body",
         }}
       />
     </>

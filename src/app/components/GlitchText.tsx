@@ -21,7 +21,7 @@ export function GlitchText({ children, className = "" }: GlitchTextProps) {
           repeat: Infinity,
           repeatDelay: 3,
         }}
-        className="absolute inset-0 text-[#00D9FF] opacity-0"
+        className="absolute inset-0 text-resistance opacity-0"
         style={{ mixBlendMode: "screen" }}
       >
         {children}
@@ -37,7 +37,7 @@ export function GlitchText({ children, className = "" }: GlitchTextProps) {
           repeat: Infinity,
           repeatDelay: 4,
         }}
-        className="absolute inset-0 text-[#DC143C] opacity-0"
+        className="absolute inset-0 text-spy opacity-0"
         style={{ mixBlendMode: "screen" }}
       >
         {children}

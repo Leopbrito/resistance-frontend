@@ -42,7 +42,7 @@ export function LobbyScreen() {
   return (
     <>
       {gameState && (
-        <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
+        <div className="relative min-h-screen bg-canvas overflow-hidden">
           <ParticleBackground />
 
           <div className="relative z-10 min-h-screen px-6 py-8 flex flex-col">
@@ -55,7 +55,7 @@ export function LobbyScreen() {
                   clearPlayerId();
                   window.location.href = "/";
                 }}
-                className="absolute right-0 top-0 flex items-center justify-center p-2 bg-[#DC143C]/10 border border-[#DC143C]/50 rounded-lg text-[#DC143C] hover:bg-[#DC143C]/20 hover:border-[#DC143C] transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"
+                className="absolute right-0 top-0 flex items-center justify-center p-2 bg-spy/10 border border-spy/50 rounded-lg text-spy hover:bg-spy/20 hover:border-spy transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"
                 title={t("common.logout")}
               >
                 <LogOut className="w-5 h-5" />
@@ -66,42 +66,42 @@ export function LobbyScreen() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center w-full"
               >
-                <h2 className="font-['Orbitron'] text-2xl mb-2 text-white tracking-wider">
+                <h2 className="font-display text-2xl mb-2 text-white tracking-wider">
                   {t("lobby.waitingRoom")}
                 </h2>
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-[#9CA3AF] text-sm font-['Inter']">
+                  <span className="text-neutral-light text-sm font-body">
                     {t("lobby.roomCode")}
                   </span>
                   <div
-                    className="flex items-center gap-2 cursor-pointer group px-3 py-1 bg-[#1A1F28] rounded-md border border-[#6B7280] hover:border-[#00D9FF] transition-colors"
+                    className="flex items-center gap-2 cursor-pointer group px-3 py-1 bg-surface rounded-md border border-neutral hover:border-resistance transition-colors"
                     onClick={handleCopyLink}
                     title={t("lobby.copyInvite")}
                   >
-                    <span className="font-['Orbitron'] text-[#00D9FF] tracking-widest text-lg">
+                    <span className="font-display text-resistance tracking-widest text-lg">
                       {gameState.me?.roomCode}
                     </span>
                     {copied ? (
                       <Check className="w-4 h-4 text-green-400" />
                     ) : (
-                      <Copy className="w-4 h-4 text-[#9CA3AF] group-hover:text-[#00D9FF] transition-colors" />
+                      <Copy className="w-4 h-4 text-neutral-light group-hover:text-resistance transition-colors" />
                     )}
                   </div>
                   <Dialog>
                     <DialogTrigger asChild>
                       <button
-                        className="flex items-center justify-center px-3 py-1 bg-[#1A1F28] rounded-md border border-[#6B7280] hover:border-[#00D9FF] transition-colors group"
+                        className="flex items-center justify-center px-3 py-1 bg-surface rounded-md border border-neutral hover:border-resistance transition-colors group"
                         title={t("lobby.showQr")}
                       >
-                        <QrCode className="w-5 h-5 text-[#9CA3AF] group-hover:text-[#00D9FF] transition-colors" />
+                        <QrCode className="w-5 h-5 text-neutral-light group-hover:text-resistance transition-colors" />
                       </button>
                     </DialogTrigger>
-                    <DialogContent className="bg-[#0B0F14] border border-[#00D9FF]/50 text-white sm:max-w-md shadow-[0_0_15px_rgba(0,217,255,0.2)]">
+                    <DialogContent className="bg-canvas border border-resistance/50 text-white sm:max-w-md shadow-[0_0_15px_rgba(0,217,255,0.2)]">
                       <DialogHeader>
-                        <DialogTitle className="font-['Orbitron'] text-xl text-center text-[#00D9FF] tracking-wider">
+                        <DialogTitle className="font-display text-xl text-center text-resistance tracking-wider">
                           {t("lobby.shareRoom")}
                         </DialogTitle>
-                        <DialogDescription className="text-center text-[#9CA3AF] font-['Inter']">
+                        <DialogDescription className="text-center text-neutral-light font-body">
                           {t("lobby.scanQr")}
                         </DialogDescription>
                       </DialogHeader>
@@ -132,40 +132,40 @@ export function LobbyScreen() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 * index }}
-                    className="bg-[#1A1F28] border border-[#6B7280] rounded-lg p-4
-                  hover:border-[#00D9FF] hover:shadow-[0_0_15px_rgba(0,217,255,0.2)]
+                    className="bg-surface border border-neutral rounded-lg p-4
+                  hover:border-resistance hover:shadow-[0_0_15px_rgba(0,217,255,0.2)]
                   transition-all duration-300"
                   >
                     <div className="flex items-center gap-4">
                       {/* Avatar */}
                       <div
-                        className="w-12 h-12 rounded-full bg-gradient-to-br from-[#00D9FF] to-[#0088AA]
+                        className="w-12 h-12 rounded-full bg-gradient-to-br from-resistance to-resistance-dark
                     flex items-center justify-center shadow-[0_0_15px_rgba(0,217,255,0.4)]"
                       >
-                        <User className="w-6 h-6 text-[#0B0F14]" />
+                        <User className="w-6 h-6 text-canvas" />
                       </div>
 
                       {/* Name */}
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-['Inter'] text-white">{player.name}</span>
-                          {player.isHost && <Crown className="w-4 h-4 text-[#FFD700]" />}
+                          <span className="font-body text-white">{player.name}</span>
+                          {player.isHost && <Crown className="w-4 h-4 text-gold" />}
                         </div>
                       </div>
 
                       {/* Status Badge */}
                       <div>
                         {player.connected ? (
-                          <div className="flex items-center gap-1 px-3 py-1 bg-[#00D9FF]/20 border border-[#00D9FF] rounded-full">
-                            <Check className="w-3 h-3 text-[#00D9FF]" />
-                            <span className="text-xs font-['Inter'] text-[#00D9FF] uppercase tracking-wide">
+                          <div className="flex items-center gap-1 px-3 py-1 bg-resistance/20 border border-resistance rounded-full">
+                            <Check className="w-3 h-3 text-resistance" />
+                            <span className="text-xs font-body text-resistance uppercase tracking-wide">
                               {t("lobby.connected")}
                             </span>
                           </div>
                         ) : (
-                          <div className="flex items-center gap-1 px-3 py-1 bg-[#6B7280]/20 border border-[#6B7280] rounded-full">
-                            <Clock className="w-3 h-3 text-[#6B7280]" />
-                            <span className="text-xs font-['Inter'] text-[#6B7280] uppercase tracking-wide">
+                          <div className="flex items-center gap-1 px-3 py-1 bg-neutral/20 border border-neutral rounded-full">
+                            <Clock className="w-3 h-3 text-neutral" />
+                            <span className="text-xs font-body text-neutral uppercase tracking-wide">
                               {t("lobby.disconnected")}
                             </span>
                           </div>
@@ -184,10 +184,10 @@ export function LobbyScreen() {
               transition={{ delay: 0.3 }}
               className="text-center mb-6"
             >
-              <p className="text-[#9CA3AF] font-['Inter'] text-sm">
+              <p className="text-neutral-light font-body text-sm">
                 {t("lobby.playerCount", { count: gameState.players?.length ?? 0, max: 10 })}
               </p>
-              <p className="text-[#6B7280] font-['Inter'] text-xs mt-1">
+              <p className="text-neutral font-body text-xs mt-1">
                 {t("lobby.minPlayers", { min: 5 })}
               </p>
             </motion.div>
@@ -210,7 +210,7 @@ export function LobbyScreen() {
                 </GlowButton>
               )}
 
-              <p className="text-center text-[#9CA3AF] text-xs font-['Inter'] mt-4">
+              <p className="text-center text-neutral-light text-xs font-body mt-4">
                 {t("lobby.onlyHostStarts")}
               </p>
             </motion.div>

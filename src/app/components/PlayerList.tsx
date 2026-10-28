@@ -98,13 +98,13 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
         className="mb-6 flex-1"
       >
         <div className="flex justify-between items-center mb-4">
-          <h3 className="font-['Inter'] text-[#9CA3AF] text-sm uppercase tracking-wide">
+          <h3 className="font-body text-neutral-light text-sm uppercase tracking-wide">
             {title()}
           </h3>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowSpies(!showSpies)}
-              className="text-[#9CA3AF] hover:text-white transition-colors"
+              className="text-neutral-light hover:text-white transition-colors"
               title={showSpies ? t("players.hideSpies") : t("players.showSpies")}
             >
               {showSpies ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -120,10 +120,10 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.01 }}
               className={
-                "bg-[#1A1F28] border-2 rounded-lg p-4 flex items-center justify-between " +
+                "bg-surface border-2 rounded-lg p-4 flex items-center justify-between " +
                 (currentRound().selectedTeam.some((id) => id === player.id)
-                  ? "border-[#00D9FF] shadow-[0_0_15px_rgba(0,217,255,0.3)]"
-                  : "border-[#6B7280] opacity-50")
+                  ? "border-resistance shadow-[0_0_15px_rgba(0,217,255,0.3)]"
+                  : "border-neutral opacity-50")
               }
               style={{
                 cursor: gameState.me?.isLeader ? "pointer" : "default",
@@ -141,40 +141,40 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
                   className={
                     "w-12 h-12 rounded-full flex items-center justify-center " +
                     (player.role === "SPY" && showSpies
-                      ? " bg-gradient-to-br from-[#DC143C] to-[#8B0000]  shadow-[0_0_15px_rgba(220,20,60,0.4)]"
+                      ? " bg-gradient-to-br from-spy to-spy-dark  shadow-[0_0_15px_rgba(220,20,60,0.4)]"
                       : currentRound().selectedTeam.some((id) => id === player.id)
-                        ? " bg-gradient-to-br from-[#00D9FF] to-[#0088AA]  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
+                        ? " bg-gradient-to-br from-resistance to-resistance-dark  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
                         : player.isLeader
-                          ? "bg-gradient-to-br from-[#FFD700] to-[yellow]  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
-                          : " bg-[#6B7280]")
+                          ? "bg-gradient-to-br from-gold to-[yellow]  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
+                          : " bg-neutral")
                   }
                 >
-                  {player.isLeader && <Crown className="w-5 h-5 text-[#0B0F14]" />}
+                  {player.isLeader && <Crown className="w-5 h-5 text-canvas" />}
                   {!player.isLeader && (
                     <>
                       {" "}
                       {player.role === "SPY" && showSpies ? (
-                        <Eye className="w-5 h-5 text-[#0B0F14]" />
+                        <Eye className="w-5 h-5 text-canvas" />
                       ) : (
-                        <User className="w-5 h-5 text-[#0B0F14]" />
+                        <User className="w-5 h-5 text-canvas" />
                       )}
                     </>
                   )}
                 </div>
                 <div>
-                  <p className="text-[#FFD700] font-['Inter'] text-sm tracking-wide">
+                  <p className="text-gold font-body text-sm tracking-wide">
                     {player.isLeader ? t("players.missionLeader") : ""}
                   </p>
-                  <p className="font-['Inter'] text-[#9CA3AF]">{player.name}</p>
+                  <p className="font-body text-neutral-light">{player.name}</p>
                 </div>
               </div>
               <div>
                 {hasVoted(player) ? (
                   <div>
                     {hasApproved(player) ? (
-                      <CheckCircle className="w-6 h-6 text-[#00D9FF]" />
+                      <CheckCircle className="w-6 h-6 text-resistance" />
                     ) : (
-                      <XCircle className="w-6 h-6 text-[#DC143C]" />
+                      <XCircle className="w-6 h-6 text-spy" />
                     )}
                   </div>
                 ) : (

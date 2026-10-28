@@ -22,7 +22,7 @@ export function RoleRevealScreen() {
 
   if (!showRole) {
     return (
-      <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden flex items-center justify-center px-6">
+      <div className="relative min-h-screen bg-canvas overflow-hidden flex items-center justify-center px-6">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -37,13 +37,13 @@ export function RoleRevealScreen() {
               ],
             }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-32 h-32 mx-auto mb-8 rounded-full bg-[#1A1F28] border-2 border-[#00D9FF] 
+            className="w-32 h-32 mx-auto mb-8 rounded-full bg-surface border-2 border-resistance 
               flex items-center justify-center"
           >
             <div className="text-4xl">?</div>
           </motion.div>
 
-          <h2 className="font-['Orbitron'] text-2xl mb-6 text-white tracking-wider">
+          <h2 className="font-display text-2xl mb-6 text-white tracking-wider">
             {t("roles.assignmentAwaits")}
           </h2>
 
@@ -64,8 +64,8 @@ export function RoleRevealScreen() {
         className="absolute inset-0"
         style={{
           background: isSpy
-            ? "radial-gradient(circle at center, #940e29 0%, #0B0F14 70%)"
-            : "radial-gradient(circle at center, #00b0cf 0%, #0B0F14 70%)",
+            ? "radial-gradient(circle at center, var(--color-spy-deep) 0%, var(--color-canvas) 70%)"
+            : "radial-gradient(circle at center, var(--color-resistance-deep) 0%, var(--color-canvas) 70%)",
         }}
       />
 
@@ -82,7 +82,7 @@ export function RoleRevealScreen() {
               repeat: Infinity,
               repeatDelay: 2,
             }}
-            className="absolute inset-0 bg-[#DC143C] mix-blend-screen"
+            className="absolute inset-0 bg-spy mix-blend-screen"
           />
           <motion.div
             animate={{
@@ -114,7 +114,7 @@ export function RoleRevealScreen() {
             repeat: Infinity,
             ease: "easeOut",
           }}
-          className="absolute w-64 h-64 rounded-full bg-[#00D9FF] blur-3xl"
+          className="absolute w-64 h-64 rounded-full bg-resistance blur-3xl"
         />
       )}
 
@@ -149,15 +149,19 @@ export function RoleRevealScreen() {
               transition={{ duration: 2, repeat: Infinity }}
               className="absolute inset-0 blur-2xl"
               style={{
-                background: isSpy ? "#DC143C" : "#00D9FF",
+                background: isSpy ? "var(--color-spy)" : "var(--color-resistance)",
               }}
             />
             {isSpy ? (
-              <Eye className="relative w-32 h-32" style={{ color: "#DC143C" }} strokeWidth={1.5} />
+              <Eye
+                className="relative w-32 h-32"
+                style={{ color: "var(--color-spy)" }}
+                strokeWidth={1.5}
+              />
             ) : (
               <Shield
                 className="relative w-32 h-32"
-                style={{ color: "#00D9FF" }}
+                style={{ color: "var(--color-resistance)" }}
                 strokeWidth={1.5}
               />
             )}
@@ -170,16 +174,16 @@ export function RoleRevealScreen() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <p className="font-['Inter'] text-white text-sm font-bold uppercase tracking-widest mb-2">
+          <p className="font-body text-white text-sm font-bold uppercase tracking-widest mb-2">
             {t("roles.yourRole")}
           </p>
           <motion.h1
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.7, type: "spring" }}
-            className="font-['Orbitron'] text-6xl mb-4 tracking-wider"
+            className="font-display text-6xl mb-4 tracking-wider"
             style={{
-              color: isSpy ? "#DC143C" : "#00D9FF",
+              color: isSpy ? "var(--color-spy)" : "var(--color-resistance)",
               textShadow: isSpy
                 ? "0 0 30px rgba(220, 20, 60, 0.8), 0 0 60px rgba(220, 20, 60, 0.4)"
                 : "0 0 30px rgba(0, 217, 255, 0.8), 0 0 60px rgba(0, 217, 255, 0.4)",
@@ -192,7 +196,7 @@ export function RoleRevealScreen() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className={`font-['Inter'] text-white text-sm max-w-md mx-auto leading-relaxed ${
+            className={`font-body text-white text-sm max-w-md mx-auto leading-relaxed ${
               isSpy &&
               gameState.players.filter((p) => p.role === Role.SPY && p.id !== gameState.me?.id)
                 .length > 0
@@ -212,7 +216,7 @@ export function RoleRevealScreen() {
                 transition={{ delay: 1.1 }}
                 className="mb-12"
               >
-                <p className="font-['Inter'] text-[#DC143C] text-xs font-bold uppercase tracking-widest mb-3">
+                <p className="font-body text-spy text-xs font-bold uppercase tracking-widest mb-3">
                   {t("roles.fellowSpies")}
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
@@ -221,7 +225,7 @@ export function RoleRevealScreen() {
                     .map((spy) => (
                       <span
                         key={spy.id}
-                        className="text-[#ffb3b3] font-bold text-sm font-['Inter'] bg-[#8B0000]/40 px-4 py-1.5 rounded-full border border-[#DC143C] shadow-[0_0_15px_rgba(220,20,60,0.3)]"
+                        className="text-spy-light font-bold text-sm font-body bg-spy-dark/40 px-4 py-1.5 rounded-full border border-spy shadow-[0_0_15px_rgba(220,20,60,0.3)]"
                       >
                         {spy.name}
                       </span>

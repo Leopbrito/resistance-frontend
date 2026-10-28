@@ -57,7 +57,7 @@ export function MissionVotingScreen() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
+    <div className="relative min-h-screen bg-canvas overflow-hidden">
       <ParticleBackground />
 
       <div className="relative z-10 min-h-screen px-6 py-8 flex flex-col">
@@ -72,8 +72,8 @@ export function MissionVotingScreen() {
               <div
                 className={`flex items-center justify-center p-2 rounded-lg border ${
                   gameState.me?.role === "SPY"
-                    ? "text-[#DC143C] border-[#DC143C]/50 bg-[#DC143C]/10 shadow-[0_0_10px_rgba(220,20,60,0.1)]"
-                    : "text-[#00D9FF] border-[#00D9FF]/50 bg-[#00D9FF]/10 shadow-[0_0_10px_rgba(0,217,255,0.1)]"
+                    ? "text-spy border-spy/50 bg-spy/10 shadow-[0_0_10px_rgba(220,20,60,0.1)]"
+                    : "text-resistance border-resistance/50 bg-resistance/10 shadow-[0_0_10px_rgba(0,217,255,0.1)]"
                 }`}
                 title={t("roles.yourRoleTitle", { role: t(`roles.${gameState.me.role}.name`) })}
               >
@@ -93,7 +93,7 @@ export function MissionVotingScreen() {
               clearPlayerId();
               window.location.href = "/";
             }}
-            className="absolute right-0 top-0 flex items-center justify-center p-2 bg-[#DC143C]/10 border border-[#DC143C]/50 rounded-lg text-[#DC143C] hover:bg-[#DC143C]/20 hover:border-[#DC143C] transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"
+            className="absolute right-0 top-0 flex items-center justify-center p-2 bg-spy/10 border border-spy/50 rounded-lg text-spy hover:bg-spy/20 hover:border-spy transition-all shadow-[0_0_10px_rgba(220,20,60,0.1)] hover:shadow-[0_0_15px_rgba(220,20,60,0.3)] z-50"
             title={t("common.logout")}
           >
             <LogOut className="w-5 h-5" />
@@ -104,7 +104,7 @@ export function MissionVotingScreen() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center w-full"
           >
-            <h2 className="font-['Orbitron'] text-2xl mb-2 text-white tracking-wider">
+            <h2 className="font-display text-2xl mb-2 text-white tracking-wider">
               {t("voting.missionProgress")}
             </h2>
           </motion.div>
@@ -123,7 +123,7 @@ export function MissionVotingScreen() {
             transition={{ delay: 0.6 }}
             className="space-y-3"
           >
-            <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
+            <p className="text-center text-neutral-light text-sm font-body mb-4">
               {t("voting.awaitingLeader")}
             </p>
           </motion.div>
@@ -137,7 +137,7 @@ export function MissionVotingScreen() {
             transition={{ delay: 0.6 }}
             className="space-y-3"
           >
-            <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
+            <p className="text-center text-neutral-light text-sm font-body mb-4">
               {t("voting.submitQuestion")}
             </p>
 
@@ -167,7 +167,7 @@ export function MissionVotingScreen() {
               transition={{ delay: 0.6 }}
               className="space-y-3"
             >
-              <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
+              <p className="text-center text-neutral-light text-sm font-body mb-4">
                 {t("voting.approveQuestion")}
               </p>
 
@@ -201,7 +201,7 @@ export function MissionVotingScreen() {
               transition={{ delay: 0.6 }}
               className="space-y-3"
             >
-              <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
+              <p className="text-center text-neutral-light text-sm font-body mb-4">
                 {gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId
                   ? t("voting.awaitingVoter", {
                       name: gameState.players.find(
@@ -226,7 +226,7 @@ export function MissionVotingScreen() {
               transition={{ delay: 0.6 }}
               className="space-y-3"
             >
-              <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
+              <p className="text-center text-neutral-light text-sm font-body mb-4">
                 {t("voting.missionQuestion")}
               </p>
 
@@ -260,7 +260,7 @@ export function MissionVotingScreen() {
               transition={{ delay: 0.6 }}
               className="space-y-3"
             >
-              <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
+              <p className="text-center text-neutral-light text-sm font-body mb-4">
                 {t("voting.alreadyVoted")}
               </p>
             </motion.div>
@@ -277,7 +277,7 @@ export function MissionVotingScreen() {
               transition={{ delay: 0.6 }}
               className="space-y-3"
             >
-              <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
+              <p className="text-center text-neutral-light text-sm font-body mb-4">
                 {t("voting.awaitingMission")}
               </p>
             </motion.div>

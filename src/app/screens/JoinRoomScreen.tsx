@@ -36,7 +36,7 @@ export function JoinRoomScreen() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
+    <div className="relative min-h-screen bg-canvas overflow-hidden">
       <ParticleBackground />
 
       <div className="relative z-10 min-h-screen px-6 py-8">
@@ -46,10 +46,10 @@ export function JoinRoomScreen() {
           animate={{ opacity: 1, x: 0 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => navigate("/")}
-          className="flex items-center gap-2 text-[#9CA3AF] hover:text-[#00D9FF] transition-colors mb-12"
+          className="flex items-center gap-2 text-neutral-light hover:text-resistance transition-colors mb-12"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span className="font-['Inter']">{t("common.back")}</span>
+          <span className="font-body">{t("common.back")}</span>
         </motion.button>
 
         <div className="flex flex-col items-center pt-12">
@@ -57,7 +57,7 @@ export function JoinRoomScreen() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="font-['Orbitron'] text-3xl mb-12 text-center tracking-wider text-white"
+            className="font-display text-3xl mb-12 text-center tracking-wider text-white"
           >
             {isCreateMode ? t("join.createTitle") : t("join.joinTitle")}
           </motion.h2>
@@ -73,7 +73,7 @@ export function JoinRoomScreen() {
             <div className="space-y-3">
               <label
                 htmlFor="username"
-                className="block font-['Inter'] text-[#9CA3AF] text-sm tracking-wide uppercase"
+                className="block font-body text-neutral-light text-sm tracking-wide uppercase"
               >
                 {t("join.username")}
               </label>
@@ -83,9 +83,9 @@ export function JoinRoomScreen() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder={t("join.usernamePlaceholder")}
-                className="w-full px-5 py-4 bg-[#1A1F28] border-2 border-[#6B7280] rounded-lg
-                  text-white font-['Inter'] placeholder-[#6B7280]
-                  focus:border-[#00D9FF] focus:outline-none focus:shadow-[0_0_20px_rgba(0,217,255,0.3)]
+                className="w-full px-5 py-4 bg-surface border-2 border-neutral rounded-lg
+                  text-white font-body placeholder-neutral
+                  focus:border-resistance focus:outline-none focus:shadow-[0_0_20px_rgba(0,217,255,0.3)]
                   transition-all duration-300"
               />
             </div>
@@ -95,7 +95,7 @@ export function JoinRoomScreen() {
               <div className="space-y-3">
                 <label
                   htmlFor="roomCode"
-                  className="block font-['Inter'] text-[#9CA3AF] text-sm tracking-wide uppercase"
+                  className="block font-body text-neutral-light text-sm tracking-wide uppercase"
                 >
                   {t("join.roomCode")}
                 </label>
@@ -106,9 +106,9 @@ export function JoinRoomScreen() {
                     value={roomCode}
                     onChange={(e) => setRoomCode(e.target.value)}
                     placeholder="ABCD-1234"
-                    className="w-full px-5 py-4 bg-[#1A1F28] border-2 border-[#6B7280] rounded-lg
-                  text-white font-['Inter'] placeholder-[#6B7280]
-                  focus:border-[#00D9FF] focus:outline-none focus:shadow-[0_0_20px_rgba(0,217,255,0.3)]
+                    className="w-full px-5 py-4 bg-surface border-2 border-neutral rounded-lg
+                  text-white font-body placeholder-neutral
+                  focus:border-resistance focus:outline-none focus:shadow-[0_0_20px_rgba(0,217,255,0.3)]
                   transition-all duration-300"
                   />
                 </div>

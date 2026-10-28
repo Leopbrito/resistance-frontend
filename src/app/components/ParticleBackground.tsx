@@ -101,7 +101,7 @@ export function ParticleBackground() {
       <canvas
         ref={canvasRef}
         className="fixed inset-0 w-full h-full pointer-events-none"
-        style={{ background: "#0B0F14" }}
+        style={{ background: "var(--color-canvas)" }}
       />
       {/* Vignette effect */}
       <div

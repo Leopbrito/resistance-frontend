@@ -47,7 +47,7 @@ export function GameEndScreen() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
+    <div className="relative min-h-screen bg-canvas overflow-hidden">
       {/* Dynamic background based on result */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -55,8 +55,8 @@ export function GameEndScreen() {
         className="absolute inset-0"
         style={{
           background: isResistanceWin()
-            ? "radial-gradient(circle at center, #00D9FF 0%, transparent 70%)"
-            : "radial-gradient(circle at center, #DC143C 0%, transparent 70%)",
+            ? "radial-gradient(circle at center, var(--color-resistance) 0%, transparent 70%)"
+            : "radial-gradient(circle at center, var(--color-spy) 0%, transparent 70%)",
         }}
       />
 
@@ -65,7 +65,7 @@ export function GameEndScreen() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="font-['Orbitron'] text-3xl mb-12 text-center tracking-wider text-white"
+          className="font-display text-3xl mb-12 text-center tracking-wider text-white"
         >
           {isResistanceWin() ? t("end.resistanceWins") : t("end.spiesWin")}
         </motion.h2>
@@ -85,7 +85,7 @@ export function GameEndScreen() {
               >
                 {/* Card Back - Unknown Role */}
                 <div
-                  className="absolute inset-0 rounded-2xl bg-[#1A1F28] border-2 border-[#6B7280]
+                  className="absolute inset-0 rounded-2xl bg-surface border-2 border-neutral
                 flex flex-col items-center justify-center shadow-2xl"
                   style={{
                     backfaceVisibility: "hidden",
@@ -100,12 +100,12 @@ export function GameEndScreen() {
                       ],
                     }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-16 h-16 rounded-full border-2 border-[#6B7280] 
+                    className="w-16 h-16 rounded-full border-2 border-neutral 
                   flex items-center justify-center mb-4"
                   >
-                    <span className="text-2xl font-['Orbitron'] text-[#6B7280]">?</span>
+                    <span className="text-2xl font-display text-neutral">?</span>
                   </motion.div>
-                  <span className="font-['Inter'] text-sm tracking-wide text-[#9CA3AF] text-center px-1 line-clamp-1">
+                  <span className="font-body text-sm tracking-wide text-neutral-light text-center px-1 line-clamp-1">
                     {result.player.name}
                   </span>
                 </div>
@@ -118,11 +118,12 @@ export function GameEndScreen() {
                     transform: "rotateY(180deg)",
                     background:
                       result.player.role !== "SPY"
-                        ? "linear-gradient(135deg, #1A1F28 0%, #00D9FF20 100%)"
-                        : "linear-gradient(135deg, #1A1F28 0%, #DC143C20 100%)",
+                        ? "linear-gradient(135deg, var(--color-surface) 0%, color-mix(in srgb, var(--color-resistance) 12.5%, transparent) 100%)"
+                        : "linear-gradient(135deg, var(--color-surface) 0%, color-mix(in srgb, var(--color-spy) 12.5%, transparent) 100%)",
                     borderWidth: "2px",
                     borderStyle: "solid",
-                    borderColor: result.player.role !== "SPY" ? "#00D9FF" : "#DC143C",
+                    borderColor:
+                      result.player.role !== "SPY" ? "var(--color-resistance)" : "var(--color-spy)",
                     boxShadow:
                       result.player.role !== "SPY"
                         ? "0 0 40px rgba(0,217,255,0.5)"
@@ -137,13 +138,13 @@ export function GameEndScreen() {
                     {result.player.role !== "SPY" ? (
                       <Shield
                         className="w-12 h-12 mb-4"
-                        style={{ color: "#00D9FF" }}
+                        style={{ color: "var(--color-resistance)" }}
                         strokeWidth={1.5}
                       />
                     ) : (
                       <Eye
                         className="w-12 h-12 mb-4"
-                        style={{ color: "#DC143C" }}
+                        style={{ color: "var(--color-spy)" }}
                         strokeWidth={1.5}
                       />
                     )}
@@ -156,15 +157,18 @@ export function GameEndScreen() {
                       y: result.flipped ? 0 : 10,
                     }}
                     transition={{ delay: 0.5 }}
-                    className="font-['Inter'] text-xs uppercase tracking-wider mb-2 text-center"
+                    className="font-body text-xs uppercase tracking-wider mb-2 text-center"
                     style={{
-                      color: result.player.role !== "SPY" ? "#00D9FF" : "#DC143C",
+                      color:
+                        result.player.role !== "SPY"
+                          ? "var(--color-resistance)"
+                          : "var(--color-spy)",
                     }}
                   >
                     {t(`roles.${result.player.role !== "SPY" ? "RESISTANCE" : "SPY"}.name`)}
                   </motion.h3>
 
-                  <span className="font-['Inter'] font-semibold text-sm tracking-wide text-white text-center px-1 line-clamp-1">
+                  <span className="font-body font-semibold text-sm tracking-wide text-white text-center px-1 line-clamp-1">
                     {result.player.name}
                   </span>
                 </div>
@@ -210,7 +214,7 @@ export function GameEndScreen() {
                 delay: 1 + i * 0.05,
                 ease: "easeOut",
               }}
-              className="absolute w-2 h-2 rounded-full bg-[#00D9FF]"
+              className="absolute w-2 h-2 rounded-full bg-resistance"
               style={{
                 boxShadow: "0 0 10px rgba(0,217,255,0.8)",
               }}
@@ -227,7 +231,7 @@ export function GameEndScreen() {
             repeat: Infinity,
             repeatDelay: 1,
           }}
-          className="absolute inset-0 bg-[#DC143C] mix-blend-screen pointer-events-none"
+          className="absolute inset-0 bg-spy mix-blend-screen pointer-events-none"
         />
       )}
     </div>

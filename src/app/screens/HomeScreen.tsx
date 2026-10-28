@@ -20,7 +20,7 @@ export function HomeScreen() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0B0F14] overflow-hidden">
+    <div className="relative min-h-screen bg-canvas overflow-hidden">
       <ParticleBackground />
       <LanguageSwitcher />
 
@@ -33,8 +33,8 @@ export function HomeScreen() {
           className="mb-8"
         >
           <div className="relative">
-            <div className="absolute inset-0 blur-2xl bg-[#00D9FF] opacity-30 rounded-full" />
-            <Shield className="relative w-24 h-24 text-[#00D9FF]" strokeWidth={1.5} />
+            <div className="absolute inset-0 blur-2xl bg-resistance opacity-30 rounded-full" />
+            <Shield className="relative w-24 h-24 text-resistance" strokeWidth={1.5} />
           </div>
         </motion.div>
 
@@ -43,9 +43,9 @@ export function HomeScreen() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="font-['Orbitron'] text-5xl mb-2 text-center tracking-wider"
+          className="font-display text-5xl mb-2 text-center tracking-wider"
           style={{
-            background: "linear-gradient(to bottom, #FFFFFF, #00D9FF)",
+            background: "linear-gradient(to bottom, white, var(--color-resistance))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -59,7 +59,7 @@ export function HomeScreen() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="font-['Inter'] text-[#9CA3AF] text-sm mb-16 tracking-widest uppercase"
+          className="font-body text-neutral-light text-sm mb-16 tracking-widest uppercase"
         >
           {t("home.tagline")}
         </motion.p>
@@ -91,7 +91,7 @@ export function HomeScreen() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute top-20 left-10 w-32 h-32 border border-[#00D9FF] opacity-10 pointer-events-none"
+          className="absolute top-20 left-10 w-32 h-32 border border-resistance opacity-10 pointer-events-none"
           style={{
             transform: "rotate(45deg)",
           }}
@@ -107,7 +107,7 @@ export function HomeScreen() {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="absolute bottom-32 right-10 w-24 h-24 border border-[#DC143C] opacity-10 pointer-events-none"
+          className="absolute bottom-32 right-10 w-24 h-24 border border-spy opacity-10 pointer-events-none"
           style={{
             transform: "rotate(25deg)",
           }}

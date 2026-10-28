@@ -28,10 +28,8 @@ export function GameRoute({ children }: { children: ReactNode }) {
 
   if (!isHydrated) {
     return (
-      <div className="min-h-screen bg-[#0B0F14] flex items-center justify-center">
-        <p className="font-['Orbitron'] text-[#00D9FF] tracking-widest animate-pulse">
-          CONNECTING...
-        </p>
+      <div className="min-h-screen bg-canvas flex items-center justify-center">
+        <p className="font-display text-resistance tracking-widest animate-pulse">CONNECTING...</p>
       </div>
     );
   }
