@@ -5,7 +5,8 @@
     "logout": "Logout",
     "players_one": "{{count}} player",
     "players_other": "{{count}} players",
-    "language": "Language"
+    "language": "Language",
+    "connecting": "CONNECTING..."
   },
   "home": {
     "title": "THE RESISTANCE",

@@ -1,4 +1,5 @@
 import { ComponentType, ReactNode, useContext, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
 import { useWakeLock } from "../hooks/useWakeLock";
@@ -8,6 +9,7 @@ const HYDRATION_TIMEOUT_MS = 8000;
 
 // Segura a tela do jogo até o estado chegar do servidor (ex.: após um refresh)
 export function GameRoute({ children }: { children: ReactNode }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { isHydrated } = useContext(AppContext);
 
@@ -29,7 +31,9 @@ export function GameRoute({ children }: { children: ReactNode }) {
   if (!isHydrated) {
     return (
       <div className="min-h-screen bg-canvas flex items-center justify-center">
-        <p className="font-display text-resistance tracking-widest animate-pulse">CONNECTING...</p>
+        <p className="font-display text-resistance tracking-widest animate-pulse">
+          {t("common.connecting")}
+        </p>
       </div>
     );
   }

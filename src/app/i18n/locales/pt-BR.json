@@ -5,7 +5,8 @@
     "logout": "Sair",
     "players_one": "{{count}} jogador",
     "players_other": "{{count}} jogadores",
-    "language": "Idioma"
+    "language": "Idioma",
+    "connecting": "CONECTANDO..."
   },
   "home": {
     "title": "A RESISTÊNCIA",
