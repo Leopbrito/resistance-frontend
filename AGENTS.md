@@ -33,6 +33,7 @@ src/
     components/         componentes de jogo (GlowButton, StatusMessage, LogoutButton, TextField…); ui/ só tem dialog.tsx e utils.ts
     services/           game-route.ts (rota a partir do estado), round-view.ts (condições de votação), navigation-service.ts
     enums/ interfaces/  contrato com o backend (eventos, fases, tipos)
+    version.ts          APP_VERSION (do package.json, injetada pelo vite.config.ts)
     hooks/              useWakeLock, useCurrentRound
     i18n/               index.ts + locales/en.json e pt-BR.json
   styles/               theme.css (tokens), tailwind.css, fonts.css

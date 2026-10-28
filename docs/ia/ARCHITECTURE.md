@@ -58,6 +58,8 @@ O servidor manda `ServerError { code, params? }`. `web-socket.ts` traduz para `e
 
 ## Build e deploy
 
+A versão exibida no rodapé da tela inicial vem do `version` do `package.json`: o `vite.config.ts` a injeta no build como `__APP_VERSION__` (tipada em `src/globals.d.ts`) e `src/app/version.ts` a exporta como `APP_VERSION`. Não há segunda fonte de verdade; o `version.test.ts` garante que as duas coincidem.
+
 `npm run build` gera `dist/` (Vite com chunks separados `react`, `motion` e `socket`). O `Dockerfile` faz build com Node 20 e serve com Nginx (`nginx.conf`). Push em `release/**` publica `ghcr.io/<usuário>/resistance-frontend:<version>`.
 
 ## Pendências conhecidas (issues abertas)

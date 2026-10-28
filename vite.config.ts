@@ -1,10 +1,17 @@
 import { defineConfig } from "vite";
+import fs from "fs";
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 
+// package.json é a única fonte da versão (o workflow da imagem usa o mesmo valor)
+const { version } = JSON.parse(fs.readFileSync(path.resolve(__dirname, "package.json"), "utf-8"));
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  define: {
+    __APP_VERSION__: JSON.stringify(version),
+  },
   resolve: {
     alias: {
       // Alias @ to the src directory

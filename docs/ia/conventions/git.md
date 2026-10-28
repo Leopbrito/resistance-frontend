@@ -15,7 +15,7 @@
 
 ## Branches
 
-- `release/**`: push dispara o build da imagem Docker. A versão sai do `package.json` (commit `chore: bump version to X.Y.Z`).
+- `release/**`: push dispara o build da imagem Docker. A versão sai do `package.json` (commit `chore: bump version to X.Y.Z`); o mesmo valor aparece no rodapé da tela inicial, então o bump já atualiza o que o usuário vê.
 - Trabalho novo em `feature/*`. Confirme com o usuário antes de criar ou trocar de branch.
 
 ## Checklist antes de entregar

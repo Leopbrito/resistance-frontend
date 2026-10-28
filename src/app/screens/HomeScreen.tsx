@@ -6,6 +6,7 @@ import { GlitchText } from "../components/GlitchText";
 import { GlowButton } from "../components/GlowButton";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { ParticleBackground } from "../components/ParticleBackground";
+import { APP_VERSION } from "../version";
 
 export function HomeScreen() {
   const { t } = useTranslation();
@@ -112,6 +113,11 @@ export function HomeScreen() {
             transform: "rotate(25deg)",
           }}
         />
+
+        {/* Versão do frontend; acima da barra do Safari iOS */}
+        <p className="absolute bottom-[max(1rem,env(safe-area-inset-bottom))] font-body text-xs text-neutral tracking-widest pointer-events-none">
+          v{APP_VERSION}
+        </p>
       </div>
     </div>
   );
