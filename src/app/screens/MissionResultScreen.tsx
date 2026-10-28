@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
-import { AckScreen, GamePhase, MissionVoteAction, SocketEvent } from "../enums/enums";
+import { AckScreen, GamePhase, MissionVoteAction, RoundStatus, SocketEvent } from "../enums/enums";
 import { ackScreen, socket } from "../web-socket";
 
 export function MissionResultScreen() {
@@ -70,7 +70,10 @@ export function MissionResultScreen() {
   };
 
   const isResistanceWin = () => {
-    return !results.every((result) => result.flipped) || resultRound.status === "MISSION_SUCCESS";
+    return (
+      !results.every((result) => result.flipped) ||
+      resultRound.status === RoundStatus.MISSION_SUCCESS
+    );
   };
 
   return (

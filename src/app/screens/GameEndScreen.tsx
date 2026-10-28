@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { AppContext } from "../App";
 import { GlowButton } from "../components/GlowButton";
-import { AckScreen } from "../enums/enums";
+import { AckScreen, Role } from "../enums/enums";
 import { ackScreen } from "../web-socket";
 
 export function GameEndScreen() {
@@ -117,15 +117,17 @@ export function GameEndScreen() {
                     backfaceVisibility: "hidden",
                     transform: "rotateY(180deg)",
                     background:
-                      result.player.role !== "SPY"
+                      result.player.role !== Role.SPY
                         ? "linear-gradient(135deg, var(--color-surface) 0%, color-mix(in srgb, var(--color-resistance) 12.5%, transparent) 100%)"
                         : "linear-gradient(135deg, var(--color-surface) 0%, color-mix(in srgb, var(--color-spy) 12.5%, transparent) 100%)",
                     borderWidth: "2px",
                     borderStyle: "solid",
                     borderColor:
-                      result.player.role !== "SPY" ? "var(--color-resistance)" : "var(--color-spy)",
+                      result.player.role !== Role.SPY
+                        ? "var(--color-resistance)"
+                        : "var(--color-spy)",
                     boxShadow:
-                      result.player.role !== "SPY"
+                      result.player.role !== Role.SPY
                         ? "0 0 40px rgba(0,217,255,0.5)"
                         : "0 0 40px rgba(220,20,60,0.5)",
                   }}
@@ -135,7 +137,7 @@ export function GameEndScreen() {
                     animate={{ scale: result.flipped ? 1 : 0 }}
                     transition={{ delay: 0.3, type: "spring" }}
                   >
-                    {result.player.role !== "SPY" ? (
+                    {result.player.role !== Role.SPY ? (
                       <Shield
                         className="w-12 h-12 mb-4"
                         style={{ color: "var(--color-resistance)" }}
@@ -160,12 +162,14 @@ export function GameEndScreen() {
                     className="font-body text-xs uppercase tracking-wider mb-2 text-center"
                     style={{
                       color:
-                        result.player.role !== "SPY"
+                        result.player.role !== Role.SPY
                           ? "var(--color-resistance)"
                           : "var(--color-spy)",
                     }}
                   >
-                    {t(`roles.${result.player.role !== "SPY" ? "RESISTANCE" : "SPY"}.name`)}
+                    {t(
+                      `roles.${result.player.role !== Role.SPY ? Role.RESISTANCE : Role.SPY}.name`,
+                    )}
                   </motion.h3>
 
                   <span className="font-body font-semibold text-sm tracking-wide text-white text-center px-1 line-clamp-1">

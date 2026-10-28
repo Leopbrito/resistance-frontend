@@ -2,6 +2,7 @@ import {
   AckScreen,
   Role,
   GamePhase,
+  RoundStatus,
   TeamVoteAction,
   MissionVoteAction,
   SocketEvent,
@@ -39,7 +40,7 @@ export interface Round {
   teamVotes: Record<string, TeamVoteAction>; // Mapping socketId -> Vote
   missionVotes: Record<string, MissionVoteAction>; // Mapping socketId -> Vote
   missionVoteResult: MissionVoteAction[];
-  status: "PENDING" | "TEAM_APPROVED" | "TEAM_REJECTED" | "MISSION_SUCCESS" | "MISSION_FAILED";
+  status: RoundStatus;
   failedVotesCount?: number;
   currentTeamVoterId?: string;
   resultRevealed?: boolean;

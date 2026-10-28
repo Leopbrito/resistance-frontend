@@ -189,7 +189,7 @@ export function RoleRevealScreen() {
                 : "0 0 30px rgba(0, 217, 255, 0.8), 0 0 60px rgba(0, 217, 255, 0.4)",
             }}
           >
-            {t(`roles.${isSpy ? "SPY" : "RESISTANCE"}.name`)}
+            {t(`roles.${isSpy ? Role.SPY : Role.RESISTANCE}.name`)}
           </motion.h1>
 
           <motion.p
@@ -204,7 +204,7 @@ export function RoleRevealScreen() {
                 : "mb-12"
             }`}
           >
-            {t(`roles.${isSpy ? "SPY" : "RESISTANCE"}.description`)}
+            {t(`roles.${isSpy ? Role.SPY : Role.RESISTANCE}.description`)}
           </motion.p>
 
           {isSpy &&

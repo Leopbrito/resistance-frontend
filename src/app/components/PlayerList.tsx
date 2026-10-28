@@ -3,7 +3,7 @@ import { CheckCircle, Crown, Eye, EyeOff, User, XCircle } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext } from "react";
 import { AppContext } from "../App";
-import { GamePhase, SocketEvent, TeamVoteAction } from "../enums/enums";
+import { GamePhase, Role, SocketEvent, TeamVoteAction } from "../enums/enums";
 import { Player } from "../interfaces/interfaces";
 import { socket } from "../web-socket";
 
@@ -140,7 +140,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
                 <div
                   className={
                     "w-12 h-12 rounded-full flex items-center justify-center " +
-                    (player.role === "SPY" && showSpies
+                    (player.role === Role.SPY && showSpies
                       ? " bg-gradient-to-br from-spy to-spy-dark  shadow-[0_0_15px_rgba(220,20,60,0.4)]"
                       : currentRound().selectedTeam.some((id) => id === player.id)
                         ? " bg-gradient-to-br from-resistance to-resistance-dark  shadow-[0_0_15px_rgba(0,217,255,0.4)]"
@@ -153,7 +153,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
                   {!player.isLeader && (
                     <>
                       {" "}
-                      {player.role === "SPY" && showSpies ? (
+                      {player.role === Role.SPY && showSpies ? (
                         <Eye className="w-5 h-5 text-canvas" />
                       ) : (
                         <User className="w-5 h-5 text-canvas" />

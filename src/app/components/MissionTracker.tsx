@@ -3,6 +3,7 @@ import { Circle, Eye, Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext } from "react";
 import { AppContext } from "../App";
+import { RoundStatus } from "../enums/enums";
 
 export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
   const { t } = useTranslation();
@@ -29,8 +30,10 @@ export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
           {gameState.rounds
             .map((m) => {
               return {
-                completed: m.status === "MISSION_SUCCESS" || m.status === "MISSION_FAILED",
-                success: m.status === "MISSION_SUCCESS",
+                completed:
+                  m.status === RoundStatus.MISSION_SUCCESS ||
+                  m.status === RoundStatus.MISSION_FAILED,
+                success: m.status === RoundStatus.MISSION_SUCCESS,
               };
             })
             .map((mission, index) => (

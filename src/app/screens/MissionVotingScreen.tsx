@@ -7,7 +7,7 @@ import { GlowButton } from "../components/GlowButton";
 import { MissionTracker } from "../components/MissionTracker";
 import { ParticleBackground } from "../components/ParticleBackground";
 import { PlayerList } from "../components/PlayerList";
-import { MissionVoteAction, SocketEvent, TeamVoteAction } from "../enums/enums";
+import { GamePhase, MissionVoteAction, Role, SocketEvent, TeamVoteAction } from "../enums/enums";
 import { clearPlayerId, socket } from "../web-socket";
 
 const SHOW_SPIES_KEY = "showSpies";
@@ -71,13 +71,13 @@ export function MissionVotingScreen() {
             >
               <div
                 className={`flex items-center justify-center p-2 rounded-lg border ${
-                  gameState.me?.role === "SPY"
+                  gameState.me?.role === Role.SPY
                     ? "text-spy border-spy/50 bg-spy/10 shadow-[0_0_10px_rgba(220,20,60,0.1)]"
                     : "text-resistance border-resistance/50 bg-resistance/10 shadow-[0_0_10px_rgba(0,217,255,0.1)]"
                 }`}
                 title={t("roles.yourRoleTitle", { role: t(`roles.${gameState.me.role}.name`) })}
               >
-                {gameState.me?.role === "SPY" ? (
+                {gameState.me?.role === Role.SPY ? (
                   <Eye className="w-5 h-5" />
                 ) : (
                   <Shield className="w-5 h-5" />
@@ -116,7 +116,7 @@ export function MissionVotingScreen() {
         <PlayerList showSpies={showSpies} setShowSpies={setShowSpies} />
 
         {/* Player Message */}
-        {gameState.phase === "TEAM_SELECTION" && !gameState.me?.isLeader && (
+        {gameState.phase === GamePhase.TEAM_SELECTION && !gameState.me?.isLeader && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -130,7 +130,7 @@ export function MissionVotingScreen() {
         )}
 
         {/* Leader Buttons */}
-        {gameState.phase === "TEAM_SELECTION" && gameState.me?.isLeader && (
+        {gameState.phase === GamePhase.TEAM_SELECTION && gameState.me?.isLeader && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -156,7 +156,7 @@ export function MissionVotingScreen() {
         )}
 
         {/* Vote Buttons */}
-        {gameState.phase === "VOTING" &&
+        {gameState.phase === GamePhase.VOTING &&
           (!gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId ||
             gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId ===
               gameState.me?.id) &&
@@ -190,7 +190,7 @@ export function MissionVotingScreen() {
           )}
 
         {/* Player Message */}
-        {gameState.phase === "VOTING" &&
+        {gameState.phase === GamePhase.VOTING &&
           ((gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId &&
             gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId !== gameState.me?.id &&
             !gameState.rounds[gameState.currentRoundIndex].teamVotes[gameState.me?.id!]) ||
@@ -215,7 +215,7 @@ export function MissionVotingScreen() {
           )}
 
         {/* Vote Buttons */}
-        {gameState.phase === "MISSION" &&
+        {gameState.phase === GamePhase.MISSION &&
           gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(
             (p) => p === gameState.me?.id,
           ) &&
@@ -249,7 +249,7 @@ export function MissionVotingScreen() {
           )}
 
         {/* Player Message */}
-        {gameState.phase === "MISSION" &&
+        {gameState.phase === GamePhase.MISSION &&
           gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(
             (p) => p === gameState.me?.id,
           ) &&
@@ -267,7 +267,7 @@ export function MissionVotingScreen() {
           )}
 
         {/* Player Message */}
-        {gameState.phase === "MISSION" &&
+        {gameState.phase === GamePhase.MISSION &&
           !gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(
             (p) => p === gameState.me?.id,
           ) && (

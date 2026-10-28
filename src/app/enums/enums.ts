@@ -21,6 +21,14 @@ export enum GamePhase {
   FINISHED = "FINISHED",
 }
 
+export enum RoundStatus {
+  PENDING = "PENDING",
+  TEAM_APPROVED = "TEAM_APPROVED",
+  TEAM_REJECTED = "TEAM_REJECTED",
+  MISSION_SUCCESS = "MISSION_SUCCESS",
+  MISSION_FAILED = "MISSION_FAILED",
+}
+
 export enum AckScreen {
   ROLES = "roles",
   MISSION_RESULT = "missionResult",
