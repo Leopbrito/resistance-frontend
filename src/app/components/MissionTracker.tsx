@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { CheckCircle, Circle, Eye, Shield, XCircle } from "lucide-react";
+import { Circle, Eye, Shield } from "lucide-react";
 import { motion } from "motion/react";
 import { useContext } from "react";
 import { AppContext } from "../App";
@@ -7,29 +7,31 @@ import { AppContext } from "../App";
 export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
   const { t } = useTranslation();
   const { gameState } = useContext(AppContext);
-  
-  while(gameState.rounds.length < 5) {
-    gameState.rounds.push({} as any)
+
+  while (gameState.rounds.length < 5) {
+    gameState.rounds.push({} as any);
   }
 
   return (
     <>
-        {/* Mission Progress Tracker */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full mb-6"
-        >
-          {!hideTitle && <h3 className="text-center font-['Inter'] text-[#9CA3AF] text-sm uppercase tracking-wide mb-4">
+      {/* Mission Progress Tracker */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full mb-6"
+      >
+        {!hideTitle && (
+          <h3 className="text-center font-['Inter'] text-[#9CA3AF] text-sm uppercase tracking-wide mb-4">
             {t("tracker.title")}
-          </h3>}
-          <div className="flex justify-center gap-3">
-            {gameState.rounds
-            .map(m => {
+          </h3>
+        )}
+        <div className="flex justify-center gap-3">
+          {gameState.rounds
+            .map((m) => {
               return {
-                 completed: m.status === 'MISSION_SUCCESS' || m.status === 'MISSION_FAILED', 
-                 success: m.status === 'MISSION_SUCCESS' 
-              }
+                completed: m.status === "MISSION_SUCCESS" || m.status === "MISSION_FAILED",
+                success: m.status === "MISSION_SUCCESS",
+              };
             })
             .map((mission, index) => (
               <motion.div
@@ -66,8 +68,8 @@ export function MissionTracker({ hideTitle = false }: { hideTitle?: boolean }) {
                 )}
               </motion.div>
             ))}
-          </div>
-        </motion.div>
+        </div>
+      </motion.div>
     </>
   );
 }

@@ -22,12 +22,12 @@ export function MissionResultScreen() {
   );
   const resultRound = gameState.rounds[resultRoundIndex];
   const [results, setResults] = useState<any[]>(
-    resultRound.missionVoteResult.map(
-      (result) => ({
+    resultRound.missionVoteResult
+      .map((result) => ({
         status: result,
         flipped: !!resultRound.resultRevealed,
-      }),
-    ).sort((a, b) => a.status === MissionVoteAction.SUCCESS ? -1 : 1)
+      }))
+      .sort((a) => (a.status === MissionVoteAction.SUCCESS ? -1 : 1)),
   );
 
   useEffect(() => {
@@ -70,10 +70,7 @@ export function MissionResultScreen() {
   };
 
   const isResistanceWin = () => {
-    return (
-      !results.every((result) => result.flipped) ||
-      resultRound.status === "MISSION_SUCCESS"
-    );
+    return !results.every((result) => result.flipped) || resultRound.status === "MISSION_SUCCESS";
   };
 
   return (
@@ -104,7 +101,7 @@ export function MissionResultScreen() {
 
         {/* Card Flip Result */}
         <div className="flex-1 flex flex-wrap gap-4 items-center justify-center">
-          {results.map((result, index) => (
+          {results.map((result) => (
             <div className="perspective-1000">
               <motion.div
                 initial={{ rotateY: 0 }}
@@ -135,9 +132,7 @@ export function MissionResultScreen() {
                     className="w-24 h-24 rounded-full border-2 border-[#00D9FF] 
                   flex items-center justify-center"
                   >
-                    <span className="text-4xl font-['Orbitron'] text-[#00D9FF]">
-                      ?
-                    </span>
+                    <span className="text-4xl font-['Orbitron'] text-[#00D9FF]">?</span>
                   </motion.div>
                 </div>
 
@@ -154,9 +149,7 @@ export function MissionResultScreen() {
                     borderWidth: "2px",
                     borderStyle: "solid",
                     borderColor:
-                      result.status === MissionVoteAction.SUCCESS
-                        ? "#00D9FF"
-                        : "#DC143C",
+                      result.status === MissionVoteAction.SUCCESS ? "#00D9FF" : "#DC143C",
                     boxShadow:
                       result.status === MissionVoteAction.SUCCESS
                         ? "0 0 40px rgba(0,217,255,0.5)"
@@ -192,10 +185,7 @@ export function MissionResultScreen() {
                     transition={{ delay: 0.5 }}
                     className="font-['Orbitron'] tracking-wider"
                     style={{
-                      color:
-                        result.status === MissionVoteAction.SUCCESS
-                          ? "#00D9FF"
-                          : "#DC143C",
+                      color: result.status === MissionVoteAction.SUCCESS ? "#00D9FF" : "#DC143C",
                       textShadow:
                         result.status === MissionVoteAction.SUCCESS
                           ? "0 0 20px rgba(0,217,255,0.6)"

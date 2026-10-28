@@ -34,10 +34,7 @@ export function HomeScreen() {
         >
           <div className="relative">
             <div className="absolute inset-0 blur-2xl bg-[#00D9FF] opacity-30 rounded-full" />
-            <Shield
-              className="relative w-24 h-24 text-[#00D9FF]"
-              strokeWidth={1.5}
-            />
+            <Shield className="relative w-24 h-24 text-[#00D9FF]" strokeWidth={1.5} />
           </div>
         </motion.div>
 

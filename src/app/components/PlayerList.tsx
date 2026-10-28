@@ -39,9 +39,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
       if (gameState.me?.isLeader) {
         if (currentRound().selectedTeam.find((p) => p === player.id)) {
           socket.emit(SocketEvent.SELECT_MISSION_TEAM, {
-            selectedPlayers: currentRound().selectedTeam.filter(
-              (p) => p !== player.id,
-            ),
+            selectedPlayers: currentRound().selectedTeam.filter((p) => p !== player.id),
           });
         }
       }
@@ -53,34 +51,42 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
   };
 
   const hasApproved = (player: Player) => {
-    return Boolean(
-      currentRound().teamVotes[player.id] === TeamVoteAction.APPROVE,
-    );
+    return Boolean(currentRound().teamVotes[player.id] === TeamVoteAction.APPROVE);
   };
 
   const teamVotesCount = () => {
-    return Object.values(currentRound().teamVotes).filter((v) => Boolean(v))
-      .length;
+    return Object.values(currentRound().teamVotes).filter((v) => Boolean(v)).length;
   };
 
   const missionVotesCount = () => {
-    return Object.values(currentRound().missionVotes).filter((v) => Boolean(v))
-      .length;
+    return Object.values(currentRound().missionVotes).filter((v) => Boolean(v)).length;
   };
 
-	const title = () => {
-		const n = gameState.currentRoundIndex + 1;
-		if (gameState.phase === GamePhase.TEAM_SELECTION) {
-			return t("players.teamSelection", { n, current: currentRound().selectedTeam.length, total: currentRound().teamSize });
-		}
-		if (gameState.phase === GamePhase.VOTING) {
-			return t("players.teamApproval", { n, current: teamVotesCount(), total: gameState.players.length });
-		}
-		if (gameState.phase === GamePhase.MISSION) {
-			return t("players.missionVotes", { n, current: missionVotesCount(), total: currentRound().teamSize });
-		}
-		return t("players.mission", { n });
-	};
+  const title = () => {
+    const n = gameState.currentRoundIndex + 1;
+    if (gameState.phase === GamePhase.TEAM_SELECTION) {
+      return t("players.teamSelection", {
+        n,
+        current: currentRound().selectedTeam.length,
+        total: currentRound().teamSize,
+      });
+    }
+    if (gameState.phase === GamePhase.VOTING) {
+      return t("players.teamApproval", {
+        n,
+        current: teamVotesCount(),
+        total: gameState.players.length,
+      });
+    }
+    if (gameState.phase === GamePhase.MISSION) {
+      return t("players.missionVotes", {
+        n,
+        current: missionVotesCount(),
+        total: currentRound().teamSize,
+      });
+    }
+    return t("players.mission", { n });
+  };
 
   return (
     <>
@@ -107,7 +113,7 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
         </div>
 
         <div className="space-y-2">
-          {gameState.players.map((player, index) => (
+          {gameState.players.map((player) => (
             <motion.div
               key={player.name}
               initial={{ opacity: 0 }}
@@ -143,29 +149,23 @@ export function PlayerList({ showSpies, setShowSpies }: PlayerListProps) {
                           : " bg-[#6B7280]")
                   }
                 >
-                  {player.isLeader && (
-                    <Crown className="w-5 h-5 text-[#0B0F14]" />
-                  )}
+                  {player.isLeader && <Crown className="w-5 h-5 text-[#0B0F14]" />}
                   {!player.isLeader && (
-										<> {
-											player.role === "SPY" && showSpies ? 
-											(
-												<Eye className="w-5 h-5 text-[#0B0F14]" />
-											) : 
-											(
-												<User className="w-5 h-5 text-[#0B0F14]" />
-											)
-										}
-										</>
+                    <>
+                      {" "}
+                      {player.role === "SPY" && showSpies ? (
+                        <Eye className="w-5 h-5 text-[#0B0F14]" />
+                      ) : (
+                        <User className="w-5 h-5 text-[#0B0F14]" />
+                      )}
+                    </>
                   )}
                 </div>
                 <div>
                   <p className="text-[#FFD700] font-['Inter'] text-sm tracking-wide">
                     {player.isLeader ? t("players.missionLeader") : ""}
                   </p>
-                  <p className="font-['Inter'] text-[#9CA3AF]">
-                    {player.name}
-                  </p>
+                  <p className="font-['Inter'] text-[#9CA3AF]">{player.name}</p>
                 </div>
               </div>
               <div>

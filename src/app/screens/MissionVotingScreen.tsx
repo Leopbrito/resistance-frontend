@@ -35,10 +35,9 @@ export function MissionVotingScreen() {
   const handleSubmitTeam = () => {
     if (gameState.me?.isLeader) {
       socket.emit(SocketEvent.SUBMIT_SELECTED_MISSION_TEAM, {
-        selectedPlayers:
-          gameState.rounds[gameState.currentRoundIndex].selectedTeam,
+        selectedPlayers: gameState.rounds[gameState.currentRoundIndex].selectedTeam,
       });
-      handleVoteTeam(TeamVoteAction.APPROVE)()
+      handleVoteTeam(TeamVoteAction.APPROVE)();
     }
   };
 
@@ -70,15 +69,19 @@ export function MissionVotingScreen() {
               animate={{ opacity: 1, x: 0 }}
               className="absolute left-0 top-0"
             >
-              <div 
+              <div
                 className={`flex items-center justify-center p-2 rounded-lg border ${
-                  gameState.me?.role === 'SPY' 
-                    ? 'text-[#DC143C] border-[#DC143C]/50 bg-[#DC143C]/10 shadow-[0_0_10px_rgba(220,20,60,0.1)]' 
-                    : 'text-[#00D9FF] border-[#00D9FF]/50 bg-[#00D9FF]/10 shadow-[0_0_10px_rgba(0,217,255,0.1)]'
+                  gameState.me?.role === "SPY"
+                    ? "text-[#DC143C] border-[#DC143C]/50 bg-[#DC143C]/10 shadow-[0_0_10px_rgba(220,20,60,0.1)]"
+                    : "text-[#00D9FF] border-[#00D9FF]/50 bg-[#00D9FF]/10 shadow-[0_0_10px_rgba(0,217,255,0.1)]"
                 }`}
                 title={t("roles.yourRoleTitle", { role: t(`roles.${gameState.me.role}.name`) })}
               >
-                {gameState.me?.role === 'SPY' ? <Eye className="w-5 h-5" /> : <Shield className="w-5 h-5" />}
+                {gameState.me?.role === "SPY" ? (
+                  <Eye className="w-5 h-5" />
+                ) : (
+                  <Shield className="w-5 h-5" />
+                )}
               </div>
             </motion.div>
           )}
@@ -95,7 +98,7 @@ export function MissionVotingScreen() {
           >
             <LogOut className="w-5 h-5" />
           </motion.button>
-          
+
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -142,8 +145,7 @@ export function MissionVotingScreen() {
               variant="resistance"
               onClick={handleSubmitTeam}
               disabled={
-                gameState.rounds[gameState.currentRoundIndex].selectedTeam
-                  .length <
+                gameState.rounds[gameState.currentRoundIndex].selectedTeam.length <
                 gameState.rounds[gameState.currentRoundIndex].teamSize
               }
               className="w-full"
@@ -155,11 +157,10 @@ export function MissionVotingScreen() {
 
         {/* Vote Buttons */}
         {gameState.phase === "VOTING" &&
-          (!gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId || 
-            gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId === gameState.me?.id) &&
-          !gameState.rounds[gameState.currentRoundIndex].teamVotes[
-            gameState.me?.id!
-          ] && (
+          (!gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId ||
+            gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId ===
+              gameState.me?.id) &&
+          !gameState.rounds[gameState.currentRoundIndex].teamVotes[gameState.me?.id!] && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -190,12 +191,10 @@ export function MissionVotingScreen() {
 
         {/* Player Message */}
         {gameState.phase === "VOTING" &&
-          ((gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId && 
+          ((gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId &&
             gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId !== gameState.me?.id &&
             !gameState.rounds[gameState.currentRoundIndex].teamVotes[gameState.me?.id!]) ||
-          gameState.rounds[gameState.currentRoundIndex].teamVotes[
-            gameState.me?.id!
-          ]) && (
+            gameState.rounds[gameState.currentRoundIndex].teamVotes[gameState.me?.id!]) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -204,7 +203,12 @@ export function MissionVotingScreen() {
             >
               <p className="text-center text-[#9CA3AF] text-sm font-['Inter'] mb-4">
                 {gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId
-                  ? t("voting.awaitingVoter", { name: gameState.players.find(p => p.id === gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId)?.name })
+                  ? t("voting.awaitingVoter", {
+                      name: gameState.players.find(
+                        (p) =>
+                          p.id === gameState.rounds[gameState.currentRoundIndex].currentTeamVoterId,
+                      )?.name,
+                    })
                   : t("voting.awaitingOthers")}
               </p>
             </motion.div>
@@ -215,9 +219,7 @@ export function MissionVotingScreen() {
           gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(
             (p) => p === gameState.me?.id,
           ) &&
-          !gameState.rounds[gameState.currentRoundIndex].missionVotes[
-            gameState.me?.id!
-          ] && (
+          !gameState.rounds[gameState.currentRoundIndex].missionVotes[gameState.me?.id!] && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -251,9 +253,7 @@ export function MissionVotingScreen() {
           gameState.rounds[gameState.currentRoundIndex].selectedTeam.some(
             (p) => p === gameState.me?.id,
           ) &&
-          gameState.rounds[gameState.currentRoundIndex].missionVotes[
-            gameState.me?.id!
-          ] && (
+          gameState.rounds[gameState.currentRoundIndex].missionVotes[gameState.me?.id!] && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

@@ -7,12 +7,15 @@ type Tree = { [key: string]: string | Tree };
 const flatten = (tree: Tree, prefix = ""): Record<string, string> =>
   Object.entries(tree).reduce<Record<string, string>>((acc, [key, value]) => {
     const path = prefix ? `${prefix}.${key}` : key;
-    return typeof value === "string" ? { ...acc, [path]: value } : { ...acc, ...flatten(value, path) };
+    return typeof value === "string"
+      ? { ...acc, [path]: value }
+      : { ...acc, ...flatten(value, path) };
   }, {});
 
 // Sufixos de plural variam por idioma (pt-BR também usa _many em alguns casos), então comparamos a base
 const base = (key: string) => key.replace(/_(zero|one|two|few|many|other)$/, "");
-const placeholders = (text: string) => [...text.matchAll(/{{\s*(\w+)\s*}}/g)].map((m) => m[1]).sort();
+const placeholders = (text: string) =>
+  [...text.matchAll(/{{\s*(\w+)\s*}}/g)].map((m) => m[1]).sort();
 
 const enFlat = flatten(en as Tree);
 const ptFlat = flatten(ptBR as Tree);

@@ -1,4 +1,11 @@
-import { AckScreen, Role, GamePhase, TeamVoteAction, MissionVoteAction, SocketEvent } from '../enums/enums';
+import {
+  AckScreen,
+  Role,
+  GamePhase,
+  TeamVoteAction,
+  MissionVoteAction,
+  SocketEvent,
+} from "../enums/enums";
 
 // Erro enviado pelo servidor: o texto vem de errors.<code> nos arquivos de i18n
 export interface ServerError {
@@ -28,7 +35,7 @@ export interface Round {
   teamVotes: Record<string, TeamVoteAction>; // Mapping socketId -> Vote
   missionVotes: Record<string, MissionVoteAction>; // Mapping socketId -> Vote
   missionVoteResult: MissionVoteAction[];
-  status: 'PENDING' | 'TEAM_APPROVED' | 'TEAM_REJECTED' | 'MISSION_SUCCESS' | 'MISSION_FAILED';
+  status: "PENDING" | "TEAM_APPROVED" | "TEAM_REJECTED" | "MISSION_SUCCESS" | "MISSION_FAILED";
   failedVotesCount?: number;
   currentTeamVoterId?: string;
   resultRevealed?: boolean;
@@ -63,8 +70,14 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  [SocketEvent.CREATE_ROOM]: (data: { playerName: string }, callback: (response: { roomCode: string, playerId: string }) => void) => void;
-  [SocketEvent.JOIN_ROOM]: (data: { playerName: string; roomCode: string }, callback: (response: { roomCode: string, playerId: string }) => void) => void;
+  [SocketEvent.CREATE_ROOM]: (
+    data: { playerName: string },
+    callback: (response: { roomCode: string; playerId: string }) => void,
+  ) => void;
+  [SocketEvent.JOIN_ROOM]: (
+    data: { playerName: string; roomCode: string },
+    callback: (response: { roomCode: string; playerId: string }) => void,
+  ) => void;
   [SocketEvent.START_GAME]: (data: {}, callback: () => void) => void;
   [SocketEvent.SELECT_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;
   [SocketEvent.SUBMIT_SELECTED_MISSION_TEAM]: (data: { selectedPlayers: string[] }) => void;

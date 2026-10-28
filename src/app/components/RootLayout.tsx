@@ -18,15 +18,15 @@ export function RootLayout() {
       <Outlet />
       <ScanlineOverlay />
       <DevNavigation />
-      <Toaster 
-        theme="dark" 
+      <Toaster
+        theme="dark"
         toastOptions={{
           style: {
-            background: '#1A1F28',
-            border: '1px solid #DC143C',
-            color: '#fff',
+            background: "#1A1F28",
+            border: "1px solid #DC143C",
+            color: "#fff",
           },
-          className: 'font-[\'Inter\']',
+          className: "font-['Inter']",
         }}
       />
     </>

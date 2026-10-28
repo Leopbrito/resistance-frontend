@@ -16,19 +16,19 @@ export function GameEndScreen() {
     gameState.players?.map((player) => ({
       player,
       flipped: false,
-    })) || []
+    })) || [],
   );
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (results.length > 0) {
-        results.forEach((result, index) => {
+        results.forEach((_, index) => {
           setTimeout(() => {
             setResults((prev) =>
               prev.map((r, i) => ({
                 ...r,
                 flipped: i <= index,
-              }))
+              })),
             );
           }, 700 * index);
         });
@@ -72,7 +72,7 @@ export function GameEndScreen() {
 
         {/* Card Flip Result */}
         <div className="flex-1 flex flex-wrap gap-4 items-center justify-center">
-          {results.map((result, index) => (
+          {results.map((result) => (
             <div key={result.player.id} className="perspective-1000">
               <motion.div
                 initial={{ rotateY: 0 }}
@@ -103,9 +103,7 @@ export function GameEndScreen() {
                     className="w-16 h-16 rounded-full border-2 border-[#6B7280] 
                   flex items-center justify-center mb-4"
                   >
-                    <span className="text-2xl font-['Orbitron'] text-[#6B7280]">
-                      ?
-                    </span>
+                    <span className="text-2xl font-['Orbitron'] text-[#6B7280]">?</span>
                   </motion.div>
                   <span className="font-['Inter'] text-sm tracking-wide text-[#9CA3AF] text-center px-1 line-clamp-1">
                     {result.player.name}
@@ -124,10 +122,7 @@ export function GameEndScreen() {
                         : "linear-gradient(135deg, #1A1F28 0%, #DC143C20 100%)",
                     borderWidth: "2px",
                     borderStyle: "solid",
-                    borderColor:
-                      result.player.role !== "SPY"
-                        ? "#00D9FF"
-                        : "#DC143C",
+                    borderColor: result.player.role !== "SPY" ? "#00D9FF" : "#DC143C",
                     boxShadow:
                       result.player.role !== "SPY"
                         ? "0 0 40px rgba(0,217,255,0.5)"
@@ -163,10 +158,7 @@ export function GameEndScreen() {
                     transition={{ delay: 0.5 }}
                     className="font-['Inter'] text-xs uppercase tracking-wider mb-2 text-center"
                     style={{
-                      color:
-                        result.player.role !== "SPY"
-                          ? "#00D9FF"
-                          : "#DC143C",
+                      color: result.player.role !== "SPY" ? "#00D9FF" : "#DC143C",
                     }}
                   >
                     {t(`roles.${result.player.role !== "SPY" ? "RESISTANCE" : "SPY"}.name`)}
@@ -188,11 +180,7 @@ export function GameEndScreen() {
             transition={{ delay: 0.5 }}
             className="w-full max-w-md mt-12"
           >
-            <GlowButton
-              variant="resistance"
-              onClick={handleContinueButton}
-              className="w-full"
-            >
+            <GlowButton variant="resistance" onClick={handleContinueButton} className="w-full">
               {t("end.exit")}
             </GlowButton>
           </motion.div>

@@ -22,23 +22,15 @@ export function JoinRoomScreen() {
     if (username.trim()) {
       startNewSession();
       if (isCreateMode) {
-        socket.emit(
-          SocketEvent.CREATE_ROOM,
-          { playerName: username },
-          (response) => {
-            setPlayerId(response.playerId);
-            navigate("/lobby");
-          },
-        );
+        socket.emit(SocketEvent.CREATE_ROOM, { playerName: username }, (response) => {
+          setPlayerId(response.playerId);
+          navigate("/lobby");
+        });
       } else {
-        socket.emit(
-          SocketEvent.JOIN_ROOM,
-          { playerName: username, roomCode },
-          (response) => {
-            setPlayerId(response.playerId);
-            navigate("/lobby");
-          },
-        );
+        socket.emit(SocketEvent.JOIN_ROOM, { playerName: username, roomCode }, (response) => {
+          setPlayerId(response.playerId);
+          navigate("/lobby");
+        });
       }
     }
   };
@@ -130,8 +122,7 @@ export function JoinRoomScreen() {
                 variant="resistance"
                 className="w-full"
                 disabled={
-                  !username.trim() ||
-                  (!isCreateMode && roomCode.length !== ROOM_CODE_LENGTH)
+                  !username.trim() || (!isCreateMode && roomCode.length !== ROOM_CODE_LENGTH)
                 }
               >
                 {isCreateMode ? t("join.createSubmit") : t("join.joinSubmit")}

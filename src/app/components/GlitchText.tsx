@@ -10,7 +10,7 @@ export function GlitchText({ children, className = "" }: GlitchTextProps) {
   return (
     <div className={`relative inline-block ${className}`}>
       <span className="relative z-10">{children}</span>
-      
+
       <motion.span
         animate={{
           opacity: [0, 0.7, 0],
@@ -26,7 +26,7 @@ export function GlitchText({ children, className = "" }: GlitchTextProps) {
       >
         {children}
       </motion.span>
-      
+
       <motion.span
         animate={{
           opacity: [0, 0.7, 0],

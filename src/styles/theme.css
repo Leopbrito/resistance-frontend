@@ -2,20 +2,20 @@
 
 :root {
   --font-size: 16px;
-  --font-heading: 'Orbitron', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  
+  --font-heading: "Orbitron", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
   /* Game color system */
-  --game-bg: #0B0F14;
-  --game-resistance: #00D9FF;
+  --game-bg: #0b0f14;
+  --game-resistance: #00d9ff;
   --game-resistance-glow: rgba(0, 217, 255, 0.5);
-  --game-spy: #DC143C;
+  --game-spy: #dc143c;
   --game-spy-glow: rgba(220, 20, 60, 0.5);
-  --game-neutral: #6B7280;
-  --game-neutral-light: #9CA3AF;
-  --game-surface: #1A1F28;
+  --game-neutral: #6b7280;
+  --game-neutral-light: #9ca3af;
+  --game-surface: #1a1f28;
   --game-surface-hover: #242933;
-  
+
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;

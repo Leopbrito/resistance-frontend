@@ -75,9 +75,7 @@ export function ParticleBackground() {
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < 100) {
-            ctx.strokeStyle = `rgba(0, 217, 255, ${
-              (1 - distance / 100) * 0.2
-            })`;
+            ctx.strokeStyle = `rgba(0, 217, 255, ${(1 - distance / 100) * 0.2})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);

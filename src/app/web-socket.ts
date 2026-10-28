@@ -5,7 +5,9 @@ import { AckScreen, SocketEvent } from "./enums/enums";
 import { navigate } from "./services/navigation-service";
 import { ClientToServerEvents, ServerError, ServerToClientEvents } from "./interfaces/interfaces";
 
-const API_URL = import.meta.env.PROD ? "wss://api-resistance.leopbrito.com/" : "http://localhost:3000";
+const API_URL = import.meta.env.PROD
+  ? "wss://api-resistance.leopbrito.com/"
+  : "http://localhost:3000";
 
 const PLAYER_ID_KEY = "playerId";
 
@@ -38,7 +40,7 @@ export const clearPlayerId = () => {
 let sessionDetached = false;
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(API_URL, {
-  transports: ['websocket'],
+  transports: ["websocket"],
   // Função: reavaliada a cada (re)conexão, para reconexões automáticas usarem o playerId atual
   auth: (cb) => cb({ playerId: sessionDetached ? "" : getPlayerId() || "" }),
 });

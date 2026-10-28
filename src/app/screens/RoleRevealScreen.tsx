@@ -153,11 +153,7 @@ export function RoleRevealScreen() {
               }}
             />
             {isSpy ? (
-              <Eye
-                className="relative w-32 h-32"
-                style={{ color: "#DC143C" }}
-                strokeWidth={1.5}
-              />
+              <Eye className="relative w-32 h-32" style={{ color: "#DC143C" }} strokeWidth={1.5} />
             ) : (
               <Shield
                 className="relative w-32 h-32"
@@ -197,38 +193,42 @@ export function RoleRevealScreen() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
             className={`font-['Inter'] text-white text-sm max-w-md mx-auto leading-relaxed ${
-              isSpy && gameState.players.filter((p) => p.role === Role.SPY && p.id !== gameState.me?.id).length > 0 
-                ? 'mb-6' 
-                : 'mb-12'
+              isSpy &&
+              gameState.players.filter((p) => p.role === Role.SPY && p.id !== gameState.me?.id)
+                .length > 0
+                ? "mb-6"
+                : "mb-12"
             }`}
           >
             {t(`roles.${isSpy ? "SPY" : "RESISTANCE"}.description`)}
           </motion.p>
 
-          {isSpy && gameState.players.filter((p) => p.role === Role.SPY && p.id !== gameState.me?.id).length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.1 }}
-              className="mb-12"
-            >
-              <p className="font-['Inter'] text-[#DC143C] text-xs font-bold uppercase tracking-widest mb-3">
-                {t("roles.fellowSpies")}
-              </p>
-              <div className="flex flex-wrap justify-center gap-2">
-                {gameState.players
-                  .filter((p) => p.role === Role.SPY && p.id !== gameState.me?.id)
-                  .map((spy) => (
-                    <span 
-                      key={spy.id} 
-                      className="text-[#ffb3b3] font-bold text-sm font-['Inter'] bg-[#8B0000]/40 px-4 py-1.5 rounded-full border border-[#DC143C] shadow-[0_0_15px_rgba(220,20,60,0.3)]"
-                    >
-                      {spy.name}
-                    </span>
-                  ))}
-              </div>
-            </motion.div>
-          )}
+          {isSpy &&
+            gameState.players.filter((p) => p.role === Role.SPY && p.id !== gameState.me?.id)
+              .length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.1 }}
+                className="mb-12"
+              >
+                <p className="font-['Inter'] text-[#DC143C] text-xs font-bold uppercase tracking-widest mb-3">
+                  {t("roles.fellowSpies")}
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {gameState.players
+                    .filter((p) => p.role === Role.SPY && p.id !== gameState.me?.id)
+                    .map((spy) => (
+                      <span
+                        key={spy.id}
+                        className="text-[#ffb3b3] font-bold text-sm font-['Inter'] bg-[#8B0000]/40 px-4 py-1.5 rounded-full border border-[#DC143C] shadow-[0_0_15px_rgba(220,20,60,0.3)]"
+                      >
+                        {spy.name}
+                      </span>
+                    ))}
+                </div>
+              </motion.div>
+            )}
         </motion.div>
 
         {/* Continue Button */}

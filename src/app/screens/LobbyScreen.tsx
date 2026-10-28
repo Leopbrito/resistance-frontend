@@ -8,7 +8,14 @@ import { ParticleBackground } from "../components/ParticleBackground";
 import { clearPlayerId, socket } from "../web-socket";
 import { SocketEvent } from "../enums/enums";
 import { QRCodeSVG } from "qrcode.react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
 
 export function LobbyScreen() {
   const { t } = useTranslation();
@@ -66,7 +73,7 @@ export function LobbyScreen() {
                   <span className="text-[#9CA3AF] text-sm font-['Inter']">
                     {t("lobby.roomCode")}
                   </span>
-                  <div 
+                  <div
                     className="flex items-center gap-2 cursor-pointer group px-3 py-1 bg-[#1A1F28] rounded-md border border-[#6B7280] hover:border-[#00D9FF] transition-colors"
                     onClick={handleCopyLink}
                     title={t("lobby.copyInvite")}
@@ -91,13 +98,15 @@ export function LobbyScreen() {
                     </DialogTrigger>
                     <DialogContent className="bg-[#0B0F14] border border-[#00D9FF]/50 text-white sm:max-w-md shadow-[0_0_15px_rgba(0,217,255,0.2)]">
                       <DialogHeader>
-                        <DialogTitle className="font-['Orbitron'] text-xl text-center text-[#00D9FF] tracking-wider">{t("lobby.shareRoom")}</DialogTitle>
+                        <DialogTitle className="font-['Orbitron'] text-xl text-center text-[#00D9FF] tracking-wider">
+                          {t("lobby.shareRoom")}
+                        </DialogTitle>
                         <DialogDescription className="text-center text-[#9CA3AF] font-['Inter']">
                           {t("lobby.scanQr")}
                         </DialogDescription>
                       </DialogHeader>
                       <div className="flex items-center justify-center p-6 bg-white rounded-lg mx-auto w-fit mt-4 mb-2">
-                        <QRCodeSVG 
+                        <QRCodeSVG
                           value={`${window.location.origin}/join?roomCode=${gameState.me?.roomCode}`}
                           size={200}
                           level="H"
@@ -139,12 +148,8 @@ export function LobbyScreen() {
                       {/* Name */}
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-['Inter'] text-white">
-                            {player.name}
-                          </span>
-                          {player.isHost && (
-                            <Crown className="w-4 h-4 text-[#FFD700]" />
-                          )}
+                          <span className="font-['Inter'] text-white">{player.name}</span>
+                          {player.isHost && <Crown className="w-4 h-4 text-[#FFD700]" />}
                         </div>
                       </div>
 

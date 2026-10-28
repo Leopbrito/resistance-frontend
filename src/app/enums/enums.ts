@@ -1,54 +1,53 @@
 export enum Role {
-  RESISTANCE = 'RESISTANCE',
-  SPY = 'SPY',
+  RESISTANCE = "RESISTANCE",
+  SPY = "SPY",
 }
 
 export enum MissionVoteAction {
-  SUCCESS = 'SUCCESS',
-  FAIL = 'FAIL',
+  SUCCESS = "SUCCESS",
+  FAIL = "FAIL",
 }
 
 export enum TeamVoteAction {
-  APPROVE = 'APPROVE',
-  REJECT = 'REJECT',
+  APPROVE = "APPROVE",
+  REJECT = "REJECT",
 }
 
 export enum GamePhase {
-  WAITING = 'WAITING',
-  TEAM_SELECTION = 'TEAM_SELECTION',
-  VOTING = 'VOTING',
-  MISSION = 'MISSION',
-  FINISHED = 'FINISHED',
+  WAITING = "WAITING",
+  TEAM_SELECTION = "TEAM_SELECTION",
+  VOTING = "VOTING",
+  MISSION = "MISSION",
+  FINISHED = "FINISHED",
 }
 
 export enum AckScreen {
-  ROLES = 'roles',
-  MISSION_RESULT = 'missionResult',
-  GAME_END = 'gameEnd',
+  ROLES = "roles",
+  MISSION_RESULT = "missionResult",
+  GAME_END = "gameEnd",
 }
 
 export enum SocketEvent {
   // Server to Client
-  ERROR = 'error',
-  GAME_STATE_UPDATE = 'gameStateUpdate',
-  RECONNECT = 'reconnectGame',
-  REVEAL_ROLES = 'revealRoles',
-  OPEN_MISSION_RESULT_SCREEN = 'openMissionResultScreen',
-  REVEAL_MISSION_RESULT = 'revealMissionResult',
-  SESSION_INVALID = 'sessionInvalid',
-  SESSION_REPLACED = 'sessionReplaced',
+  ERROR = "error",
+  GAME_STATE_UPDATE = "gameStateUpdate",
+  RECONNECT = "reconnectGame",
+  REVEAL_ROLES = "revealRoles",
+  OPEN_MISSION_RESULT_SCREEN = "openMissionResultScreen",
+  REVEAL_MISSION_RESULT = "revealMissionResult",
+  SESSION_INVALID = "sessionInvalid",
+  SESSION_REPLACED = "sessionReplaced",
 
   // Client to Server
-  CREATE_ROOM = 'createRoom',
-  JOIN_ROOM = 'joinRoom',
-  START_GAME = 'startGame',
-  SELECT_MISSION_TEAM = 'selectMissionTeam',
-  SUBMIT_SELECTED_MISSION_TEAM = 'submitSelectedMissionTeam',
-  VOTE_TEAM_APPROVAL = 'voteTeamApproval',
-  SUBMIT_MISSION_VOTE = 'submitMissionVote',
-  SUBMIT_MISSION_RESULT_REVEAL = 'submitMissionResultReveal',
-  ACK_SCREEN = 'ackScreen',
+  CREATE_ROOM = "createRoom",
+  JOIN_ROOM = "joinRoom",
+  START_GAME = "startGame",
+  SELECT_MISSION_TEAM = "selectMissionTeam",
+  SUBMIT_SELECTED_MISSION_TEAM = "submitSelectedMissionTeam",
+  VOTE_TEAM_APPROVAL = "voteTeamApproval",
+  SUBMIT_MISSION_VOTE = "submitMissionVote",
+  SUBMIT_MISSION_RESULT_REVEAL = "submitMissionResultReveal",
+  ACK_SCREEN = "ackScreen",
 }
-
 
 export const ROOM_CODE_LENGTH = 9;
